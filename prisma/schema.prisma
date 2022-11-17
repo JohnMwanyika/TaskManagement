@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model role {
+  role_id     Int    @id @default(autoincrement())
+  role_name   String @db.VarChar(50)
+  description String @db.Text
+  users       user[]
+}
+
+model task {
+  task_id     Int         @id @default(autoincrement())
+  title       String      @db.VarChar(255)
+  description String      @db.Text
+  created_at  DateTime    @default(now()) @db.DateTime(0)
+  updated_at  DateTime    @default(now()) @db.DateTime(0)
+  due_in      DateTime    @db.DateTime(0)
+  status_id   Int         @default(1)
+  user_id     Int
+  task_status task_status @relation(fields: [status_id], references: [status_id], map: "task_ibfk_1")
+  user        user        @relation(fields: [user_id], references: [user_id], onDelete: Cascade, map: "user_fk")
+
+  @@index([status_id], map: "status_id")
+  @@index([user_id], map: "user_id")
+}
+
+model task_status {
+  status_id   Int    @id @default(autoincrement())
+  status_name String @db.VarChar(50)
+  description String @db.Text
+  tasks       task[]
+}
+
+model user {
+  user_id    Int    @id @default(autoincrement())
+  first_name String @db.VarChar(50)
+  last_name  String @db.VarChar(50)
+  email      String @db.VarChar(50)
+  password   String @db.VarChar(20)
+  role_id    Int
+  role       role   @relation(fields: [role_id], references: [role_id], map: "role_fk")
+  tasks      task[]
+
+  @@index([role_id], map: "role_id")
+}

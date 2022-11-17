@@ -1,0 +1,46 @@
+extends layout
+
+block content
+    main#main.main
+        .pagetitle
+            h1=title
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="index.html") Home
+                    li.breadcrumb-item Task
+                    li.breadcrumb-item.active Add New
+        section.section
+            .row
+                .col-lg-12
+                    .card
+                        .card-body
+                            h5.card-title Create new task
+                            form.row.g-3(action="/new_task" method="POST")
+                                .col-md-12
+                                    .form-floating
+                                        input.form-control#floatingName(type="text" placeholder="Your Name" name="title"  required)
+                                        label(for="floatingName") Title
+                                .col-12
+                                    .form-floating
+                                        textarea.form-control#floatingTextarea(placeholder="Address" style="height: 100px;" name="description" required)
+                                        label(for="floatingTextarea") Description
+                                .col-md-6
+                                    .col-md-12
+                                        .form-floating
+                                            input.form-control#floatingCity(type="text" placeholder="Status" value="active" disabled)
+                                            label(for="floatingStatus") Status
+                                .col-md-4
+                                    .form-floating.mb-3
+                                        select.form-select#floatingSelect(aria-label="Assignee" name="user_id" required)
+                                            each row in rows
+                                                option(value=row.user_id).
+                                                    #{row.first_name} #{row.last_name}
+                                        label(for="floatingSelect") Assignee
+                                .col-md-2
+                                    .form-floating
+                                        input.form-control#floatingZip(type="date" placeholder="Due date" name="due_in" required)
+                                        label(for="floatingDate") Due date
+                                .text-center
+                                    button.btn.btn-primary(type="submit") Submit
+                                    button.btn.btn-secondary(type="reset") Reset

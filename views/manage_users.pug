@@ -1,0 +1,77 @@
+extends layout
+
+block content 
+  
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Manage Users</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item active">Manage users</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-12">
+
+          <div class="card recent-sales overflow-auto">
+
+            <div class="card-body">
+            <h5 class="card-title"></h5>
+            <div class="table-responsive">
+              <table class="table table-sm table-hover datatable">
+                <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                each row,index in rows
+                  include mixins/_new_user_form
+                  +user_form(row,'Edit user')
+                  <tr>
+                    <th scope="row"><a href="#">#{index+1}</a></th>
+                    <td>#{row.first_name}</td>
+                    <td>#{row.last_name}</td>
+                    <td>#{row.email}</td>
+                    <td>#{row.role.role_name}</td>
+                    <td>
+                      <div class="dropdown text-center">
+                        <button class="btn btn-sm border btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#user_modal#{index}">Edit</a></li>
+                          <li><a class="dropdown-item" href="#">Delete</a></li>
+                          <li><a class="dropdown-item" href="#">Deactivate</a></li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
