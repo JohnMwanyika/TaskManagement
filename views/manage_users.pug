@@ -39,7 +39,7 @@ block content
                 <tbody>
                 each row,index in rows
                   include mixins/_new_user_form
-                  +user_form(row,'Edit user')
+                  +user_form(row,'Edit')
                   <tr>
                     <th scope="row"><a href="#">#{index+1}</a></th>
                     <td>#{row.first_name}</td>
@@ -53,7 +53,7 @@ block content
                         </button>
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#user_modal#{index}">Edit</a></li>
-                          <li><a class="dropdown-item" href="#">Delete</a></li>
+                          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#user_modal#{index}">View</a></li>
                           <li><a class="dropdown-item" href="#">Deactivate</a></li>
                         </ul>
                       </div>

@@ -8,11 +8,13 @@ module.exports = {
       include:{
         role:true
       }
+    })
+    const allRoles = await prisma.role.findMany({
       
     })
     console.log(allUsers)
-    res.render("manage_users", { title: "Users",rows: allUsers });
-
+    console.log(allRoles)
+    res.render("manage_users", { title: "Users",rows: allUsers,results: allRoles});
   },
   // serach user
   find: (req, res) => {
