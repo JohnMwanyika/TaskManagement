@@ -6,8 +6,11 @@ module.exports = {
   getTasks: async(req, res) => {
 
     const allTasks = await prisma.task.findMany({
-      include:{user:true,task_status:true}
-    })
+      include:{user:true,task_status:true},
+      orderBy:{
+        task_id:'desc'
+      }
+    });
     console.log(allTasks)
     res.render("index", {
               rows: allTasks,
@@ -33,6 +36,9 @@ module.exports = {
   getMyTasks: async(req,res)=>{
     const results = await prisma.task.findMany({
       include:{user:true,task_status:true},
+      orderBy:{
+        task_id:'desc'
+      }
     })
     res.render('my_tasks',{rows:results,card_title:'My Tasks',bd:'My Tasks'})
   },
@@ -41,25 +47,13 @@ module.exports = {
     console.log(allUsers)
     res.render('task_form',{rows:allUsers})
   },
-  newTask: async(req,res)=>{
-    const {title,description,user_id,due_in}= req.body;
-    const author = await prisma.user.findFirst({
-      where:{
-        id:parseInt(user_id) 
-      }
-    })
-    console.log(author);
-    console.log(req.body);
-    const rows = await prisma.task.create({
-      data:{
-        title:title,
-        description:description,
-        user_id:user_id,
-        due_in:new Date(due_in)
-      }
-    });
-    console.log(rows)
-    res.json(rows)
+  activateTask: async(req,res)=>{
+    const id = req.params.user_id
+    console.log(id);
+    res.json(id);
+    // const result = await prisma.task.update({
+    //   where:{id:id}
+    // })
   }
 
 };
