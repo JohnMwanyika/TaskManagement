@@ -3,7 +3,7 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-    <a class="nav-link " href="/">
+    <a class="nav-link " href="/dashboard">
         <i class="bi bi-grid"></i>
         <span>Dashboard</span>
     </a>
@@ -20,7 +20,7 @@
         </a>
         </li>
         <li>
-        <a href="components-accordion.html" data-bs-toggle="modal" data-bs-target="#user_modal">
+        <a href="components-accordion.html" data-bs-toggle="modal" data-bs-target="#new_user">
             <i class="bi bi-circle"></i><span>Add User</span>
         </a>
 
@@ -40,17 +40,17 @@
     </a>
     <ul id="task-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-        <a href="/my_tasks">
+        <a href="/tasks/my_tasks">
             <i class="bi bi-circle"></i><span>My Tasks</span>
         </a>
         </li>
         <li>
-        <a href="/new_task">
+        <a href="tasks/new_task">
             <i class="bi bi-circle"></i><span>Create New Task</span>
         </a>
         </li>
         <li>
-        <a href="forms-layouts.html">
+        <a href="#">
             <i class="bi bi-circle"></i><span>Assign Tasks </span>
         </a>
         </li>
@@ -61,7 +61,7 @@
     <li class="nav-heading">System</li>
 
     <li class="nav-item">
-    <a class="nav-link collapsed" href="users-profile.html">
+    <a class="nav-link collapsed" href="/profile">
         <i class="bi bi-person"></i>
         <span>Profile</span>
     </a>
@@ -75,7 +75,7 @@
     </li><!-- End Contact Page Nav -->
 
     <li class="nav-item">
-    <a class="nav-link collapsed" href="pages-login.html">
+    <a class="nav-link collapsed" href="/">
         <i class="bi bi-box-arrow-in-right"></i>
         <span>Logout</span>
     </a>
@@ -86,79 +86,79 @@
 </aside>
 <!-- End Sidebar-->
 <!-- Modal -->
-//- include ../mixins/_new_user_form
-//- +user_form('sidebar','New User')
-//- <div class="modal fade" id="new_user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-//-     <div class="modal-dialog">
-//-         <div class="modal-content">
-//-             <div class="modal-header">
-//-                 <h1 class="modal-title fs-5" id="staticBackdropLabel">New User</h1>
-//-                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-//-             </div>
-//-             <div class="modal-body">
-//-                 //- Form
-//-                 <form id="form" action="/edit_task/{{task_id}}" method="post">
-//-                     //- form start
-//-                     <div class="row">
-//-                         <div class="col-6">
-//-                             <div class="form-floating mb-3">
-//-                                 <input type="text" class="form-control" id="floatingInput" placeholder="first name" name="first_name" value="" />
-//-                                 <label for="floatingInput">First Name</label>
-//-                             </div>
-//-                         </div>
+
+<div class="modal fade" id="new_user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">New User</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                //- Form
+                <form id="form" action="/edit_task/{{task_id}}" method="post">
+                    //- form start
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput" placeholder="first name" name="first_name" value="" />
+                                <label for="floatingInput">First Name</label>
+                            </div>
+                        </div>
                         
-//-                         <div class="col-6">
-//-                             <div class="form-floating mb-3">
-//-                                 <input type="text" class="form-control" id="floatingInput" placeholder="Last name" name="last_name" value="" />
-//-                                 <label for="floatingInput">Last Name</label>
-//-                             </div>
-//-                         </div>
-//-                     </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingInput" placeholder="Last name" name="last_name" value="" />
+                                <label for="floatingInput">Last Name</label>
+                            </div>
+                        </div>
+                    </div>
 
-//-                     <div class="row">
-//-                         <div class="col-6">
-//-                             <div class="form-floating mb-3">
-//-                                 <input type="email" class="form-control" id="floatingInput" placeholder="xyz@email.com" name="email" value="" />
-//-                                 <label for="floatingInput">Email</label>
-//-                             </div>
-//-                         </div>
-//-                         <div class="col-6">
-//-                             <div class="form-floating">
-//-                                 <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="role">
-//-                                     <option></option>
-//-                                     <option value=""></option>
-//-                                 </select>
-//-                                 <label for="floatingSelect">Role</label>
-//-                             </div>
-//-                         </div>
-//-                     </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="floatingInput" placeholder="xyz@email.com" name="email" value="" />
+                                <label for="floatingInput">Email</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="role">
+                                    <option selected>Select Role</option>
+                                    //- each role in roles
+                                        <option value=`${role.role_id}`>#{role.role_name}</option>
+                                </select>
+                                <label for="floatingSelect">Role</label>
+                            </div>
+                        </div>
+                    </div>
 
-//-                     <div class="row">
-//-                         <div class="col-6">
-//-                             <div class="form-floating mb-3">
-//-                                 <input type="password" class="form-control" id="floatingInput" placeholder="password" name="password" required />
-//-                                 <label for="floatingInput">Password</label>
-//-                             </div>
-//-                         </div>
-//-                         <div class="col-6">
-//-                             <div class="form-floating mb-3">
-//-                                 <input type="password" class="form-control" id="floatingInput" placeholder="confirm password" name="password" required value="" />
-//-                                 <label for="floatingInput">Confirm password</label>
-//-                             </div>
-//-                         </div>
-//-                     </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="floatingInput" placeholder="password" name="password" required />
+                                <label for="floatingInput">Password</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="floatingInput" placeholder="confirm password" name="password" required value="" />
+                                <label for="floatingInput">Confirm password</label>
+                            </div>
+                        </div>
+                    </div>
 
-//-                     <div class="col-12 d-grid">
-//-                         <button class="btn btn-primary" type="submit">submit</button>
-//-                     </div>
-//-                     //- form end
-//-                 </form>
-//-                 //- form end
-//-             </div>
-//-             <div class="modal-footer">
-//-                 //- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-//-                 //- <button type="button" class="btn btn-primary">Understood</button>
-//-             </div>
-//-         </div>
-//-     </div>
-//- </div>
+                    <div class="col-12 d-grid">
+                        <button class="btn btn-primary" type="submit">submit</button>
+                    </div>
+                    //- form end
+                </form>
+                //- form end
+            </div>
+            //- <div class="modal-footer">
+            //-     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            //-     <button type="button" class="btn btn-primary">Understood</button>
+            //- </div>
+        </div>
+    </div>
+</div>

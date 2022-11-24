@@ -16,11 +16,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("assets", express.static("/public/assets/"));
+// app.use("jquery", express.static("/public/javascripts/"));
 
+var dashboardRouter = require("./routes/dashboard.route")
 var usersRouter = require("./routes/user.route");
 var taskRouter = require("./routes/task.route");
+var profileRouter = require("./routes/profile.route");
 app.use("/users", usersRouter);
-app.use("/", taskRouter);
+app.use("/dashboard", dashboardRouter);
+app.use('/tasks',taskRouter)
+app.get('/',(req,res)=>{
+  res.render('login');
+});
+app.get('/sign_up',(req,res)=>{
+  res.render('sign_up');
+});
+app.use("/profile", profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

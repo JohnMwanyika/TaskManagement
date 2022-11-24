@@ -1,23 +1,24 @@
 const { PrismaClient } = require("@prisma/client");
-// const pool = require("../config/database");
-
 const prisma = new PrismaClient();
 module.exports = {
-  getTasks: async(req, res) => {
+  // getTasks: async(req, res) => {
+  //   const roles =await prisma.role.findMany({
 
-    const allTasks = await prisma.task.findMany({
-      include:{user:true,task_status:true},
-      orderBy:{
-        task_id:'desc'
-      }
-    });
-    console.log(allTasks)
-    res.render("index", {
-              rows: allTasks,
-              bd:'Dashboard',
-              card_title:'Recent Tasks'
-            });
-  },
+  //   })
+  //   const allTasks = await prisma.task.findMany({
+  //     include:{user:true,task_status:true},
+  //     orderBy:{
+  //       task_id:'desc'
+  //     }
+  //   });
+  //   console.log(allTasks)
+  //   res.render("index", {
+  //             rows: allTasks,
+  //             bd:'Dashboard',
+  //             card_title:'Recent Tasks',
+  //             roles
+  //           });
+  // },
   createTask: async(req, res) => {
     const { title, description, user_id, due_in} = req.body
     console.log(req.body)

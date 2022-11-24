@@ -7,8 +7,9 @@ block content
       nav
         ol.breadcrumb
           li.breadcrumb-item
-            a(href="index.html") Home
+            a(href="/dashboard") Home
           li.breadcrumb-item.active Dashboard
+            h5#jqtest jquery off
     section.section.dashboard
       .row
         .col-lg-12
@@ -32,6 +33,8 @@ block content
                   h5.card-title
                     | #{card_title} 
                     span | Today
+                      span#loader
+                        span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")
                   table.table.datatable.table-hover
                     thead
                       tr
@@ -56,9 +59,11 @@ block content
                           if row.task_status.status_name === 'Active'
                             td
                               span.badge.bg-warning #{row.task_status.status_name}
+                              
                           else
                             td
                               span.badge.bg-success #{row.task_status.status_name}
+                                
                           td 
                             .dropdown.text-center
                               button.btn.btn-light.btn-sm.dropdown-toggle(type="button" data-bs-toggle="dropdown" aria-expanded="false").
@@ -68,8 +73,8 @@ block content
                                   a.dropdown-item(href="#") View
                                 li
                                   a.dropdown-item#active(href=`#`) Active 
-                                    span#loader
-                                      span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")
+                                    //- span#loader
+                                    //-   span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")
                                 li
                                   a.dropdown-item(href=`/my_task/${row.user.user_id}`) Completed
                                 //- li
@@ -77,23 +82,26 @@ block content
 
   script.
     $('#loader').hide();
-      $('#regForm').on('submit', function (event) {
+    $('#jqtest').hide();
+      $('#active').on('click', function (event) {
         event.preventDefault();
-        var form = $(this);
-        jQuery.ajax({
-          url: form.attr('action'),
-          type: form.attr('method'),
-          data: form.serialize(),
-          beforeSend: function () {
-            $("#loader").show();
-          },
-          success: function (data) {
-            console.log(data);
-            $("#loader").hide(function(){
-              $("#MainFormDiv").hide();
-              $("#text-message").fadeIn();
-            });
-          }
-        });
+        $('#jqtest').show();
+        alert('Hello')
+        //- jQuery.ajax({
+        //-   url: '/my_task/1',
+        //-   type: 'POST',
+        //-   data: 1,
+        //-   beforeSend: function () {
+        //-     $("#loader").show();
+        //-   },
+        //-   success: function (data) {
+        //-     console.log(data);
+        //-     $("#loader").hide(function(){
+        //-       $("#main").load(location.href + " #main");
+        //-       //- $("#MainFormDiv").hide();
+        //-       //- $("#text-message").fadeIn();
+        //-     });
+        //-   }
+        //- });
       });
 
