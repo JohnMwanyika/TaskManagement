@@ -1,5 +1,6 @@
 const express = require("express");
-router = express.Router();
+// const { router } = require("../app");
+const router = express.Router();
 const {
   getUsers,
   find,
@@ -20,9 +21,5 @@ router.get("/:id", get_userById);
 router.get("/edituser/:id", edit_user_form);
 router.get("/delete/:id", delete_byId);
 router.post("/update/:id", update_byId);
-
-
-
-
 
 module.exports = router;

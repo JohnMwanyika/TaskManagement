@@ -1,0 +1,15 @@
+extends layout
+block content 
+    main#main.main
+        .pagetitle
+            h1=title
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="index.html") Home
+                    li.breadcrumb-item Users
+                    li.breadcrumb-item.active view User
+        ul 
+        each user in row 
+            li #{user.first_name} #{user.last_name }
+            li=user.role.role_name

@@ -89,24 +89,17 @@ module.exports = {
     });
   },
   // get user by id
-  get_userById: (req, res) => {
-    pool.getConnection((err, connection) => {
-      if (err) throw err;
-
-      connection.query(
-        `SELECT * FROM user WHERE user_id=?`,
-        [req.params.id],
-        (err, rows) => {
-          connection.release();
-          console.log(rows);
-          if (!err) {
-            res.render("view_user", { rows: rows });
-          } else {
-            console.log(err);
-          }
-        }
-      );
-    });
+  get_userById: async(req, res) => {
+    let id = req.params.id
+    const user = await prisma.user.findMany({
+      include:{
+        role:true,
+      },
+      where:{
+        user_id:parseInt(id)
+      }
+    })
+    res.render('view_user',{row:user,title:'View User'});
   },
   // get edit user form by id
   edit_user_form: (req, res) => {

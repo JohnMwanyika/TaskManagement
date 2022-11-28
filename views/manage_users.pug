@@ -49,11 +49,11 @@ block content
                     <td>
                       <div class="dropdown text-center">
                         <button class="btn btn-sm border btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-
+                          |Action
                         </button>
                         <ul class="dropdown-menu">
                           <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#user_modal#{index}">Edit</a></li>
-                          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#user_modal#{index}">View</a></li>
+                          <li><a class="dropdown-item" href='/users/#{row.user_id}'>View</a></li>
                           <li><a class="dropdown-item" href="#">Deactivate</a></li>
                         </ul>
                       </div>
