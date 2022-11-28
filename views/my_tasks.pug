@@ -7,8 +7,9 @@ block content
       nav
         ol.breadcrumb
           li.breadcrumb-item
-            a(href="index.html") Home
+            a(href="/dashboard") Home
           li.breadcrumb-item.active Dashboard
+            h5#jqtest jquery off
     section.section.dashboard
       .row
         .col-lg-12
@@ -32,7 +33,9 @@ block content
                   h5.card-title
                     | #{card_title} 
                     span | Today
-                  table.table.table-borderless.datatable
+                      span#loader
+                        span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")
+                  table.table.datatable.table-hover
                     thead
                       tr
                         th(scope="col") #
@@ -56,20 +59,49 @@ block content
                           if row.task_status.status_name === 'Active'
                             td
                               span.badge.bg-warning #{row.task_status.status_name}
+                              
                           else
                             td
                               span.badge.bg-success #{row.task_status.status_name}
+                                
                           td 
                             .dropdown.text-center
-                              button.btn.btn-light.btn-sm.dropdown-toggle(type="button", data-bs-toggle="dropdown", aria-expanded="false").
-                                
+                              button.btn.btn-light.btn-sm.dropdown-toggle(type="button" data-bs-toggle="dropdown" aria-expanded="false").
+
                               ul.dropdown-menu.border
                                 li
-                                  a.dropdown-item(href="#") Active
+                                  a.dropdown-item(href="#") View
                                 li
-                                  a.dropdown-item(href="#") Completed
+                                  a.dropdown-item#active(href=`#`) Active 
+                                    //- span#loader
+                                    //-   span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")
+                                li
+                                  a.dropdown-item(href=`/my_task/${row.user.user_id}`) Completed
                                 //- li
                                 //-   a.dropdown-item(href="#") Something else here
-                                
 
-              //- end of mytasks table
+  script.
+    $('#loader').hide();
+    $('#jqtest').hide();
+      $('#active').on('click', function (event) {
+        event.preventDefault();
+        $('#jqtest').show();
+        alert('Hello')
+        //- jQuery.ajax({
+        //-   url: '/my_task/1',
+        //-   type: 'POST',
+        //-   data: 1,
+        //-   beforeSend: function () {
+        //-     $("#loader").show();
+        //-   },
+        //-   success: function (data) {
+        //-     console.log(data);
+        //-     $("#loader").hide(function(){
+        //-       $("#main").load(location.href + " #main");
+        //-       //- $("#MainFormDiv").hide();
+        //-       //- $("#text-message").fadeIn();
+        //-     });
+        //-   }
+        //- });
+      });
+

@@ -14,15 +14,14 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "/public/")));
-// app.use("assets", express.static("/public/assets/"));
+app.use(express.static(path.join(__dirname, "public")));
+app.use("assets", express.static("/public/assets/"));
 
-var taskRouter = require("./routes/task.route");
 var usersRouter = require("./routes/user.route");
-
-
+var taskRouter = require("./routes/task.route");
+app.use("/users", usersRouter);
 app.use("/", taskRouter);
-app.use("/users/", usersRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
