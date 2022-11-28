@@ -18,9 +18,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("assets", express.static("/public/assets/"));
 
 var usersRouter = require("./routes/user.route");
-var taskRouter = require("./routes/task.route");
+// var taskRouter = require("./routes/task.route");
+const dashboardRoute = require("./routes/dashboard.route")
 app.use("/users", usersRouter);
-app.use("/", taskRouter);
+app.use("/dashboard", dashboardRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

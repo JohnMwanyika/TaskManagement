@@ -1,7 +1,11 @@
-const express = require('express');
-const { mainDashboard } = require('../controllers/dashboard.controller');
+const express = require("express");
+const { mainDashboard } = require("../controllers/dashboard.controller");
 const router = express.Router();
 
-router.get('/',mainDashboard)
+var taskRouter = require("./task.route");
 
-module.exports = router
+
+router.get("/", mainDashboard);
+router.use("/my_tasks",taskRouter);
+
+module.exports = router;
