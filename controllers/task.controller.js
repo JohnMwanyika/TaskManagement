@@ -1,24 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 module.exports = {
-  // getTasks: async(req, res) => {
-  //   const roles =await prisma.role.findMany({
-
-  //   })
-  //   const allTasks = await prisma.task.findMany({
-  //     include:{user:true,task_status:true},
-  //     orderBy:{
-  //       task_id:'desc'
-  //     }
-  //   });
-  //   console.log(allTasks)
-  //   res.render("index", {
-  //             rows: allTasks,
-  //             bd:'Dashboard',
-  //             card_title:'Recent Tasks',
-  //             roles
-  //           });
-  // },
   createTask: async(req, res) => {
     const { title, description, user_id, due_in} = req.body
     console.log(req.body)
@@ -31,8 +13,8 @@ module.exports = {
         due_in:new Date(due_in)
       }
     });
-
-    res.redirect('/my_tasks')
+    console.log(result)
+    res.redirect('/dashboard/my_tasks')
   },
   getMyTasks: async(req,res)=>{
     const results = await prisma.task.findMany({

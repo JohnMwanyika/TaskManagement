@@ -41,9 +41,10 @@ model user {
   user_id    Int    @id @default(autoincrement())
   first_name String @db.VarChar(50)
   last_name  String @db.VarChar(50)
-  email      String @db.VarChar(50)
-  password   String @db.VarChar(20)
-  role_id    Int
+  username   String @unique(map: "username") @db.VarChar(50)
+  email      String @unique(map: "email") @db.VarChar(50)
+  password   String @db.VarChar(255)
+  role_id    Int    @default(2)
   role       role   @relation(fields: [role_id], references: [role_id], map: "role_fk")
   tasks      task[]
 

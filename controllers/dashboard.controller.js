@@ -3,11 +3,15 @@ const prisma = new PrismaClient();
 module.exports = {
   mainDashboard: async (req, res) => {
     const allTasks = await prisma.task.findMany({
-      include: { user: true, task_status: true },
+      include: { user: true ,task_status:true},
       orderBy: {
         task_id: "desc",
       },
+      where:{
+        user_id:1
+      }
     });
+
     console.log(allTasks);
     res.render("index", {
       rows: allTasks,
