@@ -1,13 +1,15 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
-const { mainDashboard } = require("./dashboard.controller");
+// const { mainDashboard } = require("./dashboard.controller");
 module.exports = {
   loginForm: (req, res) => {
-    session = req.session;
-    if (session.userid) {
-      res.send("Welcome User <a href='/logout'>click to logout</a>");
-    } else res.render("login");
+    sess = req.session;
+    console.log(sess)
+    // if (session.userid) {
+    //   res.send("Welcome User <a href='/logout'>click to logout</a>");
+    // } else 
+    res.render("login",{status:'close'});
   },
   signUp: async (req, res) => {
     try {
@@ -60,17 +62,32 @@ module.exports = {
           .status(401)
           .render("login", { message: "No user with the supplied username" });
       }
-      console.log(user.password)
-    //   compare passswords
-    bcrypt.compare(password,user.password,(err,result)=>{
-        if(result){
-            return res.status(200).redirect('/dashboard')
-        }else{
-            return res.status(401).render('login',{ message: "Invalid Credentials" });
+      // console.log(user.password);
+      //   compare passswords
+      bcrypt.compare(password, user.password, (err, result) => {
+        // if (err) throw err;
+        if (result) {
+          // var user = req.session.user;
+          // user = req.body.username;
+          console.log(req.session)
+          return res.status(200).redirect("/dashboard");
+        } else {
+          return res
+            .status(401)
+            .render("login", { message: "Invalid Credentials" });
         }
-    })
-    } catch (error) {
-        res.status(401).render('login',{mesage:err.message})
+      });
+    } catch (err) {
+      res.status(401).render("login", { mesage: err.message });
     }
   },
+  signOut:async (req,res)=>{
+    req.session.destroy((err) => {
+      if(err) {
+          return console.log(err);
+      }
+      console.log(req.session)
+      res.redirect('/');
+  });
+  }
 };

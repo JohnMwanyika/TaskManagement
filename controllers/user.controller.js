@@ -1,20 +1,23 @@
 const { PrismaClient } = require("@prisma/client");
+const { json } = require("express");
 const prisma = new PrismaClient();
 const pool = require("../config/database");
 
 module.exports = {
   getUsers: async (req, res) => {
     const allUsers = await prisma.user.findMany({
-      include:{
-        role:true
-      }
-    })
-    const allRoles = await prisma.role.findMany({
-      
-    })
-    console.log(allUsers)
-    console.log(allRoles)
-    res.render("manage_users", { title: "Users",rows: allUsers,results: allRoles});
+      include: {
+        role: true,
+      },
+    });
+    const allRoles = await prisma.role.findMany({});
+    console.log(allUsers);
+    console.log(allRoles);
+    res.render("manage_users", {
+      title: "Users",
+      rows: allUsers,
+      results: allRoles,
+    });
   },
   // serach user
   find: (req, res) => {
@@ -43,17 +46,14 @@ module.exports = {
   },
   // get create_user form
   form: (req, res) => {
-    pool.getConnection((err,connection)=>{
-      if(err) throw err;
-      connection.query(
-        `SELECT role_id, role_name FROM role `,
-        (err,rows)=>{
-          if(!err){
-            res.render('addUser',{rows:rows})
-          }
+    pool.getConnection((err, connection) => {
+      if (err) throw err;
+      connection.query(`SELECT role_id, role_name FROM role `, (err, rows) => {
+        if (!err) {
+          res.render("addUser", { rows: rows });
         }
-      )
-    })
+      });
+    });
   },
   // submit new user
   createUser: (req, res) => {
@@ -72,7 +72,7 @@ module.exports = {
           newUser.last_name,
           newUser.email,
           newUser.password[1],
-          newUser.role
+          newUser.role,
         ],
         (err, rows) => {
           connection.release();
@@ -89,17 +89,23 @@ module.exports = {
     });
   },
   // get user by id
-  get_userById: async(req, res) => {
-    let id = req.params.id
-    const user = await prisma.user.findMany({
-      include:{
-        role:true,
-      },
-      where:{
-        user_id:parseInt(id)
-      }
-    })
-    res.render('view_user',{row:user,title:'View User'});
+  get_userById: async (req, res) => {
+    const id = parseInt(req.params.id);
+    try {
+      const user = await prisma.user.findUnique({
+        where: { user_id: id },
+        include: {
+          role: {
+            select: { role_name: true },
+          },
+        },
+      });
+      console.log(id);
+      console.log(user);
+      res.render("view_user", { row: user, title: "View User" });
+    } catch (error) {
+      return res.status(404).render("not_found");
+    }
   },
   // get edit user form by id
   edit_user_form: (req, res) => {
@@ -112,7 +118,7 @@ module.exports = {
         [req.params.id],
         (err, rows) => {
           connection.release();
-          console.log(rows,req.params.id);
+          console.log(rows, req.params.id);
           if (!err) {
             res.render("edit_user", { rows: rows });
           } else {
@@ -149,12 +155,7 @@ module.exports = {
       const newData = req.body;
       connection.query(
         `UPDATE user SET first_name =?,last_name =?,email =? WHERE user_id=?`,
-        [
-          newData.first_name,
-          newData.last_name,
-          newData.email,
-          req.params.id,
-        ],
+        [newData.first_name, newData.last_name, newData.email, req.params.id],
         (err, rows) => {
           // connection.release();
           if (!err) {
