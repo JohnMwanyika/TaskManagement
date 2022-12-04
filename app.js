@@ -22,7 +22,7 @@ app.use(
   session({
     secret: "thisismysecretjohnmwanyikalovesvee",
     saveUninitialized: false,
-    cookie: { maxAge: 50000 },
+    // cookie: { maxAge: 100000 },
     resave: false,
   })
 );

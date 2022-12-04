@@ -3,24 +3,30 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 module.exports = {
   mainDashboard: async (req, res) => {
-    const allTasks = await prisma.task.findMany({
-      include: { user: true ,task_status:true},
-      orderBy: {
-        task_id: "desc",
-      },
-      where:{
-        user_id:1
+    try {
+      if (req.session.user) {
+        const allTasks = await prisma.task.findMany({
+          include: { user: true, task_status: true },
+          orderBy: {
+            task_id: "desc",
+          },
+          where: {
+            user_id: req.session.user.user_id,
+          },
+        });
+
+        res.render("sub-layout", {
+          rows: allTasks,
+          bd: "Dashboard",
+          card_title: "Recent Tasks",
+          user: req.session.user,
+          toast:'fire'
+        });
+      } else {
+        res.render("login", { message: "You need to login first" });
       }
-    });
-    // var user = req.session.user;
-    
-    console.log(allTasks,req.session.user);
-    // console.log('My Query '+ req.query.name);
-    res.render("index", {
-      rows: allTasks,
-      bd: "Dashboard",
-      card_title: "Recent Tasks",
-      user:req.session.user
-    });
+    } catch (error) {
+      res.render("not found", { message: error.message });
+    }
   },
 };
