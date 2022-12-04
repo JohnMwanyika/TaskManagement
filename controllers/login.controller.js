@@ -53,6 +53,7 @@ module.exports = {
       const { username, password } = req.body;
       // check if user exists
       let user = await prisma.user.findUnique({
+        include:{role:true},
         where: {
           username: username,
         },
@@ -67,9 +68,11 @@ module.exports = {
       bcrypt.compare(password, user.password, (err, result) => {
         // if (err) throw err;
         if (result) {
-          // var user = req.session.user;
-          // user = req.body.username;
-          console.log(req.session)
+          // var current_user = req.session.user;
+          // current_user.username = req.body.username;
+          req.session.user = user;
+          // console.log(req.session.username)
+          console.log(req.session.user)
           return res.status(200).redirect("/dashboard");
         } else {
           return res

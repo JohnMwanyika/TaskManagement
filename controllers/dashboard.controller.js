@@ -13,16 +13,14 @@ module.exports = {
       }
     });
     // var user = req.session.user;
-    if(req.session.user){
-      res.render("index", {
-        rows: allTasks,
-        bd: "Dashboard",
-        card_title: "Recent Tasks",
-        user:req.session.user
-      });
-    }
-    res.send('You Have no session')
-    console.log(allTasks,req.session.user);
     
+    console.log(allTasks,req.session.user);
+    // console.log('My Query '+ req.query.name);
+    res.render("index", {
+      rows: allTasks,
+      bd: "Dashboard",
+      card_title: "Recent Tasks",
+      user:req.session.user
+    });
   },
 };

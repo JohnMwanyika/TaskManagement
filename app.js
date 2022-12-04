@@ -7,14 +7,6 @@ var session = require("express-session");
 var app = express();
 
 // const oneDay = 1000 * 60 * 60 * 24;
-app.use(
-  session({
-    secret: "thisismysecretjohnmwanyikalovesvee",
-    saveUninitialized: true,
-    cookie: { maxAge: 50000 },
-    resave: false,
-  })
-);
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -26,8 +18,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("assets", express.static("/public/assets/"));
 
+app.use(
+  session({
+    secret: "thisismysecretjohnmwanyikalovesvee",
+    saveUninitialized: false,
+    cookie: { maxAge: 50000 },
+    resave: false,
+  })
+);
 const loginRouter = require("./routes/login.route");
 app.use('/',loginRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
