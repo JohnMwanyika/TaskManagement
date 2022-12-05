@@ -49,7 +49,7 @@ module.exports = {
         res.render("login", { messgage: "You need to log in first" });
       }
     } catch (error) {
-      return res.status(404).render("not_found",{message:error.message,status:err.status});
+      return res.status(404).render("not_found",{message:error.message,status:error.status});
     }
   },
   // get edit user form by id

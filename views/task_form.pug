@@ -27,15 +27,25 @@ block content
                                         label(for="floatingTextarea") Description
                                 .col-md-6
                                     .col-md-12
-                                        .form-floating
-                                            input.form-control#floatingCity(type="text" placeholder="Status" value="active" disabled)
-                                            label(for="floatingStatus") Status
+                                        .row
+                                            .col-md-6
+                                                .form-floating
+                                                    input.form-control#floatingCity(type="text" placeholder="Status" value="active" disabled)
+                                                    label(for="floatingStatus") Status
+                                            .col-md-6
+                                                .form-floating
+                                                    input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
+                                                    label(for="floatingDate") Start date
                                 .col-md-4
                                     .form-floating.mb-3
                                         select.form-select#floatingSelect(aria-label="Assignee" name="user_id" required)
-                                            each row in rows
-                                                option(value=row.user_id).
-                                                    #{row.first_name} #{row.last_name}
+                                            if (user.role.role_name == 'Admin')
+                                                each row in rows
+                                                    option(value=row.user_id).
+                                                        #{row.first_name} #{row.last_name}
+                                            else 
+                                                option(value=user.user_id).
+                                                    #{user.first_name} #{user.last_name}
                                         label(for="floatingSelect") Assignee
                                 .col-md-2
                                     .form-floating
