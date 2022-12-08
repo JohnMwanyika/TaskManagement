@@ -27,6 +27,65 @@ block content
                                     i.bi.bi-instagram
                                 a.linkedin(href="#")
                                     i.bi.bi-linkedin
-                .col-xl-8
-                    .card
-                        .card-body.pt-3
+                .col-lg-8
+                    //  project card 
+                    .card.d-block
+                        .card-body
+                            .d-flex.justify-content-between.align-items-center.mb-2
+                                h5.my-3 #{task.title}
+                                .dropdown
+                                    a.dropdown-toggle.arrow-none.card-drop(href="#" data-bs-toggle="dropdown" aria-expanded="false")
+                                        i.dripicons-dots-3
+                                    .dropdown-menu.dropdown-menu-end
+                                        //  item
+                                        a.dropdown-item(href="javascript:void(0);")
+                                            i.mdi.mdi-pencil.me-1
+                                            | Edit
+                                        //  item
+                                        a.dropdown-item(href="javascript:void(0);")
+                                            i.mdi.mdi-delete.me-1
+                                            | Delete
+                                //  project title
+                            .badge.bg-secondary.text-light.mb-3 #{task.task_status.status_name}
+                            h5 Task Overview:
+                            p.text-muted.mb-2.
+                                #{task.description}
+                            .row
+                                .col-md-4
+                                    .mb-4
+                                        h5 Start Date
+                                        p=moment(task.start_at).format('ll')
+                                            | 
+                                            small.text-muted=moment(task.start_at).format('LT')
+                                .col-md-4
+                                    .mb-4
+                                        h5 End Date
+                                        p=moment(task.due_in).format('ll')
+                                            |  
+                                            small.text-muted=moment(task.due_in).format('LT')
+                                //- .col-md-4
+                                //-     .mb-4
+                                //-         h5 Budget
+                                //-         p $15,800
+                            #tooltip-container
+                                h5 Team Members:
+                                //- a.d-inline-block(href="javascript:void(0);" data-bs-container="#tooltip-container" data-bs-toggle="tooltip" data-bs-placement="top" title="Mat Helme")
+                                //-     img.rounded-circle.img-thumbnail.avatar-sm(src="assets/images/users/avatar-6.jpg" alt="friend")
+                                //- a.d-inline-block(href="javascript:void(0);" data-bs-container="#tooltip-container" data-bs-toggle="tooltip" data-bs-placement="top" title="Michael Zenaty")
+                                //-     img.rounded-circle.img-thumbnail.avatar-sm(src="assets/images/users/avatar-7.jpg" alt="friend")
+                                //  end card-body
+                                //  end card
+                                //  end card
+                                //  end col 
+                                .col-lg-6.col-xxl-4.
+    //- script.
+    //-     $('.sdate').innerHTML = (function(){
+    //-         let day = "2010-02-28 13:40:55"
+    //-         let date = moment(day);
+    //-         date.format("DD/MM/YYYY-H:mm:ss");
+    //-     })
+        //- function clickHandler() {
+        //-     let day = "2010-02-28 13:40:55"
+        //-     let date = moment(day);
+        //-     alert(date.format("DD/MM/YYYY-H:mm:ss"));
+        //- }

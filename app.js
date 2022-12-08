@@ -5,7 +5,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var session = require("express-session");
 var app = express();
-
 // const oneDay = 1000 * 60 * 60 * 24;
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

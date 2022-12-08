@@ -14,13 +14,16 @@ module.exports = {
             user_id: req.session.user.user_id,
           },
         });
-
         res.render("sub-layout", {
           rows: allTasks,
           bd: "Dashboard",
           card_title: "Recent Tasks",
           user: req.session.user,
-          toast:'fire'
+          pass:req.session.pass,
+          // shows the sign in toast
+          toast:'fire',
+          // requires moment in the rendered template
+          moment: require('moment')
         });
       } else {
         res.render("login", { message: "You need to login first" });

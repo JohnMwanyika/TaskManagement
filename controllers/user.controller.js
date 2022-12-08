@@ -7,7 +7,7 @@ module.exports = {
       const allUsers = await prisma.user.findMany({
         include: {
           role: true,
-        }
+        },
       });
       const allRoles = await prisma.role.findMany({});
       console.log(allUsers);
@@ -16,7 +16,7 @@ module.exports = {
         title: "Users",
         rows: allUsers,
         results: allRoles,
-        user:req.session.user
+        user: req.session.user,
       });
     } else {
       res.render("login", { message: "You need to log in first" });
@@ -44,54 +44,49 @@ module.exports = {
         });
         console.log(id);
         console.log(user);
-        res.render("view_user", { row: user, title: "View User",user:req.session.user });
+        res.render("view_user", {
+          row: user,
+          title: "View User",
+          user: req.session.user,
+        });
       } else {
         res.render("login", { messgage: "You need to log in first" });
       }
     } catch (error) {
-      return res.status(404).render("not_found",{message:error.message,status:error.status});
+      return res
+        .status(404)
+        .render("not_found", { message: error.message, status: error.status });
     }
   },
-  // get edit user form by id
-  edit_user_form: (req, res) => {
-
-  },
-  update_byId: (req, res) => {
-    // pool.getConnection((err, connection) => {
-    //   if (err) throw err;
-
-    //   const newData = req.body;
-    //   connection.query(
-    //     `UPDATE user SET first_name =?,last_name =?,email =? WHERE user_id=?`,
-    //     [newData.first_name, newData.last_name, newData.email, req.params.id],
-    //     (err, rows) => {
-    //       // connection.release();
-    //       if (!err) {
-    //         pool.getConnection((err, connection) => {
-    //           if (err) throw err;
-
-    //           connection.query(
-    //             `SELECT * FROM user WHERE user_id=?`,
-    //             [req.params.id],
-    //             (err, rows) => {
-    //               connection.release();
-    //               console.log(rows);
-    //               if (!err) {
-    //                 res.render("edit_user", {
-    //                   rows: rows,
-    //                   alert: `${newData.first_name} updated successfully`,
-    //                 });
-    //               } else {
-    //                 console.log(err);
-    //               }
-    //             }
-    //           );
-    //         });
-    //       } else {
-    //         console.log(err);
-    //       }
-    //     }
-    //   );
-    // });
+  update_byId: async (req, res) => {
+    try {
+      console.log(req.session.user);
+      console.log('Request.body is')
+      console.log(req.body);
+      if (req.session.user) {
+        const id = parseInt(req.params.id) ;
+        const { first_name, last_name, email, role } = req.body;
+        const newData = await prisma.user.update({
+          where: {
+            user_id: id,
+          },
+          data: {
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            role_id: parseInt(role)
+          },
+        });
+        console.log(newData);
+        res.redirect("/dashboard/users");
+      } else {
+        res.render("login", { message: "You need to log in first" });
+      }
+    } catch (error) {
+      return res.status(404).render("not_found", {
+        message: error.message,
+        status: error.status,
+      });
+    }
   },
 };

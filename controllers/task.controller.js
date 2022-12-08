@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+var moment = require('moment')
 const prisma = new PrismaClient();
 module.exports = {
   createTask: async (req, res) => {
@@ -41,6 +42,7 @@ module.exports = {
           card_title: "My Tasks",
           bd: "My Tasks",
           user: req.session.user,
+          moment: require('moment')
         });
       } else {
         res.render("login", {
@@ -81,18 +83,19 @@ module.exports = {
         const task = await prisma.task.findUnique({
           include: {
             user: true,
+            task_status:true
           },
           where: {
             task_id: id,
           },
         });
-        console.log(task);
-        res.render("view_task", { user: req.session.user, task: task });
+        console.log(moment(task.created_at).format("MMM Do YY"));
+        res.render("view_task", { user: req.session.user, task: task, moment: require('moment') });
       } else {
         res.render("login", { messgage: "You need to log in first" });
       }
     } catch (error) {
-      res.render("not-found", { message: error.message, status: error.status });
+      res.render("not_found", { message: error.message, status: error.status });
     }
   },
 };

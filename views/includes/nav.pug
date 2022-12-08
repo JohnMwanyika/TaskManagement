@@ -28,7 +28,8 @@
 
         <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
           <i class="bi bi-bell"></i>
-          <span class="badge bg-primary badge-number">4</span>
+          if (user.phone == NULL || pass == 1234)
+            <span class="badge bg-primary badge-number">.</span>
         </a><!-- End Notification Icon -->
 
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
@@ -40,27 +41,30 @@
             <hr class="dropdown-divider">
           </li>
 
-          <li class="notification-item">
-            <i class="bi bi-exclamation-circle text-warning"></i>
-            <div>
-              <h4>Lorem Ipsum</h4>
-              <p>Quae dolorem earum veritatis oditseno</p>
-              <p>30 min. ago</p>
-            </div>
-          </li>
+          if (user.phone == NULL)
+            a(href="/dashboard/profile")
+              <li class="notification-item">
+                <i class="bi bi-exclamation-circle text-warning"></i>
+                <div>
+                  <h4>Update Details</h4>
+                  <p>Please update your Phone number</p>
+                  <p>30 min. ago</p>
+                </div>
+              </li>
 
           <li>
             <hr class="dropdown-divider">
           </li>
 
-          <li class="notification-item">
-            <i class="bi bi-x-circle text-danger"></i>
-            <div>
-              <h4>Atque rerum nesciunt</h4>
-              <p>Quae dolorem earum veritatis oditseno</p>
-              <p>1 hr. ago</p>
-            </div>
-          </li>
+            if (pass == 1234)
+              <li class="notification-item">
+                <i class="bi bi-x-circle text-danger"></i>
+                <div>
+                  <h4>Change Password</h4>
+                  <p>You need to change your password once  it has been reset</p>
+                  <p>1 hr. ago</p>
+                </div>
+              </li>
 
           <li>
             <hr class="dropdown-divider">
@@ -117,7 +121,7 @@
 
           <li class="message-item">
             <a href="#">
-              <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+              <img src="/assets/img/messages-1.jpg" alt="" class="rounded-circle">
               <div>
                 <h4>Maria Hudson</h4>
                 <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -131,7 +135,7 @@
 
           <li class="message-item">
             <a href="#">
-              <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+              <img src="/assets/img/messages-2.jpg" alt="" class="rounded-circle">
               <div>
                 <h4>Anna Nelson</h4>
                 <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -182,7 +186,7 @@
           </li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="/profile">
+            <a class="dropdown-item d-flex align-items-center" href="/dashboard/profile">
               <i class="bi bi-person"></i>
               <span>My Profile</span>
             </a>

@@ -23,7 +23,7 @@
             th(scope="col") Task
             th(scope="col") Description
             th(scope="col") Due_in
-            th(scope="col") User
+            th(scope="col") Assignor
             th(scope="col") Status
         tbody
          each row,index in rows
@@ -34,8 +34,11 @@
             td #{row.title}
             td
               a.text-primary(href="#") #{row.description}
-            td #{row.due_in}
-            td #{row.user.first_name} #{row.user.last_name}
+            td #{moment(row.due_in).format('LLL')}
+            if (row.user.first_name == user.first_name)
+              td self 
+            else
+              td #{row.user.first_name} #{row.user.last_name}
 
             if row.task_status.status_name === 'Active'
               td

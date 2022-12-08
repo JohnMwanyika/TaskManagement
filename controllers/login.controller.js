@@ -5,11 +5,11 @@ const bcrypt = require("bcrypt");
 module.exports = {
   loginForm: (req, res) => {
     sess = req.session;
-    console.log(sess)
+    console.log(sess);
     // if (session.userid) {
     //   res.send("Welcome User <a href='/logout'>click to logout</a>");
-    // } else 
-    res.render("login",{status:'close'});
+    // } else
+    res.render("login", { status: "close" });
   },
   signUp: async (req, res) => {
     try {
@@ -53,7 +53,7 @@ module.exports = {
       const { username, password } = req.body;
       // check if user exists
       let user = await prisma.user.findUnique({
-        include:{role:true},
+        include: { role: true },
         where: {
           username: username,
         },
@@ -66,13 +66,16 @@ module.exports = {
       // console.log(user.password);
       //   compare passswords
       bcrypt.compare(password, user.password, (err, result) => {
-        // if (err) throw err;
+        if (err) throw err;
         if (result) {
-          // var current_user = req.session.user;
-          // current_user.username = req.body.username;
+          if (password == "1234") {
+            req.session.pass = password;
+            // res.redirect("/dashboard");
+          }
+          // console.log(user.push({pass:req.body}))
           req.session.user = user;
-          // console.log(req.session.username)
-          console.log(req.session.user)
+          console.log(req.session.user,req.session.pass);
+          // return res.status(200).redirect("/dashboard");
           return res.status(200).redirect("/dashboard");
         } else {
           return res
@@ -84,13 +87,13 @@ module.exports = {
       res.status(401).render("login", { mesage: err.message });
     }
   },
-  signOut:async (req,res)=>{
+  signOut: async (req, res) => {
     req.session.destroy((err) => {
-      if(err) {
-          return console.log(err);
+      if (err) {
+        return console.log(err);
       }
-      console.log(req.session)
-      res.redirect('/');
-  });
-  }
+      console.log(req.session);
+      res.redirect("/");
+    });
+  },
 };

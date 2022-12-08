@@ -53,7 +53,7 @@ block content
                           td #{row.title}
                           td
                             a.text-primary(href="#") #{row.description}
-                          td #{row.due_in}
+                          td #{moment(row.due_in).format('ll')}
                           td #{row.user.first_name} #{row.user.last_name}
 
                           if row.task_status.status_name === 'Active'

@@ -5,7 +5,6 @@ const {
   getUsers,
   createUser,
   get_userById,
-  edit_user_form,
   update_byId,
 } = require("../controllers/user.controller");
 
@@ -13,7 +12,6 @@ const {
 router.get("/", getUsers);
 router.post("/", createUser);
 router.get("/:id", get_userById);
-router.get("/edituser/:id", edit_user_form);
 router.post("/update/:id", update_byId);
 
 module.exports = router;

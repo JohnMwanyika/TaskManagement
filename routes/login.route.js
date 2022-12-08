@@ -1,7 +1,7 @@
 var express = require('express');
 // import all routers
 const dashboardRoute =require('./dashboard.route')
-const usersRouter = require('./user.route')
+// const usersRouter = require('./user.route')
 // var taskRouter = require("./task.route");
 // const usersRouter = require('./user.route')
 
@@ -18,6 +18,6 @@ router.get('/logout',signOut)
 
 // dashboard routes
 router.use('/dashboard',dashboardRoute)
-router.use('/users',usersRouter)
+// router.use('/users',usersRouter)
 // router.use("/my_tasks",taskRouter);
 module.exports = router;

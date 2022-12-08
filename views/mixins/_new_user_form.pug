@@ -8,7 +8,7 @@ mixin user_form(user,type)
                 </div>
                 <div class="modal-body">
                     //- Form
-                    <form class="p-2" id="form" action="/edit_task/{{task_id}}" method="post">
+                    <form class="p-2" id="form" action="/dashboard/users/update/#{user.user_id}" method="POST">
                         //- form start
                         <div class="row">
                             <div class="col-6">
@@ -46,23 +46,16 @@ mixin user_form(user,type)
                         </div>
 
                         <div class="row">
-                            <div class="col-6">
-                                <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" id="floatingInput" placeholder="password" name="password" required />
-                                    <label for="floatingInput">Password</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" id="floatingInput" placeholder="confirm password" name="password" required value="" />
-                                    <label for="floatingInput">Confirm password</label>
+                            <div class="col-12">
+                                <div class="d-grid gap-2 col-6 mx-auto">
+                                    <button class="btn btn-primary" type="submit">Save</button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-12 d-grid pt-2">
-                            <button class="btn btn-primary btn-sm" type="submit">submit</button>
-                        </div>
+                        //- <div class="col-12 d-grid pt-2">
+                        //-     <button class="btn btn-primary btn-sm" type="submit">submit</button>
+                        //- </div>
                         //- form end
                     </form>
                     //- form end
