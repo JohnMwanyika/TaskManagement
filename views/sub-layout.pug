@@ -46,14 +46,14 @@ block content
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Active tasks <span>| Today</span></h5>
+                  <h5 class="card-title">Active tasks</h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-radioactive"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>14</h6>
+                      <h6>#{totalActive._count.status_id}</h6>
                       //- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                     </div>
@@ -75,7 +75,7 @@ block content
                       <i class="bi bi-check-all"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>20</h6>
+                      <h6>#{totalCompleted._count.status_id}</h6>
                       //- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                     </div>
@@ -91,14 +91,14 @@ block content
 
               <div class="card info-card customers-card">
                 <div class="card-body">
-                  <h5 class="card-title">Total Tasks <span>| This Year</span></h5>
+                  <h5 class="card-title">Total Tasks</h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-clipboard-data"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>#{rows.length}</h6>
+                      <h6>#{totalTasks._count.task_id}</h6>
                       //- <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
 
                     </div>

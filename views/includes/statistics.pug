@@ -60,17 +60,17 @@
                                   show: false
                               },
                               data: [{
-                                  value: 1048,
+                                  value: #{totalActive._count.status_id},
                                   name: 'Active Tasks'
                                   },
                                   {
-                                      value: 735,
+                                      value: #{totalCompleted._count.status_id},
                                       name: 'Completed Tasks'
                                   },
-                                  {
-                                      value: 580,
-                                      name: 'Abandoned Tasks'
-                                  },
+                                  //- {
+                                  //-     value: 580,
+                                  //-     name: 'Abandoned Tasks'
+                                  //- },
                               ]
                           }]
                       });
