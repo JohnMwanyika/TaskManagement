@@ -1,0 +1,67 @@
+extends sub-layout
+
+block content
+    main#main.main
+        .pagetitle
+            h1=title
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="/dashboard") Home
+                    li.breadcrumb-item Task
+                    li.breadcrumb-item.active Assign task
+        section.section
+            .row
+                .col-lg-6
+                    .card
+                        .card-body
+                            h5.card-title Create And Assign
+                            form.row.g-3(action="/dashboard/my_tasks/new_task" method="POST")
+                                .col-md-12
+                                    .form-floating
+                                        input.form-control#floatingName(type="text" placeholder="Your Name" name="title"  required)
+                                        label(for="floatingName") Title
+                                .col-12
+                                    .form-floating
+                                        textarea.form-control#floatingTextarea(placeholder="Address" style="height: 100px;" name="description" required)
+                                        label(for="floatingTextarea") Description
+                                .col-md-6
+                                    .col-md-12
+                                        .row
+                                            .col-md-6
+                                                .form-floating
+                                                    input.form-control#floatingCity(type="text" placeholder="Status" value="active" disabled)
+                                                    label(for="floatingStatus") Status
+                                            .col-md-6
+                                                .form-floating
+                                                    input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
+                                                    label(for="floatingDate") Start date
+                                .col-md-4
+                                    .form-floating.mb-3
+                                        select.form-select#floatingSelect(aria-label="Assignee" name="user_id" required)
+                                            //- if (user.role.role_name == 'Admin')
+                                                each task in tasks
+                                                    option(value=task.user.user_id).
+                                                        #{task.user.first_name} #{task.user.last_name}
+                                            //- else 
+                                                    option(value=task.user_id).
+                                                        #{task.user.first_name} #{task.user.last_name}
+                                        label(for="floatingSelect") Assignee
+                                .col-md-2
+                                    .form-floating
+                                        input.form-control#floatingZip(type="date" placeholder="Due date" name="due_in" required)
+                                        label(for="floatingDate") Due date
+                                .text-center
+                                    button.btn.btn-primary(type="submit") Submit
+                                    button.btn.btn-secondary(type="reset") Reset
+                .col-lg-6
+                    .card
+                        .card-body
+                            h5.card-title Assign Existing
+                            form.row.g-3(action="/dashboard/my_tasks/new_task" method="POST")
+                                .col-md-12
+                                    .form-floating
+                                        select.form-select#floatingSelect(aria-label="Assignee" multiple name="user_id" size="25" style="height:250px" required)
+                                            each task in tasks
+                                                option(value=task.task_id)  #{task.title} | Created by | #{task.user_id}
+                                        label(for="floatingSelect") Assignee

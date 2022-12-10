@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-var moment = require('moment')
+var moment = require("moment");
 const prisma = new PrismaClient();
 module.exports = {
   createTask: async (req, res) => {
@@ -19,7 +19,7 @@ module.exports = {
       res.redirect("/dashboard/my_tasks");
     } else {
       res.render("login", {
-        messgage: "You need to log in first",
+        message: "You need to log in first",
         user: req.session.user,
       });
     }
@@ -42,7 +42,7 @@ module.exports = {
           card_title: "My Tasks",
           bd: "My Tasks",
           user: req.session.user,
-          moment: require('moment')
+          moment: require("moment"),
         });
       } else {
         res.render("login", {
@@ -62,7 +62,7 @@ module.exports = {
         console.log(allUsers);
         res.render("task_form", { rows: allUsers, user: req.session.user });
       } else {
-        res.render("login", { messgage: "You need to log in first" });
+        res.render("login", { message: "You need to log in first" });
       }
     } catch (error) {
       res.render("not-found", { message: error.message, status: error.status });
@@ -83,19 +83,49 @@ module.exports = {
         const task = await prisma.task.findUnique({
           include: {
             user: true,
-            task_status:true
+            task_status: true,
           },
           where: {
             task_id: id,
           },
         });
         console.log(moment(task.created_at).format("MMM Do YY"));
-        res.render("view_task", { user: req.session.user, task: task, moment: require('moment') });
+        res.render("view_task", {
+          user: req.session.user,
+          task: task,
+          moment: require("moment"),
+        });
       } else {
-        res.render("login", { messgage: "You need to log in first" });
+        res.render("login", { message: "You need to log in first" });
       }
     } catch (error) {
       res.render("not_found", { message: error.message, status: error.status });
     }
   },
+  assignTask: async (req, res) => {
+    try {
+        if (req.session.user) {
+          const tasks = await prisma.task.findMany({
+            include:{user:true}
+          })
+          console.log(tasks)
+          res.render("assign_task", { user: req.session.user,title:'Assign Task',tasks:tasks });
+        } else {
+          res.render("login", { messgage: "You need to log in first" });
+        }
+    } catch (error) {
+      res.render("not_found", { message: error.message, status: error.status });
+    }
+  },
 };
+
+// Reusale Code
+// try {
+//   if(req.session.user){
+
+//   }else{
+//     res.render("login", { messgage: "You need to log in first" });
+//   }
+// } catch (error) {
+//   res.render("not_found", { message: error.message, status: error.status });
+// }
