@@ -51,11 +51,10 @@ block content
                           td
                             a.text-primary(href="#") #{row.description}
                           td #{moment(row.due_in).format('ll')}
-                          each team in row.team
-                            //- td #{team.userId}
-                            //- td #{team.userId}
-                            each user in team.user_id
-                                td #{user}
+                          td
+                            each team in row.team
+                              p
+                                small #{team.userId.first_name} #{team.userId.last_name}
 
                           if row.statusId.status_name === 'Active'
                             td

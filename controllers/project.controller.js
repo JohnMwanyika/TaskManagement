@@ -14,6 +14,7 @@ module.exports = {
         },
       });
       console.log(projects[0].team)
+      // console.log(JSON.stringify(projects) )
       res.render("projects", {
         rows: projects,
         bd: "Projects",
