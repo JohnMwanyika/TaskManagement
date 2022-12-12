@@ -26,4 +26,11 @@ module.exports = {
       res.render("login", { message: "You need to login first" });
     }
   },
+  myProjects:(req,res)=>{
+    if(req.session.user){
+      res.render('my_projects',{user:req.session.user})
+    }else{
+      res.render("login", { message: "You need to login first" });
+    }
+  }
 };
