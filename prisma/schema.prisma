@@ -26,6 +26,7 @@ model task {
   start_at             DateTime         @default(now()) @db.DateTime(0)
   milestoneMilestoneId Int?
   projectProjectId     Int?
+  assigned_to          Int?
   task_status          task_status      @relation(fields: [status_id], references: [status_id], map: "task_ibfk_1")
   milestoneId          milestone?       @relation(fields: [milestoneMilestoneId], references: [milestoneId])
   projectId            project?         @relation(fields: [projectProjectId], references: [projectId])
@@ -111,9 +112,11 @@ model milestone {
 }
 
 model taskassignment {
-  assignmentId Int  @id @default(autoincrement())
-  taskId       task @relation(fields: [taskTask_id], references: [task_id])
-  userId       user @relation(fields: [userUser_id], references: [user_id])
-  taskTask_id  Int
-  userUser_id  Int
+  assignmentId Int   @id @default(autoincrement())
+  taskTask_id  Int?
+  assignee     user? @relation(fields: [userUser_id], references: [user_id])
+  taskId       task? @relation(fields: [taskTask_id], references: [task_id])
+  userUser_id  Int?
+
+  @@index([taskTask_id], map: "taskassignment_taskTask_id_fkey")
 }
