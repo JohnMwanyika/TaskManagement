@@ -58,8 +58,9 @@ model user {
   organization   String?          @db.VarChar(255)
   role           role             @relation(fields: [role_id], references: [role_id], map: "role_fk")
   tasks          task[]
-  team           team[]
   taskassignment taskassignment[]
+  team           team[]
+  project        project[]
 
   @@index([role_id], map: "role_id")
 }
@@ -74,10 +75,12 @@ model project {
   projectId              Int            @id @default(autoincrement())
   project_statusStatusId Int            @default(2)
   description            String         @db.Text
+  created_by             user?          @relation(fields: [userUser_id], references: [user_id])
   statusId               project_status @relation(fields: [project_statusStatusId], references: [statusId])
   milestone              milestone[]
   task                   task[]
   team                   team[]
+  userUser_id            Int?
 
   @@index([project_statusStatusId], map: "project_project_statusStatusId_fkey")
 }
@@ -91,6 +94,7 @@ model project_status {
 
 model team {
   teamId           Int     @id @default(autoincrement())
+  team_name        String  @db.VarChar(255)
   userUser_id      Int
   projectProjectId Int
   projectId        project @relation(fields: [projectProjectId], references: [projectId])
@@ -114,9 +118,10 @@ model milestone {
 model taskassignment {
   assignmentId Int   @id @default(autoincrement())
   taskTask_id  Int?
-  assignee     user? @relation(fields: [userUser_id], references: [user_id])
-  taskId       task? @relation(fields: [taskTask_id], references: [task_id])
   userUser_id  Int?
+  taskId       task? @relation(fields: [taskTask_id], references: [task_id])
+  assignee     user? @relation(fields: [userUser_id], references: [user_id])
 
   @@index([taskTask_id], map: "taskassignment_taskTask_id_fkey")
+  @@index([userUser_id], map: "taskassignment_userUser_id_fkey")
 }
