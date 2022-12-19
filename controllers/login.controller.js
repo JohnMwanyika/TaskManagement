@@ -1,15 +1,13 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
+var Swal = require("sweetalert2");
 // const { mainDashboard } = require("./dashboard.controller");
 module.exports = {
   loginForm: (req, res) => {
     sess = req.session;
     console.log(sess);
-    // if (session.userid) {
-    //   res.send("Welcome User <a href='/logout'>click to logout</a>");
-    // } else
-    res.render("login", { status: "close" });
+    res.render("login", {});
   },
   signUp: async (req, res) => {
     try {
@@ -24,7 +22,10 @@ module.exports = {
       console.log(userExists);
       if (userExists) {
         res.status(401).render("sign_up", {
-          message: "username taken try another note you can add numbers",
+          message: {
+            info: "username taken try another note you can add numbers",
+            type: "warning",
+          },
         });
         return;
       }
@@ -42,10 +43,19 @@ module.exports = {
       });
       console.log(user.password);
       res.render("login", {
-        message: `User ${user.first_name} created successfully`,
+        message: {
+          info: `User ${user.first_name} created successfully`,
+          type: "success",
+        },
+        fire:"fire"
       });
     } catch (err) {
-      return res.status(401).render("sign_up", { mesage: err.mesage });
+      return res
+        .status(401)
+        .render("sign_up", {
+          message: { info: "Oops!! sorry cant reach database", type: "error" },
+          fire: "fire",
+        });
     }
   },
   signIn: async (req, res) => {
@@ -58,12 +68,16 @@ module.exports = {
           username: username,
         },
       });
+
       if (!user) {
-        return res
-          .status(401)
-          .render("login", { message: "No user with the supplied username" });
+        return res.status(401).render("login", {
+          message: {
+            info: "No user with the supplied username",
+            type: "alert-danger",
+          },
+        });
       }
-      // console.log(user.password);
+
       //   compare passswords
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) throw err;
@@ -74,17 +88,21 @@ module.exports = {
           }
           // console.log(user.push({pass:req.body}))
           req.session.user = user;
-          console.log(req.session.user,req.session.pass);
+          console.log(req.session.user, req.session.pass);
           // return res.status(200).redirect("/dashboard");
           return res.status(200).redirect("/dashboard");
         } else {
-          return res
-            .status(401)
-            .render("login", { message: "Invalid Credentials" });
+          return res.status(401).render("login", {
+            message: { info: "Invalid Credentials", type: "alert-danger" },
+          });
         }
       });
-    } catch (err) {
-      res.status(401).render("login", { mesage: err.message });
+    } catch (error) {
+      res.status(401).render("login", {
+        message: { info: "Oops!! sorry cant reach database", type: "error" },
+        Swal: require("sweetalert2"),
+        fire: "fire",
+      });
     }
   },
   signOut: async (req, res) => {

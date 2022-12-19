@@ -8,11 +8,11 @@ module.exports = {
         // count Actove tasks
         const groupActive = await prisma.task.aggregate({
           _count: {
-            status_id: true
+            status_id: true,
           },
           where: {
             status_id: 1,
-            user_id:req.session.user.user_id
+            user_id: req.session.user.user_id,
           },
         });
         // Count Completed tasks
@@ -22,7 +22,7 @@ module.exports = {
           },
           where: {
             status_id: 2,
-            user_id:req.session.user.user_id
+            user_id: req.session.user.user_id,
           },
         });
         // count all tasks
@@ -60,10 +60,13 @@ module.exports = {
           // total Completed Tasks
           totalCompleted: grpCompleted,
           // total tasks of logged in user
-          totalTasks:grpAll
+          totalTasks: grpAll,
         });
       } else {
-        res.render("login", { message: "You need to login first" });
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
       }
     } catch (error) {
       res.render("not_found", { message: error.message });

@@ -23,7 +23,10 @@ module.exports = {
         moment: require("moment"),
       });
     } else {
-      res.render("login", { message: "You need to login first" });
+      res.render("login", {
+        message: { info: "You need to login first", type: "error" },
+        fire:"fire"
+      });
     }
   },
   myProjects: async (req, res) => {
@@ -35,36 +38,59 @@ module.exports = {
             include: { userId: true },
           },
           task: true,
-          created_by:true
+          created_by: true,
+        },
+        where: {
+          userUser_id: req.session.user.user_id,
         },
         orderBy: {
-          projectId:"desc",
+          projectId: "desc",
         },
       });
       const tasks = await prisma.task.groupBy({
-        // where: {
-        //   status_id: 2,
-        //   user_id:req.session.user.user_id
-        // },
         by: ["projectProjectId"],
         _count: {
           task_id: true,
         },
       });
-      console.log(projects[0]);
+      const taskCount = await prisma.task.aggregate({
+        _count: {
+          _all: true,
+        },
+        where: {
+          projectProjectId:1,
+        },
+      });
+      const milestoneCount = await prisma.milestone.aggregate({
+        _count: {
+          _all: true,
+        },
+        where: {
+          projectProjectId: 1,
+        },
+      });
+      console.log(projects);
       console.log(tasks);
+      console.log(taskCount);
+      console.log(milestoneCount);
       res.render("my_projects", {
         bd: "Projects",
         user: req.session.user,
         projects: projects,
+        title: "My Projects",
+        taskCount,
+        milestoneCount
       });
     } else {
-      res.render("login", { message: "You need to login first" });
+      res.render("login", {
+        message: { info: "You need to login first", type: "error" },
+        fire:"fire"
+      });
     }
   },
-  projectForm: (req,res)=>{
-    if(req.session.user){
-      res.render('project_form',{user:req.session.user})
+  projectForm: (req, res) => {
+    if (req.session.user) {
+      res.render("project_form", { user: req.session.user });
     }
-  }
+  },
 };

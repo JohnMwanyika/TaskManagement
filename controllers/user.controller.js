@@ -19,14 +19,20 @@ module.exports = {
         user: req.session.user,
       });
     } else {
-      res.render("login", { message: "You need to log in first" });
+      res.render("login", {
+        message: { info: "You need to login first", type: "error" },
+        fire: "fire",
+      });
     }
   },
   // submit new user
   createUser: (req, res) => {
     if (req.session.user) {
     } else {
-      res.render("login", { messgage: "You need to log in first" });
+      res.render("login", {
+        message: { info: "You need to login first", type: "error" },
+        fire: "fire",
+      });
     }
   },
   // get user by id
@@ -50,7 +56,10 @@ module.exports = {
           user: req.session.user,
         });
       } else {
-        res.render("login", { messgage: "You need to log in first" });
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
       }
     } catch (error) {
       return res
@@ -61,10 +70,10 @@ module.exports = {
   update_byId: async (req, res) => {
     try {
       console.log(req.session.user);
-      console.log('Request.body is')
+      console.log("Request.body is");
       console.log(req.body);
       if (req.session.user) {
-        const id = parseInt(req.params.id) ;
+        const id = parseInt(req.params.id);
         const { first_name, last_name, email, role } = req.body;
         const newData = await prisma.user.update({
           where: {
@@ -74,13 +83,16 @@ module.exports = {
             first_name: first_name,
             last_name: last_name,
             email: email,
-            role_id: parseInt(role)
+            role_id: parseInt(role),
           },
         });
         console.log(newData);
         res.redirect("/dashboard/users");
       } else {
-        res.render("login", { message: "You need to log in first" });
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
       }
     } catch (error) {
       return res.status(404).render("not_found", {
