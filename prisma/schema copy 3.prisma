@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:db/taskmanager.sqlite3"
+}
+
+model milestone {
+  name             String
+  description      String
+  milestoneId      Int     @id @default(autoincrement())
+  projectProjectId Int
+  project          project @relation(fields: [projectProjectId], references: [projectId])
+  task             task[]
+
+  @@index([projectProjectId], map: "milestone_projectProjectId_fkey")
+}
+
+model project {
+  name                   String
+  Start_date             String
+  created_at             String
+  updated_at             String
+  due_in                 String
+  end_date               String
+  projectId              Int            @id @default(autoincrement())
+  project_statusStatusId Int
+  description            String
+  userUser_id            Int?
+  user                   user?          @relation(fields: [userUser_id], references: [user_id])
+  project_status         project_status @relation(fields: [project_statusStatusId], references: [statusId])
+  milestone              milestone[]
+  task                   task[]
+  team                   team[]
+
+  @@index([project_statusStatusId], map: "project_project_statusStatusId_fkey")
+}
+
+model project_status {
+  statusId    Int       @id @default(autoincrement())
+  status_name String
+  description String
+  project     project[]
+}
+
+model role {
+  role_id     Int    @id @default(autoincrement())
+  role_name   String
+  description String
+  user        user[]
+}
+
+model task {
+  task_id              Int              @id @default(autoincrement())
+  title                String
+  description          String
+  created_at           String
+  updated_at           String
+  due_in               String
+  status_id            Int
+  user_id              Int
+  start_at             String
+  milestoneMilestoneId Int?
+  projectProjectId     Int?
+  assigned_to          Int?
+  user                 user             @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  project              project?         @relation(fields: [projectProjectId], references: [projectId])
+  milestone            milestone?       @relation(fields: [milestoneMilestoneId], references: [milestoneId])
+  task_status          task_status      @relation(fields: [status_id], references: [status_id])
+  taskassignment       taskassignment[]
+
+  @@index([user_id], map: "user_id")
+  @@index([status_id], map: "status_id")
+  @@index([milestoneMilestoneId], map: "task_milestoneMilestoneId_fkey")
+  @@index([projectProjectId], map: "task_projectProjectId_fkey")
+}
+
+model task_status {
+  status_id   Int    @id @default(autoincrement())
+  status_name String
+  description String
+  task        task[]
+}
+
+model taskassignment {
+  assignmentId Int   @id @default(autoincrement())
+  taskTask_id  Int?
+  userUser_id  Int?
+  user         user? @relation(fields: [userUser_id], references: [user_id])
+  task         task? @relation(fields: [taskTask_id], references: [task_id])
+
+  @@index([taskTask_id], map: "taskassignment_taskTask_id_fkey")
+  @@index([userUser_id], map: "taskassignment_userUser_id_fkey")
+}
+
+model team {
+  teamId           Int     @id @default(autoincrement())
+  team_name        String
+  userUser_id      Int
+  projectProjectId Int
+  user             user    @relation(fields: [userUser_id], references: [user_id])
+  project          project @relation(fields: [projectProjectId], references: [projectId])
+
+  @@index([projectProjectId], map: "team_projectProjectId_fkey")
+  @@index([userUser_id], map: "team_userUser_id_fkey")
+}
+
+model user {
+  user_id        Int              @id @default(autoincrement())
+  first_name     String
+  last_name      String
+  username       String           @unique(map: "sqlite_autoindex_user_1")
+  email          String           @unique(map: "sqlite_autoindex_user_2")
+  password       String
+  role_id        Int
+  phone          Int?
+  organization   String?
+  role           role             @relation(fields: [role_id], references: [role_id])
+  project        project[]
+  task           task[]
+  taskassignment taskassignment[]
+  team           team[]
+
+  @@index([role_id], map: "role_id")
+}

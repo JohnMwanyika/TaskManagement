@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model role {
+  role_id     Int    @id @default(autoincrement())
+  role_name   String @db.VarChar(255)
+  description String @db.VarChar(500)
+  user        user[]
+}
+
+model user {
+  user_id              Int               @id @default(autoincrement())
+  first_name           String            @db.VarChar(50)
+  last_name            String            @db.VarChar(50)
+  username             String            @db.VarChar(50)
+  email                String            @db.VarChar(50)
+  password             String            @db.VarChar(20)
+  phone                Int               @unique(map: "phone")
+  user_statusStatus_id Int               @default(1)
+  roleRole_id          Int               @default(2)
+  created_at           DateTime          @default(now()) @db.Timestamp(0)
+  updated_at           DateTime          @default(now()) @db.Timestamp(0)
+  designationDesig_id  Int?
+  project              project[]
+  task                 task[]
+  task_assignment      task_assignment[]
+  team                 team[]
+  designation          designation?      @relation(fields: [designationDesig_id], references: [desig_id], onDelete: Restrict)
+  role                 role              @relation(fields: [roleRole_id], references: [role_id])
+  status               user_status       @relation(fields: [user_statusStatus_id], references: [status_id])
+
+  @@unique([username, email], map: "username")
+  @@index([designationDesig_id], map: "user_designationDesig_id_fkey")
+  @@index([roleRole_id], map: "user_roleRole_id_fkey")
+  @@index([user_statusStatus_id], map: "user_user_statusStatus_id_fkey")
+}
+
+model designation {
+  desig_id    Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String   @db.VarChar(500)
+  created_at  DateTime @default(now()) @db.Timestamp(0)
+  updated_at  DateTime @default(now()) @db.Timestamp(0)
+  user        user[]
+}
+
+model project {
+  project_id              Int            @id @default(autoincrement())
+  title                   String         @db.VarChar(50)
+  description             String         @db.VarChar(500)
+  start_date              DateTime       @db.DateTime(0)
+  due_date                DateTime       @db.DateTime(0)
+  end_date                DateTime       @db.DateTime(0)
+  created_at              DateTime       @default(now()) @db.Timestamp(0)
+  updated_at              DateTime       @default(now()) @db.Timestamp(0)
+  project_statusStatus_id Int            @default(1)
+  userUser_id             Int
+  milestone               milestone[]
+  status                  project_status @relation(fields: [project_statusStatus_id], references: [status_id])
+  created_by              user           @relation(fields: [userUser_id], references: [user_id])
+  task                    task[]
+  team                    team[]
+
+  @@index([project_statusStatus_id], map: "project_project_statusStatus_id_fkey")
+  @@index([userUser_id], map: "project_userUser_id_fkey")
+}
+
+model project_status {
+  status_id   Int       @id @default(autoincrement())
+  name        String    @db.VarChar(50)
+  description String    @db.VarChar(500)
+  project     project[]
+}
+
+model user_status {
+  status_id   Int    @id @default(autoincrement())
+  name        String @db.VarChar(255)
+  description String @db.VarChar(500)
+  user        user[]
+}
+
+model milestone {
+  mile_id                   Int              @id @default(autoincrement())
+  name                      String           @db.VarChar(50)
+  description               String           @db.VarChar(500)
+  milestone_statusStatus_id Int              @default(1)
+  projectProject_id         Int
+  created_at                DateTime         @default(now()) @db.Timestamp(0)
+  due_date                  DateTime         @db.DateTime(0)
+  end_date                  DateTime         @db.DateTime(0)
+  start_date                DateTime         @db.DateTime(0)
+  updated_at                DateTime         @default(now()) @db.Timestamp(0)
+  status                    milestone_status @relation(fields: [milestone_statusStatus_id], references: [status_id])
+  project                   project          @relation(fields: [projectProject_id], references: [project_id])
+  task                      task[]
+
+  @@index([milestone_statusStatus_id], map: "milestone_milestone_statusStatus_id_fkey")
+  @@index([projectProject_id], map: "milestone_projectProject_id_fkey")
+}
+
+model milestone_status {
+  status_id   Int         @id @default(autoincrement())
+  name        String      @db.VarChar(255)
+  description String      @db.VarChar(500)
+  milestone   milestone[]
+}
+
+model team {
+  team_id           Int      @id @default(autoincrement())
+  userUser_id       Int
+  projectProject_id Int
+  created_at        DateTime @default(now()) @db.Timestamp(0)
+  updated_at        DateTime @default(now()) @db.Timestamp(0)
+  project           project  @relation(fields: [projectProject_id], references: [project_id])
+  user              user     @relation(fields: [userUser_id], references: [user_id])
+
+  @@index([projectProject_id], map: "team_projectProject_id_fkey")
+  @@index([userUser_id], map: "team_userUser_id_fkey")
+}
+
+model task {
+  task_id              Int               @id @default(autoincrement())
+  title                String            @db.VarChar(50)
+  description          String            @db.VarChar(500)
+  milestoneMile_id     Int
+  projectProject_id    Int
+  userUser_id          Int
+  start_date           DateTime          @db.DateTime(0)
+  due_date             DateTime          @db.DateTime(0)
+  end_date             DateTime          @db.DateTime(0)
+  created_at           DateTime          @default(now()) @db.Timestamp(0)
+  updated_at           DateTime          @default(now()) @db.Timestamp(0)
+  task_statusStatus_id Int               @default(1)
+  milestone            milestone         @relation(fields: [milestoneMile_id], references: [mile_id])
+  project              project           @relation(fields: [projectProject_id], references: [project_id])
+  status               task_status       @relation(fields: [task_statusStatus_id], references: [status_id])
+  created_by           user              @relation(fields: [userUser_id], references: [user_id])
+  task_assignment      task_assignment[]
+
+  @@index([milestoneMile_id], map: "task_milestoneMile_id_fkey")
+  @@index([projectProject_id], map: "task_projectProject_id_fkey")
+  @@index([task_statusStatus_id], map: "task_task_statusStatus_id_fkey")
+  @@index([userUser_id], map: "task_userUser_id_fkey")
+}
+
+model task_status {
+  status_id   Int    @id @default(autoincrement())
+  name        String @db.VarChar(50)
+  description String @db.VarChar(500)
+  task        task[]
+}
+
+model task_assignment {
+  assignment_id Int      @id @default(autoincrement())
+  taskTask_id   Int
+  userUser_id   Int
+  created_at    DateTime @default(now()) @db.Timestamp(0)
+  updated_at    DateTime @default(now()) @db.Timestamp(0)
+  task          task     @relation(fields: [taskTask_id], references: [task_id])
+  user          user     @relation(fields: [userUser_id], references: [user_id])
+
+  @@index([taskTask_id], map: "task_assignment_taskTask_id_fkey")
+  @@index([userUser_id], map: "task_assignment_userUser_id_fkey")
+}

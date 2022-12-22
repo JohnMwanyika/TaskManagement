@@ -32,6 +32,7 @@ model project {
   milestone              milestone[]
   task                   task[]
   team                   team[]
+  
 }
 
 model project_status {
@@ -69,6 +70,8 @@ model task {
 
   @@index([status_id], map: "status_id")
   @@index([user_id], map: "user_id")
+  // @@index([milestoneMilestoneId], map: "task_milestoneMilestoneId_fkey")
+  // @@index([projectProjectId], map: "task_projectProjectId_fkey")
 }
 
 model task_status {

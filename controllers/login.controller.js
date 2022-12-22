@@ -10,7 +10,7 @@ module.exports = {
     res.render("login", {});
   },
   signUp: async (req, res) => {
-    try {
+    // try {
       const { first_name, last_name, email, username } = req.body;
       var pass = req.body.password;
 
@@ -38,7 +38,7 @@ module.exports = {
           email: email,
           username: username,
           password: pass,
-          role_id: 2,
+          // roleRole_id: 2,
         },
       });
       console.log(user.password);
@@ -47,16 +47,14 @@ module.exports = {
           info: `User ${user.first_name} created successfully`,
           type: "success",
         },
-        fire:"fire"
+        fire: "fire",
       });
-    } catch (err) {
-      return res
-        .status(401)
-        .render("sign_up", {
-          message: { info: "Oops!! sorry cant reach database", type: "error" },
-          fire: "fire",
-        });
-    }
+    // } catch (err) {
+    //   return res.status(401).render("sign_up", {
+    //     message: { info: "Oops!! sorry cant reach database", type: "error" },
+    //     fire: "fire",
+    //   });
+    // }
   },
   signIn: async (req, res) => {
     try {
@@ -73,8 +71,9 @@ module.exports = {
         return res.status(401).render("login", {
           message: {
             info: "No user with the supplied username",
-            type: "alert-danger",
+            type: "error",
           },
+          fire: "fire",
         });
       }
 
@@ -92,14 +91,16 @@ module.exports = {
           // return res.status(200).redirect("/dashboard");
           return res.status(200).redirect("/dashboard");
         } else {
-          return res.status(401).render("login", {
+          return res.render("login", {
+            Swal: require("sweetalert2"),
             message: { info: "Invalid Credentials", type: "alert-danger" },
+            fire: "fire",
           });
         }
       });
     } catch (error) {
       res.status(401).render("login", {
-        message: { info: "Oops!! sorry cant reach database", type: "error" },
+        message: { info: error.message, type: "error" },
         Swal: require("sweetalert2"),
         fire: "fire",
       });

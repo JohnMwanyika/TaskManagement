@@ -1,17 +1,5 @@
 .col-12
   .card.recent-sales.overflow-auto
-    .filter
-      a.icon(href="#", data-bs-toggle="dropdown")
-        i.bi.bi-three-dots
-      ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow
-        li.dropdown-header.text-start
-          h6 Filter
-        li
-          a.dropdown-item(href="#") Today
-        li
-          a.dropdown-item(href="#") This Month
-        li
-          a.dropdown-item(href="#") This Year
     .card-body
       h5.card-title
         | #{card_title} 
@@ -26,23 +14,44 @@
             th(scope="col") Assignor
             th(scope="col") Status
         tbody
-         each row,index in rows
-          
-          tr
-            th(scope="row")
-              a(href="#") #{index+1}
-            td #{row.title}
-            td
-              a.text-primary(href="#") #{row.description}
-            td #{moment(row.due_in).format('LLL')}
-            if (row.user.first_name == user.first_name)
-              td self 
-            else
-              td #{row.user.first_name} #{row.user.last_name}
+          each aTask,index in assignedTasks
+            tr.bg-primary(style="--bs-bg-opacity: .25;",rowspan="5")
+              th(scope="row")
+                a(href="#") #{index+1}
+              td #{aTask.task.title}
+              td #{aTask.task.description}
+              td #{moment(aTask.task.due_date).format('LLL')}
+              td #{aTask.task.user.first_name} (#{aTask.task.user.designation.title})
+              td #{aTask.task.task_status.name}
+  
+          each row,index in rows
+            tr
+              th(scope="row")
+                a(href="#") #{index+1}
+              td #{row.title}
+              td
+                a.text-primary(href="#") #{row.description}
+              td #{moment(row.due_in).format('LLL')}
+              if (row.user.first_name == user.first_name)
+                td self 
+              else
+                td #{row.user.first_name} #{row.user.last_name}
 
-            if row.task_status.status_name === 'Active'
-              td
-                span.badge.bg-warning #{row.task_status.status_name}
-            else
-              td
-                span.badge.bg-success #{row.task_status.status_name}
+              if row.task_status.name === 'Active'
+                td
+                  span.badge.bg-warning #{row.task_status.name}
+              else if row.task_status.name === 'Pending'
+                td
+                  span.badge.bg-secondary #{row.task_status.name}
+              else if row.task_status.name === 'Failed'
+                td
+                  span.badge.bg-danger #{row.task_status.name}
+              else if row.task_status.name === 'Completed'
+                td
+                  span.badge.bg-success #{row.task_status.name}
+              else if row.task_status.name === 'Overdue'
+                td
+                  span.badge.bg-danger #{row.task_status.name}
+              else
+                td
+                  span.badge.bg-info #{row.task_status.name}

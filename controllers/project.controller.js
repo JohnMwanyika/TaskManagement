@@ -7,13 +7,13 @@ module.exports = {
     if (req.session.user) {
       const projects = await prisma.project.findMany({
         include: {
-          statusId: true,
+          project_status: true,
           team: {
-            include: { userId: true },
+            include: { user: true },
           },
         },
       });
-      console.log(projects[0].team);
+      // console.log(projects[0].team);
       // console.log(JSON.stringify(projects) )
       res.render("projects", {
         rows: projects,
@@ -33,12 +33,12 @@ module.exports = {
     if (req.session.user) {
       const projects = await prisma.project.findMany({
         include: {
-          statusId: true,
+          project_status: true,
           team: {
-            include: { userId: true },
+            include: { user: true },
           },
           task: true,
-          created_by: true,
+          user: true,
         },
         where: {
           userUser_id: req.session.user.user_id,
