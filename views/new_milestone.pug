@@ -1,0 +1,67 @@
+extends sub-layout
+
+block content
+    main#main.main
+        .pagetitle
+            h1=title
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="/dashboard") Home
+                    li.breadcrumb-item Project
+                    li.breadcrumb-item.active Add New
+        section.section
+            .row
+                //  Left side 
+                .col-lg-12
+                    //  Basic information 
+                    .card.mb-4
+                        .card-body
+                            if (message)
+                                h1 #{message}
+                            h5.card-title Project Milestones
+                                .row 
+                                    .col-lg-6
+                                        p
+                                            strong Project :
+                                                span Name of Project
+                                        p 
+                                            strong All Milestones 
+                                        ul 
+                                            li First Meeting 
+                                            li Requirements Gathering 
+                                            li Analyzing requirements
+                                            li Designing Wireframes 
+                                            li Implementation 
+                                            li Testing 
+                                            li Deployment 
+                                            li Maintainance
+                                    
+                                    .col-lg-6
+
+                                        form(action="/dashboard/projects/new-project/", method="post") 
+                                            .row
+                                                .col-lg-6
+                                                    .mb-3
+                                                        .form-floating
+                                                            input.form-control#floatingName(type="text" placeholder="Project Name" name="project_title"  required)
+                                                            label(for="floatingName") Project Name
+                                                .col-lg-3
+                                                    .mb-3
+                                                        .form-floating
+                                                            input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
+                                                            label(for="floatingDate") Start date
+                                                .col-lg-3
+                                                    .mb-3
+                                                        .form-floating
+                                                            input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" required)
+                                                            label(for="floatingDate") Expected End Date
+                                            .row
+                                                .col-lg-12.mb-3
+                                                    .form-floating
+                                                        textarea.form-control#floatingTextarea(placeholder="Address" style="height: 200px;" name="description" required)
+                                                        label(for="floatingTextarea") Overview
+
+                                                        .d-grid.gap-2.col-2.mx-auto.mt-3
+                                                            button.btn.btn-secondary(type="submit") Save
+                                                            button.btn.btn-primary(type="button") Save and Continue

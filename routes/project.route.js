@@ -8,8 +8,8 @@ const {
   newProject,
 } = require("../controllers/project.controller");
 
-router.get("/", allProjects);
-router.get("/projects", myProjects);
+// router.get("/", allProjects);
+router.get("/", myProjects);
 router.get("/new_project", projectForm);
 router.post("/new-project", newProject);
 

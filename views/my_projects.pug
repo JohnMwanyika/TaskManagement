@@ -8,15 +8,28 @@ block content
                     li.breadcrumb-item
                         a(href="/dashboard") Home
                     li.breadcrumb-item.active=bd
-        section.section
+        section.section.dashboard
             .row
                 if (projects.length > 0)
                     each project,index in projects
                         .col-lg-4
                             .card.overflow-hidden(style="height:500px")
+                                .filter
+                                    a.icon(href="#" data-bs-toggle="dropdown").mb-2
+                                        i.bi.bi-three-dots
+                                    ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow
+                                        li.dropdown-header.text-start
+                                            h6 Options
+                                        li
+                                            a.dropdown-item(href="#") Manage
+                                        li
+                                            a.dropdown-item(href="/dashboard/milestones/new") Add Milestone
+                                        li
+                                            a.dropdown-item(href="#") Add Team member
+
                                 .card-body
-                                    h5.card-title.text-success.border-bottom #{index+1}. #{project.title}
-                                    //- hr
+                                    h4.fw-lighter.text-secondary.my-4.mx-3 #{project.title}
+                                    hr
                                     p 
                                         strong created by: 
                                         |#{project.created_by.first_name} #{project.created_by.last_name}
@@ -48,14 +61,14 @@ block content
                                         <i class="bi bi-list-task"></i> #{taskCount._count._all} Task(s)  
                                         //- each task in project.task 
                                         //-     p #{task.title}
-                                    //- team members
-                                    h6.card-title.border-bottom Team
-                                    .row 
-                                        .col-lg-6
-                                            ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')
-                                                each team in project.team
-                                                    li.list-group-item
-                                                        small #{team.userId.first_name} #{team.userId.last_name}
+                                        //- team members
+                                        h6.card-title.border-bottom Team
+                                        .row 
+                                            .col-lg-6
+                                                ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')
+                                                    each team in project.team
+                                                        li.list-group-item
+                                                            small #{team.userId.first_name} #{team.userId.last_name}
                 else 
                     p Hey! #{user.first_name} Seems like you have not created any projects yet.
                     p click 

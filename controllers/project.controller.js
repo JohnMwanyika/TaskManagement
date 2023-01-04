@@ -106,14 +106,16 @@ module.exports = {
           start_date: new Date(start_date),
           due_date: new Date(due_date),
           description: description,
+          userUser_id: req.session.user.user_id,
         },
       });
-      console.log(project)
-      res.render("project_form", {
-        user: req.session.user,
-        title: "New Project",
-        message:"Project Created Successfuly"
-      });
+      console.log(project);
+      res.redirect('/dashboard/projects')
+      // res.render("project_form", {
+      //   user: req.session.user,
+      //   title: "New Project",
+      //   message: "Project Created Successfuly",
+      // });
     } else {
       res.render("login", {
         message: { info: "You need to login first", type: "error" },

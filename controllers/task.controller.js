@@ -33,7 +33,7 @@ module.exports = {
             task_id: "desc",
           },
           where: {
-            user_id: req.session.user.user_id,
+            userUser_id: req.session.user.user_id,
           },
         });
         console.log(req.session.user);

@@ -53,9 +53,9 @@ model user {
   username             String            @unique(map: "username") @db.VarChar(50)
   email                String            @unique(map: "email") @db.VarChar(50)
   password             String            @db.VarChar(255)
-  phone                Int?               @unique(map: "phone")
+  phone                Int?              @unique(map: "phone")
   user_statusStatus_id Int               @default(1)
-  roleRole_id          Int?               @default(2)
+  roleRole_id          Int?              @default(2)
   created_at           DateTime          @default(now()) @db.Timestamp(0)
   updated_at           DateTime          @default(now()) @db.Timestamp(0)
   designationDesig_id  Int?
@@ -64,7 +64,7 @@ model user {
   task_assignment      task_assignment[]
   team                 team[]
   designation          designation?      @relation(fields: [designationDesig_id], references: [desig_id], onDelete: Restrict)
-  role                 role?              @relation(fields: [roleRole_id], references: [role_id])
+  role                 role?             @relation(fields: [roleRole_id], references: [role_id])
   user_status          user_status       @relation(fields: [user_statusStatus_id], references: [status_id])
 
   @@index([designationDesig_id], map: "user_designationDesig_id_fkey")
@@ -78,7 +78,7 @@ model project {
   description             String         @db.VarChar(500)
   start_date              DateTime       @db.DateTime(0)
   due_date                DateTime       @db.DateTime(0)
-  end_date                DateTime       @db.DateTime(0)
+  end_date                DateTime?      @db.DateTime(0)
   created_at              DateTime       @default(now()) @db.Timestamp(0)
   updated_at              DateTime       @default(now()) @db.Timestamp(0)
   project_statusStatus_id Int            @default(1)
