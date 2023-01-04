@@ -51,7 +51,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      res.render("not-found", { message: error.message, status: error.status });
+      res.render("not_found", { message: error.message, status: error.status });
     }
   },
   taskForm: async (req, res) => {
@@ -68,7 +68,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      res.render("not-found", { message: error.message, status: error.status });
+      res.render("not_found", { message: error.message, status: error.status });
     }
   },
   activateTask: async (req, res) => {

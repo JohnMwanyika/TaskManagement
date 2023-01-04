@@ -11,32 +11,32 @@ block content
         section.section
             .row
                 if (projects.length > 0)
-                    each project in projects
+                    each project,index in projects
                         .col-lg-4
                             .card.overflow-hidden(style="height:500px")
                                 .card-body
-                                    h5.card-title #{project.name}
-                                    hr
+                                    h5.card-title.text-success.border-bottom (#{index+1}) #{project.title}
+                                    //- hr
                                     p 
                                         strong created by: 
                                         |#{project.created_by.first_name} #{project.created_by.last_name}
                                     //- project status
-                                    if (project.statusId.status_name == 'Active')
+                                    if (project.project_status.name == 'Active')
                                         p 
                                             strong  Status: 
-                                            <span class="badge text-bg-primary">#{project.statusId.status_name}</span>
-                                    if (project.statusId.status_name == 'Pending')
+                                            <span class="badge text-bg-primary">#{project.project_status.name}</span>
+                                    if (project.project_status.name == 'Pending')
                                         p 
                                             strong  Status: 
-                                            <span class="badge text-bg-warning">#{project.statusId.status_name}</span>
-                                    if (project.statusId.status_name == 'Complete')
+                                            <span class="badge text-bg-warning">#{project.project_status.name}</span>
+                                    if (project.project_status.name == 'Complete')
                                         p 
                                             strong  Status: 
-                                            <span class="badge text-bg-success">#{project.statusId.status_name}</span>
-                                    if (project.statusId.status_name == 'Suspended')
+                                            <span class="badge text-bg-success">#{project.project_status.name}</span>
+                                    if (project.project_status.name == 'Suspended')
                                         p 
                                             strong  Status: 
-                                            <span class="badge text-bg-info">#{project.statusId.status_name}</span>
+                                            <span class="badge text-bg-info">#{project.project_status.name}</span>
                                     //- Project Description
                                     strong Overview
                                     p.text-muted.
@@ -46,10 +46,10 @@ block content
                                         <i class="bi bi-list-task"></i> #{milestoneCount._count._all} Milestone(s)
                                     p
                                         <i class="bi bi-list-task"></i> #{taskCount._count._all} Task(s)  
-                                        each task in project.task 
-                                            p #{task.title}
+                                        //- each task in project.task 
+                                        //-     p #{task.title}
                                     //- team members
-                                    h6.card-title Team
+                                    h6.card-title.border-bottom Team
                                     .row 
                                         .col-lg-6
                                             ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')

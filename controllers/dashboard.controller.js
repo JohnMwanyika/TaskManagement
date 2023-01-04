@@ -3,7 +3,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 module.exports = {
   mainDashboard: async (req, res) => {
-    // try {
+    try {
     if (req.session.user) {
       // count Active tasks
       const groupActive = await prisma.task.aggregate({
@@ -124,8 +124,8 @@ module.exports = {
         fire: "fire",
       });
     }
-    // } catch (error) {
-    //   res.render("not_found", { message: error.message });
-    // }
+    } catch (error) {
+      res.render("not_found", { message: error.message });
+    }
   },
 };

@@ -11,44 +11,44 @@ module.exports = {
   },
   signUp: async (req, res) => {
     // try {
-      const { first_name, last_name, email, username } = req.body;
-      var pass = req.body.password;
+    const { first_name, last_name, email, username } = req.body;
+    var pass = req.body.password;
 
-      let userExists = await prisma.user.findUnique({
-        where: {
-          username: username,
-        },
-      });
-      console.log(userExists);
-      if (userExists) {
-        res.status(401).render("sign_up", {
-          message: {
-            info: "username taken try another note you can add numbers",
-            type: "warning",
-          },
-        });
-        return;
-      }
-
-      pass = bcrypt.hashSync(pass, 10);
-      let user = await prisma.user.create({
-        data: {
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          username: username,
-          password: pass,
-          // roleRole_id: 2,
-        },
-      });
-      console.log(user.password);
-      res.render("login", {
+    let userExists = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+    console.log(userExists);
+    if (userExists) {
+      res.status(401).render("sign_up", {
         message: {
-          info: `User ${user.first_name} created successfully`,
-          type: "success",
+          info: "username taken try another note you can add numbers",
+          type: "warning",
         },
-        fire: "fire",
       });
+      return;
+    }
+
+    pass = bcrypt.hashSync(pass, 10);
+    let user = await prisma.user.create({
+      data: {
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        username: username,
+        password: pass,
+        // roleRole_id: 2,
+      },
+    });
+    console.log(user.password);
+    res.render("login", {
+      message: {
+        info: `User ${user.first_name} created successfully`,
+        type: "success",
+      },
+      fire: "fire",
+    });
     // } catch (err) {
     //   return res.status(401).render("sign_up", {
     //     message: { info: "Oops!! sorry cant reach database", type: "error" },
@@ -68,7 +68,8 @@ module.exports = {
       });
 
       if (!user) {
-        return res.status(401).render("login", {
+        return res.render("login", {
+          Swal: require("sweetalert2"),
           message: {
             info: "No user with the supplied username",
             type: "error",

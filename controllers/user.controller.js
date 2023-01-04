@@ -3,26 +3,32 @@ const prisma = new PrismaClient();
 
 module.exports = {
   getUsers: async (req, res) => {
-    if (req.session.user) {
-      const allUsers = await prisma.user.findMany({
-        include: {
-          role: true,
-        },
-      });
-      const allRoles = await prisma.role.findMany({});
-      console.log(allUsers);
-      console.log(allRoles);
-      res.render("manage_users", {
-        title: "Users",
-        rows: allUsers,
-        results: allRoles,
-        user: req.session.user,
-      });
-    } else {
-      res.render("login", {
-        message: { info: "You need to login first", type: "error" },
-        fire: "fire",
-      });
+    try {
+      if (req.session.user) {
+        const allUsers = await prisma.user.findMany({
+          include: {
+            role: true,
+          },
+        });
+        const allRoles = await prisma.role.findMany({});
+        console.log(allUsers);
+        console.log(allRoles);
+        res.render("manage_users", {
+          title: "Users",
+          rows: allUsers,
+          results: allRoles,
+          user: req.session.user,
+        });
+      } else {
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
+      }
+    } catch (error) {
+      return res
+        .status(404)
+        .render("not_found", { message: error.message, status: error.status });
     }
   },
   // submit new user
@@ -68,7 +74,7 @@ module.exports = {
     }
   },
   update_byId: async (req, res) => {
-    try {
+    // try {
       console.log(req.session.user);
       console.log("Request.body is");
       console.log(req.body);
@@ -83,7 +89,7 @@ module.exports = {
             first_name: first_name,
             last_name: last_name,
             email: email,
-            role_id: parseInt(role),
+            roleRole_id: parseInt(role),
           },
         });
         console.log(newData);
@@ -94,11 +100,11 @@ module.exports = {
           fire: "fire",
         });
       }
-    } catch (error) {
-      return res.status(404).render("not_found", {
-        message: error.message,
-        status: error.status,
-      });
-    }
+    // } catch (error) {
+    //   return res.status(404).render("not_found", {
+    //     message: error.message,
+    //     status: error.status,
+    //   });
+    // }
   },
 };

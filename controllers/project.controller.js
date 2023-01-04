@@ -35,20 +35,20 @@ module.exports = {
         include: {
           project_status: true,
           team: {
-            include: { user: true },
+            include: { userId: true },
           },
           task: true,
-          user: true,
+          created_by: true,
         },
         where: {
           userUser_id: req.session.user.user_id,
         },
         orderBy: {
-          projectId: "desc",
+          project_id: "desc",
         },
       });
       const tasks = await prisma.task.groupBy({
-        by: ["projectProjectId"],
+        by: ["projectProject_id"],
         _count: {
           task_id: true,
         },
@@ -58,7 +58,7 @@ module.exports = {
           _all: true,
         },
         where: {
-          projectProjectId:1,
+          projectProject_id:1,
         },
       });
       const milestoneCount = await prisma.milestone.aggregate({
@@ -66,7 +66,7 @@ module.exports = {
           _all: true,
         },
         where: {
-          projectProjectId: 1,
+          projectProject_id: 1,
         },
       });
       console.log(projects);
