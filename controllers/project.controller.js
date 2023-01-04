@@ -9,7 +9,7 @@ module.exports = {
         include: {
           project_status: true,
           team: {
-            include: { user: true },
+            include: { userId: true },
           },
         },
       });
@@ -25,7 +25,7 @@ module.exports = {
     } else {
       res.render("login", {
         message: { info: "You need to login first", type: "error" },
-        fire:"fire"
+        fire: "fire",
       });
     }
   },
@@ -58,7 +58,7 @@ module.exports = {
           _all: true,
         },
         where: {
-          projectProject_id:1,
+          projectProject_id: 1,
         },
       });
       const milestoneCount = await prisma.milestone.aggregate({
@@ -79,18 +79,49 @@ module.exports = {
         projects: projects,
         title: "My Projects",
         taskCount,
-        milestoneCount
+        milestoneCount,
       });
     } else {
       res.render("login", {
         message: { info: "You need to login first", type: "error" },
-        fire:"fire"
+        fire: "fire",
       });
     }
   },
   projectForm: (req, res) => {
     if (req.session.user) {
-      res.render("project_form", { user: req.session.user });
+      res.render("project_form", {
+        user: req.session.user,
+        title: "New Project",
+      });
     }
+  },
+  newProject: async (req, res) => {
+    // try {
+    const { project_title, start_date, due_date, description } = req.body;
+    if (req.session.user) {
+      const project = await prisma.project.create({
+        data: {
+          title: project_title,
+          start_date: new Date(start_date),
+          due_date: new Date(due_date),
+          description: description,
+        },
+      });
+      console.log(project)
+      res.render("project_form", {
+        user: req.session.user,
+        title: "New Project",
+        message:"Project Created Successfuly"
+      });
+    } else {
+      res.render("login", {
+        message: { info: "You need to login first", type: "error" },
+        fire: "fire",
+      });
+    }
+    // } catch (error) {
+
+    // }
   },
 };

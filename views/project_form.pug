@@ -11,158 +11,59 @@ block content
                     li.breadcrumb-item Project
                     li.breadcrumb-item.active Add New
         section.section
-            //- .row
-            //-     .col-lg-12
-            //-         .card
-            //-             .card-body
-            //-                 h5.card-title New Project
             .row
                 //  Left side 
-                .col-lg-8
+                .col-lg-12
                     //  Basic information 
                     .card.mb-4
                         .card-body
-                            h5.card-title Details
-                            .row
-                                .col-lg-6
-                                    .mb-3
+                            if (message)
+                                h1 #{message}
+                            h5.card-title Project Details
+                            form(action="/dashboard/projects/new-project/", method="post") 
+                                .row
+                                    .col-lg-6
+                                        .mb-3
+                                            .form-floating
+                                                input.form-control#floatingName(type="text" placeholder="Project Name" name="project_title"  required)
+                                                label(for="floatingName") Project Name
+                                    .col-lg-3
+                                        .mb-3
+                                            .form-floating
+                                                input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
+                                                label(for="floatingDate") Start date
+                                    .col-lg-3
+                                        .mb-3
+                                            .form-floating
+                                                input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" required)
+                                                label(for="floatingDate") Expected End Date
+                                .row
+                                    .col-lg-12.mb-3
                                         .form-floating
-                                            input.form-control#floatingName(type="text" placeholder="Project Name" name="project_name"  required)
-                                            label(for="floatingName") Project Name
-                                .col-lg-6
-                                    .mb-3
-                                        .form-floating
-                                            input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
-                                            label(for="floatingDate") Start date
-                            .row
-                                .col-lg-12.mb-3
-                                    .form-floating
-                                        textarea.form-control#floatingTextarea(placeholder="Address" style="height: 100px;" name="description" required)
-                                        label(for="floatingTextarea") Description
-                                //-     .mb-3
-                                //-         label.form-label Email
-                                //-         input.form-control(type="email")
-                                //- .col-lg-6
-                                //-     .mb-3
-                                //-         label.form-label Phone number
-                                //-         input.form-control(type="text")
-                    //  Address 
-                    //- .card.mb-4
-                        .card-body
-                            h3.h6.mb-4 Address
-                            .mb-3
-                                label.form-label Address Line 1
-                                input.form-control(type="text")
-                            .mb-3
-                                label.form-label Address Line 2
-                                input.form-control(type="text")
-                            .row
-                                .col-lg-6
-                                    .mb-3
-                                        label.form-label Country
-                                        select.select2.form-control.select2-hidden-accessible(data-select2-placeholder="Select country" data-select2-id="select2-data-1-gy14" tabindex="-1" aria-hidden="true")
-                                            option(data-select2-id="select2-data-3-ibs9")
-                                            option(value="AF") Afghanistan
-                                            option(value="BS") Bahamas
-                                            option(value="KH") Cambodia
-                                            option(value="DK") Denmark
-                                            option(value="TL") East Timor
-                                            option(value="GM") Gambia
-                                        span.select2.select2-container.select2-container--bootstrap-5(dir="ltr" data-select2-id="select2-data-2-46y9" style="width: 391px;")
-                                            span.selection
-                                                span.select2-selection.select2-selection--single(role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-vp8l-container" aria-controls="select2-vp8l-container")
-                                                    span.select2-selection__rendered#select2-vp8l-container(role="textbox" aria-readonly="true" title="Select country")
-                                                        span.select2-selection__placeholder Select country
-                                                    span.select2-selection__arrow(role="presentation")
-                                                        b(role="presentation")
-                                            span.dropdown-wrapper(aria-hidden="true")
-                                .col-lg-6
-                                    .mb-3
-                                        label.form-label State
-                                        select.select2.form-control.select2-hidden-accessible(data-select2-placeholder="Select state" data-select2-id="select2-data-4-680y" tabindex="-1" aria-hidden="true")
-                                            option(data-select2-id="select2-data-6-cshs")
-                                            option(value="AL") Alabama
-                                            option(value="CA") California
-                                            option(value="DE") Delaware
-                                            option(value="FL") Florida
-                                            option(value="GA") Georgia
-                                            option(value="HI") Hawaii
-                                            option(value="ID") Idaho
-                                            option(value="KS") Kansas
-                                        span.select2.select2-container.select2-container--bootstrap-5(dir="ltr" data-select2-id="select2-data-5-np4c" style="width: 391px;")
-                                            span.selection
-                                                span.select2-selection.select2-selection--single(role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-2fn7-container" aria-controls="select2-2fn7-container")
-                                                    span.select2-selection__rendered#select2-2fn7-container(role="textbox" aria-readonly="true" title="Select state")
-                                                        span.select2-selection__placeholder Select state
-                                                    span.select2-selection__arrow(role="presentation")
-                                                        b(role="presentation")
-                                            span.dropdown-wrapper(aria-hidden="true")
-                            .row
-                                .col-lg-6
-                                    .mb-3
-                                        label.form-label City
-                                        select.select2.form-control.select2-hidden-accessible(data-select2-placeholder="Select city" data-select2-id="select2-data-7-809c" tabindex="-1" aria-hidden="true")
-                                            option(data-select2-id="select2-data-9-k35n")
-                                            option(value="b") Bangkok
-                                            option(value="d") Dubai
-                                            option(value="h") Hong Kong
-                                            option(value="k") Kuala Lumpur
-                                            option(value="l") London
-                                            option(value="n") New York City
-                                            option(value="m") Macau
-                                            option(value="p") Paris
-                                        span.select2.select2-container.select2-container--bootstrap-5(dir="ltr" data-select2-id="select2-data-8-3peu" style="width: 391px;")
-                                            span.selection
-                                                span.select2-selection.select2-selection--single(role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-jdfi-container" aria-controls="select2-jdfi-container")
-                                                    span.select2-selection__rendered#select2-jdfi-container(role="textbox" aria-readonly="true" title="Select city")
-                                                        span.select2-selection__placeholder Select city
-                                                    span.select2-selection__arrow(role="presentation")
-                                                        b(role="presentation")
-                                            span.dropdown-wrapper(aria-hidden="true")
-                                .col-lg-6
-                                    .mb-3
-                                        label.form-label ZIP code
-                                        input.form-control(type="text")
-                //  Right side 
-                .col-lg-4
-                    //  Status 
-                    .card.mb-4
-                        .card-body
-                            h3.h6 Status
-                            select.form-select
-                                option(value="draft", selected) Draft
-                                option(value="active") Active
-                                option(value="active") Inactive
-                    //  Avatar 
-                    .card.mb-4
-                        .card-body
-                            h3.h6 Avatar
-                            input.form-control(type="file")
-                    //  Notes 
-                    .card.mb-4
-                        .card-body
-                            h3.h6 Notes
-                            textarea.form-control(rows="3")
-                    //  Notification settings 
-                    //- .card.mb-4
-                        .card-body
-                            h3.h6 Notification Settings
-                            ul.list-group.list-group-flush.mx-n2
-                                li.list-group-item.px-0.d-flex.justify-content-between.align-items-start
-                                    .ms-2.me-auto
-                                        h6.mb-0 News and updates
-                                        small News about product and feature updates.
-                                    .form-check.form-switch
-                                        input.form-check-input(type="checkbox" role="switch")
-                                li.list-group-item.px-0.d-flex.justify-content-between.align-items-start
-                                    .ms-2.me-auto
-                                        h6.mb-0 Tips and tutorials
-                                        small Tips on getting more out of the platform.
-                                    .form-check.form-switch
-                                        input.form-check-input(type="checkbox" role="switch", checked)
-                                li.list-group-item.px-0.d-flex.justify-content-between.align-items-start
-                                    .ms-2.me-auto
-                                        h6.mb-0 User Research
-                                        small Get involved in our beta testing program.
-                                    .form-check.form-switch
-                                        input.form-check-input(type="checkbox" role="switch")
+                                            textarea.form-control#floatingTextarea(placeholder="Address" style="height: 200px;" name="description" required)
+                                            label(for="floatingTextarea") Overview
+
+                                            .d-grid.gap-2.col-2.mx-auto.mt-3
+                                                button.btn.btn-secondary(type="submit") Save
+                                                button.btn.btn-primary(type="button") Save and Continue
+
+        //- //  Right side 
+        //- .col-lg-4
+        //-     //  Status 
+        //-     .card.mb-4
+        //-         .card-body
+        //-             h3.h6 Status
+        //-             select.form-select
+        //-                 option(value="draft", selected) Draft
+        //-                 option(value="active") Active
+        //-                 option(value="active") Inactive
+        //- //  Avatar 
+        //- .card.mb-4
+        //-     .card-body
+        //-         h3.h6 Avatar
+        //-         input.form-control(type="file")
+        //- //  Notes 
+        //- .card.mb-4
+        //-     .card-body
+        //-         h3.h6 Notes
+        //-         textarea.form-control(rows="3")

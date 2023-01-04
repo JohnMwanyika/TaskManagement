@@ -47,7 +47,7 @@ block content
                         tr
                           th(scope="row")
                             a(href="#") #{index+1}
-                          td #{row.name}
+                          td #{row.title}
                           td
                             a.text-primary(href="#") #{row.description}
                           td #{moment(row.due_in).format('ll')}
@@ -56,13 +56,13 @@ block content
                               p
                                 small #{team.userId.first_name} #{team.userId.last_name}
 
-                          if row.statusId.status_name === 'Active'
+                          if row.project_status.name === 'Active'
                             td
-                              span.badge.bg-warning #{row.statusId.status_name}
+                              span.badge.bg-warning #{row.project_status.name}
                               
                           else
                             td
-                              span.badge.bg-success #{row.statusId.status_name}
+                              span.badge.bg-success #{row.project_status.name}
                                 
                           td 
                             .dropdown.text-center
