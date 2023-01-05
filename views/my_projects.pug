@@ -23,12 +23,12 @@ block content
                                         li
                                             a.dropdown-item(href="#") Manage
                                         li
-                                            a.dropdown-item(href="/dashboard/milestones/new") Add Milestone
+                                            a.dropdown-item(href=`/dashboard/milestones/${project.project_id}`) Add Milestone
                                         li
                                             a.dropdown-item(href="#") Add Team member
 
                                 .card-body
-                                    h4.fw-lighter.text-secondary.my-4.mx-3 #{project.title}
+                                    h4.fw-lighter.text-secondary.my-4.mx-3 #{project.project_id} #{project.title}
                                     hr
                                     p 
                                         strong created by: 

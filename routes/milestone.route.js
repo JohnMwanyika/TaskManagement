@@ -1,8 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const { milestoneForm } = require('../controllers/milestone.controller');
+const {
+  milestoneForm,
+  getMileById,
+} = require("../controllers/milestone.controller");
 
-router.get('/new',milestoneForm);
+router.get("/new", milestoneForm);
+router.get("/:id", getMileById);
 
 module.exports = router;
