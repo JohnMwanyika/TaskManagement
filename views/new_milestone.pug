@@ -51,16 +51,16 @@ block content
                                         .accordion#accordionExample
                                             .accordion-item
                                                 h2.accordion-header(id=`heading-${row.mile_id}`)
-                                                    button.accordion-button(type="button", data-bs-toggle="collapse", data-bs-target=`collapse-${row.mile_id}`, aria-expanded="true", aria-controls=`collapse${row.mile_id}`).
+                                                    button.accordion-button.collapsed(type="button", data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`).
                                                     
-                                                        Accordion Item #1
+                                                        (#{index+1})#{row.name}
                                                     
-                                                .accordion-collapse.collapse.show(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
+                                                .accordion-collapse.collapse(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
                                                     .accordion-body
-                                                        strong This is the first item's accordion body.
-                                                        |  It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the 
-                                                        code .accordion-body
-                                                        | , though the transition does limit overflow.
+                                                        strong Overview.
+                                                        |  #{row.description} 
+                                                        //- code .accordion-body
+                                                        //- | , though the transition does limit overflow.
 
                                             //- .accordion-item
                                             //-     h2.accordion-header#headingTwo
