@@ -20,21 +20,22 @@ block content
                         .card-body
                             if (message)
                                 h1 #{message}
-                            h4.fw-lighter.text-secondary.my-3.mx-3 Project Milestones
+                            h4.fw-lighter.text-secondary.my-3.mx-3.text-center Project Milestones
                             hr
                             .row 
                                 .col-lg-6.px-5
-                                    p
-                                        strong Project : 
-                                        span #{project.title}
-                                    p
-                                        strong By : 
-                                        span #{project.created_by.first_name} #{project.created_by.last_name}
+                                    .text-center
+                                        p
+                                            strong Project : 
+                                            span #{project.title}
+                                        p
+                                            strong By : 
+                                            span #{project.created_by.first_name} #{project.created_by.last_name}
                                     
 
                                     .col-lg-8
                                         p.text-center 
-                                            strong All Milestones 
+                                            strong Existing Milestones 
                                         hr
                                         .div(style="height:220px").overflow-auto
                                             each row,index in rows
@@ -55,26 +56,48 @@ block content
 
 
 
-                                .col-lg-6
+                                .col-lg-6.border-start
                                     p.text-center 
-                                        strong Add New Milestone
-                                    form(action="/dashboard/projects/new-project/" method="post").px-5
+                                        strong  New Milestone
+                                    form(action="/dashboard/milestones/" method="post").px-5
                                         .mb-3.row
                                             label.col-sm-4.col-form-label(for="title") Name of Milestone
                                             .col-sm-8
-                                                input.form-control#title(type="text",name="title")
+                                                input.form-control#title(type="text" name="title")
+                                                input.form-control#title(type="text" name="projectId" hidden value=`${project.project_id}`)
                                         
                                         .mb-3.row
                                             label.col-sm-4.col-form-label(for="description") Description
                                             .col-sm-8
                                                 textarea.form-control#description(placeholder="Milestone overview" style="height: 100px;" name="description" required)
+                
+                                                .mt-3.row
+                                                    .col-6 
+                                                        .form-floating
+                                                            input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
+                                                            label(for="floatingDate") Start date
+                                                    .col-6
+                                                        .form-floating
+                                                            input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" required)
+                                                            label(for="floatingDate") Expected End Date
                                     
                                         .row
                                             .col-lg-12.mb-3
 
-                                                    .d-grid.gap-2.col-2.mx-auto.mt-3
+                                                    .d-grid.gap-4.col-3.mx-auto.mt-3
                                                         //- button.btn.btn-secondary(type="submit") Save
                                                         button.btn.btn-primary(type="submit") Add
+                                                        //- button.btn.btn-primary(type="submit")
+                                                        //-     span#lbl Add 
+                                                        //-     span.spinner-border.spinner-border-sm(role="status", aria-hidden="true")#spina
+
 
     script.
-        
+        var $loading = $('#spina').hide();
+        $(document)
+            .ajaxStart(function () {
+                $loading.show();
+            })
+            .ajaxStop(function () {
+                $loading.hide();
+            });

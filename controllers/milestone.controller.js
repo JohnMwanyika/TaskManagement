@@ -45,17 +45,35 @@ module.exports = {
     }
   },
   createNewMilestone: async(req,res) =>{
-    try {
+    // try {
       if (req.session.user) {
+        // const project = await prisma.project.findUnique({
+        //   include:{created_by:true},
+        //   where: {
+        //     user_id:req.session.user.user_id
+        //   },
+        // })
 
+        const {title,description,start_date,due_date,projectId} = req.body;
+        const milestone = await prisma.milestone.create({
+          data:{
+            name:title,
+            description:description,
+            start_date:new Date(start_date),
+            due_date:new Date(due_date),
+            projectProject_id: parseInt(projectId)
+          }
+        })
+        res.redirect("back")
+        console.log(milestone)
       }else{
         res.render("login", {
           message: { info: "You need to login first", type: "error" },
           fire: "fire",
         });
       }
-    } catch (error) {
+    // } catch (error) {
       
-    }
+    // }
   }
 };

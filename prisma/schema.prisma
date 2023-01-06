@@ -121,7 +121,7 @@ model milestone {
   projectProject_id         Int
   created_at                DateTime         @default(now()) @db.Timestamp(0)
   due_date                  DateTime         @db.DateTime(0)
-  end_date                  DateTime         @db.DateTime(0)
+  end_date                  DateTime?        @db.DateTime(0)
   start_date                DateTime         @db.DateTime(0)
   updated_at                DateTime         @default(now()) @db.Timestamp(0)
   milestone_status          milestone_status @relation(fields: [milestone_statusStatus_id], references: [status_id])
