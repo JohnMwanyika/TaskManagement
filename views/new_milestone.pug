@@ -9,7 +9,8 @@ block content
                     li.breadcrumb-item
                         a(href="/dashboard") Home
                     li.breadcrumb-item Project
-                    li.breadcrumb-item.active Add New
+                    li.breadcrumb-item Milestone
+                    li.breadcrumb-item.active New Milestone
         section.section
             .row
                 //  Left side 
@@ -19,88 +20,61 @@ block content
                         .card-body
                             if (message)
                                 h1 #{message}
-                            h5.card-title Project Milestones
+                            h4.fw-lighter.text-secondary.my-3.mx-3 Project Milestones
                             hr
                             .row 
-                                .col-lg-6.border-end
+                                .col-lg-6.px-5
                                     p
                                         strong Project : 
                                         span #{project.title}
                                     p
                                         strong By : 
-                                        span Name of Project
-                                    p 
-                                        strong All Milestones 
-                                    //- .list-group.overflow-auto(style="height:200px")
-                                    //-     each row in rows
-                                    //-         a(href="#").list-group-item.list-group-item-action #{row.name}
+                                        span #{project.created_by.first_name} #{project.created_by.last_name}
                                     
-                                        //- .accordion(id=`parent-${row.mile_id}`)
-                                        //-     //- each row,index in rows
-                                        //-     .accordion-item
-                                        //-         h2.accordion-header(id=`heading-${row.mile_id}`)
-                                        //-             button.accordion-button(type="button" data-bs-toggle="collapse" data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="true",aria-controls="collapseOne").
-                                                        
-                                        //-                 (#{index+1}) #{row.name}
 
-                                        //-         .accordion-collapse.collapse.show(data-bs-parent=`parent-${row.mile_id}` ,aria-labelledby=`heading-${row.mile_id}`,id=`collapse-${row.mile_id}`)
-                                        //-             .accordion-body
-                                        //-                 strong Milestone Overview.
-                                        //-                 |  #{row.description}
-                                    each row,index in rows
-                                        .accordion#accordionExample
-                                            .accordion-item
-                                                h2.accordion-header(id=`heading-${row.mile_id}`)
-                                                    button.accordion-button.collapsed(type="button", data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`).
-                                                    
-                                                        (#{index+1})#{row.name}
-                                                    
-                                                .accordion-collapse.collapse(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
-                                                    .accordion-body
-                                                        strong Overview.
-                                                        |  #{row.description} 
-                                                        //- code .accordion-body
-                                                        //- | , though the transition does limit overflow.
+                                    .col-lg-8
+                                        p.text-center 
+                                            strong All Milestones 
+                                        hr
+                                        .div(style="height:220px").overflow-auto
+                                            each row,index in rows
+                                                .accordion#accordionExample
+                                                    .accordion-item
+                                                        h2.accordion-header(id=`heading-${row.mile_id}`)
+                                                            button.accordion-button.collapsed(type="button", data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`).
+                                                            
+                                                                (#{index+1})#{row.name}
+                                                            
+                                                        .accordion-collapse.collapse(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
+                                                            .accordion-body
+                                                                strong Overview.
+                                                                |  #{row.description} 
+                                                                //- code .accordion-body
+                                                                //- | , though the transition does limit overflow.
+                                        hr
 
-                                            //- .accordion-item
-                                            //-     h2.accordion-header#headingTwo
-                                            //-         button.accordion-button.collapsed(type="button", data-bs-toggle="collapse", data-bs-target="#collapseTwo", aria-expanded="false", aria-controls="collapseTwo").
-                                                        
-                                            //-             Accordion Item #2
-                                                        
-                                            //-         #collapseTwo.accordion-collapse.collapse(aria-labelledby="headingTwo", data-bs-parent="#accordionExample")
-                                            //-             .accordion-body
-                                            //-                 strong This is the second item's accordion body.
-                                            //-                 |  It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the 
-                                            //-                 code .accordion-body
-                                            //-                 | , though the transition does limit overflow.
 
 
                                 .col-lg-6
-                                    h5.card-title New Milestone
-                                    form(action="/dashboard/projects/new-project/" method="post") 
-                                        .row
-                                            .col-lg-6
-                                                .mb-3
-                                                    .form-floating
-                                                        input.form-control#floatingName(type="text" placeholder="Project Name" name="project_title"  required)
-                                                        label(for="floatingName") Project Name
-                                            .col-lg-3
-                                                .mb-3
-                                                    .form-floating
-                                                        input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
-                                                        label(for="floatingDate") Start date
-                                            .col-lg-3
-                                                .mb-3
-                                                    .form-floating
-                                                        input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" required)
-                                                        label(for="floatingDate") Expected End Date
+                                    p.text-center 
+                                        strong Add New Milestone
+                                    form(action="/dashboard/projects/new-project/" method="post").px-5
+                                        .mb-3.row
+                                            label.col-sm-4.col-form-label(for="title") Name of Milestone
+                                            .col-sm-8
+                                                input.form-control#title(type="text",name="title")
+                                        
+                                        .mb-3.row
+                                            label.col-sm-4.col-form-label(for="description") Description
+                                            .col-sm-8
+                                                textarea.form-control#description(placeholder="Milestone overview" style="height: 100px;" name="description" required)
+                                    
                                         .row
                                             .col-lg-12.mb-3
-                                                .form-floating
-                                                    textarea.form-control#floatingTextarea(placeholder="Address" style="height: 200px;" name="description" required)
-                                                    label(for="floatingTextarea") Overview
 
                                                     .d-grid.gap-2.col-2.mx-auto.mt-3
                                                         //- button.btn.btn-secondary(type="submit") Save
-                                                        button.btn.btn-primary(type="button") Save
+                                                        button.btn.btn-primary(type="submit") Add
+
+    script.
+        

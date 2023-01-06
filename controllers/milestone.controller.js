@@ -24,14 +24,16 @@ module.exports = {
         });
         
         const project = await prisma.project.findUnique({
+          include:{created_by:true},
           where: {
             project_id: parseInt(id),
           },
         })
 
         console.log(milestones);
+        console.log(project);
         // res.json(milestones);
-        res.render("new_milestone",{user:req.session.user, rows:milestones,project})
+        res.render("new_milestone",{user:req.session.user, rows:milestones,project,title:"Add Project Milestone"})
       } else {
         res.render("login", {
           message: { info: "You need to login first", type: "error" },
@@ -42,4 +44,18 @@ module.exports = {
       res.render("not_found", { message: error.message });
     }
   },
+  createNewMilestone: async(req,res) =>{
+    try {
+      if (req.session.user) {
+
+      }else{
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
+      }
+    } catch (error) {
+      
+    }
+  }
 };
