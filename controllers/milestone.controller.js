@@ -18,6 +18,9 @@ module.exports = {
         const id = req.params.id;
         const milestones = await prisma.milestone.findMany({
           include:{project:true},
+          orderBy:{
+            mile_id:"desc"
+          },
           where: {
             projectProject_id: parseInt(id),
           },
@@ -45,15 +48,8 @@ module.exports = {
     }
   },
   createNewMilestone: async(req,res) =>{
-    // try {
+    try {
       if (req.session.user) {
-        // const project = await prisma.project.findUnique({
-        //   include:{created_by:true},
-        //   where: {
-        //     user_id:req.session.user.user_id
-        //   },
-        // })
-
         const {title,description,start_date,due_date,projectId} = req.body;
         const milestone = await prisma.milestone.create({
           data:{
@@ -72,8 +68,8 @@ module.exports = {
           fire: "fire",
         });
       }
-    // } catch (error) {
-      
-    // }
+    } catch (error) {
+      res.render("not_found", { message: error.message });
+    }
   }
 };
