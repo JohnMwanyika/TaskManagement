@@ -60,7 +60,11 @@ module.exports = {
             projectProject_id: parseInt(projectId)
           }
         })
-        res.redirect("back")
+        // res.redirect("back")
+        res.json({
+          message: { info: "Milestone added successfully", type: "success" },
+          fire: "fire",
+        });
         console.log(milestone)
       }else{
         res.render("login", {

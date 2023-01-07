@@ -21,6 +21,8 @@ block content
                             if (message)
                                 h1 #{message}
                             h4.fw-lighter.text-secondary.my-3.mx-3.text-center Project Milestones
+                            //- shwing errors
+                            div#message
                             hr
                             .row 
                                 .col-lg-6.px-5
@@ -32,7 +34,7 @@ block content
                                             strong By : 
                                             span #{project.created_by.first_name} #{project.created_by.last_name}
 
-                                    //- div to be refreshed by AJAX
+                                    //- ################div to be refreshed by AJAX#################
                                     .col-lg-12#myDiv
                                         p.text-center 
                                             strong Existing Milestones 
@@ -91,6 +93,7 @@ block content
 
 
     script.
+        //- var message = "Empty";
         var loading = $('#spina').hide();
         var submitbtn = $('#submit');
         $("#myForm").submit(function(event){
@@ -110,17 +113,36 @@ block content
                     loading.hide();
                 },
                 success: function(data){
-                    form[0].reset();
-                    $("#myDiv").load(document.URL + " #myDiv");
+                    var msg = data.message.type;
+                    //- declearing toast
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    if(msg == "success"){
+                        //- Clears The form fields
+                        form[0].reset();
+                        //- fires the toast
+                        Toast.fire({
+                            icon: data.message.type,
+                            title: data.message.info
+                        })
+                        $("#myDiv").load(document.URL + " #myDiv");
+                    }else{
+                        Toast.fire({
+                            icon: "error",
+                            title: "Oops! an error occured"
+                        })
+                    }
                 }
 
-            })
+            });
 
-        })
-        //- $(document)
-        //-     .ajaxStart(function () {
-        //-         $loading.show();
-        //-     })
-        //-     .ajaxStop(function () {
-        //-         $loading.hide();
-        //-     });
+        });
