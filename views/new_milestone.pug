@@ -42,10 +42,7 @@ block content
                                         //- if (!rows)
 
                                         //- if rows == true
-                                        if rows == false 
-                                            .div(style="height:270px").overflow-auto.border-bottom.bg-light.position-relative
-                                                h3.text-center(class="position-absolute top-50 start-50 translate-middle").text-muted No milestones found
-                                        else 
+                                        if rows == true 
                                             .div(style="height:270px").overflow-auto.border-bottom
                                                 each row,index in rows
                                                     .accordion#accordionExample
@@ -59,6 +56,9 @@ block content
                                                                 .accordion-body
                                                                     strong Overview.
                                                                     |  #{row.description}
+                                        else 
+                                            .div(style="height:270px").overflow-auto.border-bottom.bg-light.position-relative
+                                                h3.text-center(class="position-absolute top-50 start-50 translate-middle").text-muted No milestones found
                                         
                                         //- hr.text-light
 
