@@ -97,33 +97,72 @@ module.exports = {
     }
   },
   newProject: async (req, res) => {
-    // try {
-    const { project_title, start_date, due_date, description } = req.body;
-    if (req.session.user) {
-      const project = await prisma.project.create({
-        data: {
-          title: project_title,
-          start_date: new Date(start_date),
-          due_date: new Date(due_date),
-          description: description,
-          userUser_id: req.session.user.user_id,
-        },
-      });
-      console.log(project);
-      res.redirect('/dashboard/projects')
-      // res.render("project_form", {
-      //   user: req.session.user,
-      //   title: "New Project",
-      //   message: "Project Created Successfuly",
-      // });
-    } else {
-      res.render("login", {
-        message: { info: "You need to login first", type: "error" },
-        fire: "fire",
-      });
-    }
-    // } catch (error) {
+    try {
+      const { project_title, start_date, due_date, description } = req.body;
 
-    // }
+      if (req.session.user) {
+        const project = await prisma.project.create({
+          data: {
+            title: project_title,
+            start_date: new Date(start_date),
+            due_date: new Date(due_date),
+            description: description,
+            userUser_id: req.session.user.user_id,
+          },
+        });
+        console.log(project);
+        
+        res.render("new_milestone", {
+          user: req.session.user,
+          // rows: milestones,
+          project,
+          title: "Add Project Milestone",
+        });
+      } else {
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
+      }
+    } catch (error) {res.render("not_found",{message:error.message})}
+  },
+  newProjectApi: async (req, res) => {
+    try {
+      const { project_title, start_date, due_date, description } = req.body;
+
+      if (req.session.user) {
+        const project = await prisma.project.create({
+          include: { created_by: true },
+          data: {
+            title: project_title,
+            start_date: new Date(start_date),
+            due_date: new Date(due_date),
+            description: description,
+            userUser_id: req.session.user.user_id,
+          },
+        });
+        console.log(project);
+        // res.redirect('/dashboard/projects')
+        res.json({
+          id: project.project_id,
+          message: { info: "Project added successfully", type: "success" },
+        });
+      } else {
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
+      }
+    } catch (error) {
+      res.render("not_found", { message: error.message });
+    }
   },
 };
+
+// await prismaClient.$transaction(async prisma => {
+//   await prisma.$queryRaw`INSERT INTO users(name, username, clin_id, createdAt)
+//   VALUES ('transactionTest', 'transaction@test.com', 10, ${new Date().toISOString()})`;
+//   const [{ insertId }] = await prisma.$queryRaw<[{ insertId: number }]>`SELECT LAST_INSERT_ID() as insertId`;
+//   console.log(insertId);
+//   throw new Error(insertId.toString());
+// });

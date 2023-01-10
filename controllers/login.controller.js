@@ -10,51 +10,52 @@ module.exports = {
     res.render("login", {});
   },
   signUp: async (req, res) => {
-    // try {
-    const { first_name, last_name, email, username } = req.body;
-    var pass = req.body.password;
+    try {
+      const { first_name, last_name, email, username } = req.body;
+      var pass = req.body.password;
 
-    let userExists = await prisma.user.findUnique({
-      where: {
-        username: username,
-      },
-    });
-    console.log(userExists);
-    if (userExists) {
-      res.status(401).render("sign_up", {
-        message: {
-          info: "username taken try another note you can add numbers",
-          type: "warning",
+      let userExists = await prisma.user.findUnique({
+        where: {
+          username: username,
         },
       });
-      return;
-    }
+      console.log(userExists);
+      if (userExists) {
+        res.status(401).render("sign_up", {
+          message: {
+            info: "username taken try another note you can add numbers",
+            type: "warning",
+          },
+        });
+        return;
+      }
 
-    pass = bcrypt.hashSync(pass, 10);
-    let user = await prisma.user.create({
-      data: {
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        username: username,
-        password: pass,
-        // roleRole_id: 2,
-      },
-    });
-    console.log(user.password);
-    res.render("login", {
-      message: {
-        info: `User ${user.first_name} created successfully`,
-        type: "success",
-      },
-      fire: "fire",
-    });
-    // } catch (err) {
-    //   return res.status(401).render("sign_up", {
-    //     message: { info: "Oops!! sorry cant reach database", type: "error" },
-    //     fire: "fire",
-    //   });
-    // }
+      pass = bcrypt.hashSync(pass, 10);
+      let user = await prisma.user.create({
+        data: {
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          username: username,
+          password: pass,
+          // roleRole_id: 2,
+        },
+      });
+      console.log(user.password);
+      res.render("login", {
+        message: {
+          info: `User ${user.first_name} created successfully`,
+          type: "success",
+        },
+        fire: "fire",
+      });
+    } catch (err) {
+      return res.status(401).render("sign_up", {
+        message: { info: "Oops!! sorry cant reach database", type: "error" },
+        fire: "fire",
+        Swal:require("sweetalert2")
+      });
+    }
   },
   signIn: async (req, res) => {
     try {
@@ -101,7 +102,7 @@ module.exports = {
       });
     } catch (error) {
       res.status(401).render("login", {
-        message: { info: error.message, type: "error" },
+        message: { info: "Oops! server unavailable, try again", type: "error" },
         Swal: require("sweetalert2"),
         fire: "fire",
       });
