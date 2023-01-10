@@ -102,6 +102,7 @@ module.exports = {
 
       if (req.session.user) {
         const project = await prisma.project.create({
+          include: { created_by: true },
           data: {
             title: project_title,
             start_date: new Date(start_date),
@@ -132,7 +133,6 @@ module.exports = {
 
       if (req.session.user) {
         const project = await prisma.project.create({
-          include: { created_by: true },
           data: {
             title: project_title,
             start_date: new Date(start_date),
