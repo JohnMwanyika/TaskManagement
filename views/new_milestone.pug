@@ -41,9 +41,9 @@ block content
                                                             h2.accordion-header(id=`heading-${row.mile_id}`)
                                                                 //- milestone title
                                                                 button.accordion-button.collapsed(type="button" data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`) (#{index+1})#{row.name}
-                                                                
-                                                                    a.bg-primary.text-white.px-2.mx-3.rounded(href="#" data-bs-toggle="modal", data-bs-target=`#mile_modal_$(row.mile_id)`) edit
-                                                                    a.bg-primary.text-white.px-2.ml-4.rounded(href="#") delete
+                                                                    div.animate__fadeInLeftBig
+                                                                        a.bg-primary.text-white.px-2.mx-3.rounded(href="#" data-bs-toggle="modal", data-bs-target=`#mile_modal_${row.mile_id}`) edit
+                                                                        a.bg-primary.text-white.px-2.ml-4.rounded(href="#") delete
                                                                 include mixins/_milestone_popup
                                                             .accordion-collapse.collapse(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
                                                                 .accordion-body
