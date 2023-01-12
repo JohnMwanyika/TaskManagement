@@ -40,14 +40,14 @@ block content
                                 .row
                                     .col-lg-12.mb-3
                                         .form-floating
-                                            textarea.form-control#floatingTextarea(placeholder="Address" style="height: 200px;" name="description" required)
+                                            textarea.txtArea.form-control#floatingTextarea(placeholder="Address" style="height: 200px;" name="description" required)
                                             label(for="floatingTextarea") Overview
 
                                             .d-grid.gap-2.col-2.mx-auto.mt-3
                                                 //- button.btn.btn-secondary(type="submit") Save
                                                 button.btn.btn-secondary(type="submit")#submit
-                                                    span#lbl Save
-                                                    span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
+                                                    span#lbl Save 
+                                                        span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
                                                 button.btn.btn-primary(type="submit") Save and Continue
 
         //- //  Right side 
@@ -71,56 +71,72 @@ block content
         //-         h3.h6 Notes
         //-         textarea.form-control(rows="3")
 
-    script. 
+    script.
         var loading = $('#spina').hide();
-        var submitbtn = $('#submit');
+        //- var submitbtn = $('#submit');
+        //-  $(':input[type="submit"]').prop('disabled', true);
+        //-  $('input[type="text"], input[type="date"], .txtArea').keyup(function() {
+        //- if($('input[type="text"]').val() && $('input[type="date"]').val() && $('.txtArea').val() != '') {
+        //-     $(':input[type="submit"]').prop('disabled', false);
+        //- }
+        //- });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
         $("#submit").click(function(event){
             event.preventDefault();
             //- get form
             var form = $("#myForm");
             //- ajax call
-            $.ajax({
-                url: form.attr('action'),
-                type:form.attr('method'),
-                //- dataType: "application/json",
-                data: form.serialize(),
-                beforeSend: function(){
-                    loading.show();
-                },
-                complete: function(){
-                    loading.hide();
-                },
-                success: function(data){
-                    var msg = data.message.type;
-                    //- declearing toast
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+            if ($('input').val() == "" && $('input').val() == "" && $('.txtArea').val() == "") {
+                Toast.fire({
+                    icon: "error",
+                    title: "All fields are required"
+                });
+            }else{
+                $.ajax({
+                    url:form.attr('action'),
+                    type:form.attr('method'),
+                    data: form.serialize(),
+                    beforeSend: function(){
+                        loading.show(function(){
+                            $("#submit").prop("disabled", true);
+                        });
+                    },
+                    complete: function(){
+                        //- loading.hide(function(){
+                        //-     $("#submit").removeAttr('disabled');
+                        //- });
+                        loading.hide();
+                    },
+                    success: function(data){
+                        var msg = data.message.type;
+                        if(msg == "success"){
+                            //- Clears The form fields
+                            form[0].reset();
+                            //- fires the toast
+                            Toast.fire({
+                                icon: data.message.type,
+                                title: data.message.info
+                            });
+                        }else{
+                            Toast.fire({
+                                icon: "error",
+                                title: "Oops! an error occured"
+                            });
                         }
-                    })
-                    if(msg == "success"){
-                        //- Clears The form fields
-                        form[0].reset();
-                        //- fires the toast
-                        Toast.fire({
-                            icon: data.message.type,
-                            title: data.message.info
-                        })
-                        $("#myDiv").load(document.URL + " #myDiv");
-                    }else{
-                        Toast.fire({
-                            icon: "error",
-                            title: "Oops! an error occured"
-                        })
                     }
-                }
 
-            });
+                });
+            }
+
 
         });

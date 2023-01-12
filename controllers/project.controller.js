@@ -13,8 +13,7 @@ module.exports = {
           },
         },
       });
-      // console.log(projects[0].team);
-      // console.log(JSON.stringify(projects) )
+
       res.render("projects", {
         rows: projects,
         bd: "Projects",
@@ -34,6 +33,8 @@ module.exports = {
       const projects = await prisma.project.findMany({
         include: {
           project_status: true,
+          milestone: true,
+          task: true,
           team: {
             include: { userId: true },
           },
@@ -47,39 +48,12 @@ module.exports = {
           project_id: "desc",
         },
       });
-      const tasks = await prisma.task.groupBy({
-        by: ["projectProject_id"],
-        _count: {
-          task_id: true,
-        },
-      });
-      const taskCount = await prisma.task.aggregate({
-        _count: {
-          _all: true,
-        },
-        where: {
-          projectProject_id: 1,
-        },
-      });
-      const milestoneCount = await prisma.milestone.aggregate({
-        _count: {
-          _all: true,
-        },
-        where: {
-          projectProject_id: 1,
-        },
-      });
       console.log(projects);
-      console.log(tasks);
-      console.log(taskCount);
-      console.log(milestoneCount);
       res.render("my_projects", {
         bd: "Projects",
         user: req.session.user,
         projects: projects,
         title: "My Projects",
-        taskCount,
-        milestoneCount,
       });
     } else {
       res.render("login", {
@@ -102,7 +76,7 @@ module.exports = {
 
       if (req.session.user) {
         const project = await prisma.project.create({
-          include: { created_by: true },
+          include: { created_by: true, milestone: true },
           data: {
             title: project_title,
             start_date: new Date(start_date),
@@ -112,10 +86,10 @@ module.exports = {
           },
         });
         console.log(project);
-        
+
         res.render("new_milestone", {
           user: req.session.user,
-          // rows: milestones,
+          rows: project.milestone,
           project,
           title: "Add Project Milestone",
         });
@@ -125,7 +99,9 @@ module.exports = {
           fire: "fire",
         });
       }
-    } catch (error) {res.render("not_found",{message:error.message})}
+    } catch (error) {
+      res.render("not_found", { message: error.message });
+    }
   },
   newProjectApi: async (req, res) => {
     try {
@@ -150,7 +126,7 @@ module.exports = {
       } else {
         res.render("login", {
           message: { info: "You need to login first", type: "error" },
-          fire: "fire",
+          // fire: "fire",
         });
       }
     } catch (error) {

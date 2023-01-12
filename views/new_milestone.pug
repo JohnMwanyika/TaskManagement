@@ -13,17 +13,11 @@ block content
                     li.breadcrumb-item.active New Milestone
         section.section
             .row
-                //  Left side 
                 .col-lg-12
-                    //  Basic information 
                     .card.mb-4
                         .card-body.milestone
-                            //- if (message)
-                            //-     h1 #{message}
+                            
                             h4.fw-lighter.text-dark.my-3.mx-3.text-center.border-bottom.mb-3 Project Milestones
-                            //- shwing errors
-                            div#message
-                            //- hr.text-light
                             .row 
                                 .col-lg-6.px-5
                                     .text-center
@@ -34,30 +28,30 @@ block content
                                             strong By : 
                                             span #{project.created_by.first_name} #{project.created_by.last_name}
 
-                                    //- ################div to be refreshed by AJAX#################
+                                    //- ################ div to be refreshed by AJAX #################
                                     .col-lg-12#myDiv
                                         p.text-center 
                                             strong Existing Milestones 
-                                        //- hr.text-light
-                                        //- if (!rows)
-
-                                        //- if rows == true
-                                        if rows == true 
+                                        //- if milestones exists render them
+                                        if rows.length>0
                                             .div(style="height:270px").overflow-auto.border-bottom
                                                 each row,index in rows
                                                     .accordion#accordionExample
                                                         .accordion-item
                                                             h2.accordion-header(id=`heading-${row.mile_id}`)
-                                                                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`).
-
-                                                                    (#{index+1})#{row.name}
-
+                                                                //- milestone title
+                                                                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`) (#{index+1})#{row.name}
+                                                                
+                                                                    a.bg-primary.text-white.px-2.mx-3.rounded(href="#" data-bs-toggle="modal", data-bs-target=`#mile_modal_$(row.mile_id)`) edit
+                                                                    a.bg-primary.text-white.px-2.ml-4.rounded(href="#") delete
+                                                                include mixins/_milestone_popup
                                                             .accordion-collapse.collapse(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
                                                                 .accordion-body
                                                                     strong Overview.
                                                                     |  #{row.description}
+                                        //- Else render the message bellow
                                         else 
-                                            .div(style="height:270px").overflow-auto.border-bottom.bg-light.position-relative
+                                            .div(style="height:270px").overflow-auto.bg-light.position-relative.bg-opacity-50.border-dark.border
                                                 h3.text-center(class="position-absolute top-50 start-50 translate-middle").text-muted No milestones found
                                         
                                         //- hr.text-light
@@ -113,10 +107,14 @@ block content
                 //- dataType: "application/json",
                 data: form.serialize(),
                 beforeSend: function(){
-                    loading.show();
+                    loading.show(function(){
+                        $("#submit").prop("disabled", true);
+                    });
                 },
                 complete: function(){
-                    loading.hide();
+                    loading.hide(function(){
+                        $("#submit").removeAttr('disabled'); 
+                    });
                 },
                 success: function(data){
                     var msg = data.message.type;
@@ -135,12 +133,13 @@ block content
                     if(msg == "success"){
                         //- Clears The form fields
                         form[0].reset();
+                        //- refresh the milestone div
+                        $("#myDiv").load("/dashboard/milestones/"+#{project.project_id} + " #myDiv");
                         //- fires the toast
                         Toast.fire({
                             icon: data.message.type,
                             title: data.message.info
                         })
-                        $("#myDiv").load(document.URL + " #myDiv");
                     }else{
                         Toast.fire({
                             icon: "error",

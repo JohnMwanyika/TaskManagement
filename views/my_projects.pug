@@ -56,9 +56,10 @@ block content
                                         #{project.description}
                                     //- total tasks
                                     p
-                                        <i class="bi bi-list-task"></i> #{milestoneCount._count._all} Milestone(s)
+                                        //- <i class="bi bi-list-task"></i> #{milestoneCount._count._all} Milestone(s)
+                                        <i class="bi bi-list-task"></i> #{project.milestone.length} Milestone(s)
                                     p
-                                        <i class="bi bi-list-task"></i> #{taskCount._count._all} Task(s)  
+                                        <i class="bi bi-list-task"></i> #{project.task.length} Task(s)  
                                         //- each task in project.task 
                                         //-     p #{task.title}
                                         //- team members

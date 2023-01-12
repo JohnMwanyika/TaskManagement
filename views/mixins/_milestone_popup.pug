@@ -1,0 +1,40 @@
+.modal.fade(id=`mile_modal_$(row.mile_id)`,data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true")
+    .modal-dialog
+        .modal-content(style="border-radius:0px")
+            .modal-header
+                h1.modal-title.fs-5#staticBackdropLabel
+                    span
+                        i.bi.bi-person-circle.fa-2x.text-primary
+                    |  Edit milestone
+                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+            .modal-body
+                //- form
+                form#myForm(action="/dashboard/milestones/" method="post").px-5
+                    .mb-3.row
+                        label.col-sm-4.col-form-label(for="title").text-dark Name of Milestone
+                        .col-sm-8
+                            input.form-control#title(type="text" name="title")
+                            input.form-control#title(type="text" name="projectId" hidden value=`${project.project_id}`)
+
+                    .mb-3.row
+                        label.col-sm-4.col-form-label(for="description").text-dark Description
+                        .col-sm-8
+                            textarea.form-control#description(placeholder="Milestone overview" style="height: 100px;" name="description" required)
+
+                            .mt-3.row
+                                .col-6 
+                                    .form-floating
+                                        input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
+                                        label(for="floatingDate") Start date
+                                .col-6
+                                    .form-floating
+                                        input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" required)
+                                        label(for="floatingDate") Expected End Date
+
+                    .row
+                        .col-lg-12.mb-3
+
+                            .d-grid.gap-4.col-3.mx-auto.mt-3
+                                button.btn.btn-primary(type="submit")#submit
+                                    span#lbl Add 
+
