@@ -107,9 +107,6 @@ module.exports = {
       },
     });
     const project_id = parseInt(projectId);
-    res.redirect('back');
-    // res.render('new_milestone')
-    // res.redirect('/dashboard/milestones/'+project_id);
-    // res.send(`<script>window.location.href=/dashboard/milestones/${project_id};</script>`);
+    res.redirect('/dashboard/milestones/'+project_id);
   },
 };

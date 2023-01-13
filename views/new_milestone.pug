@@ -52,14 +52,15 @@ block content
                                                             .accordion-collapse.collapse(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
                                                                 .accordion-body
                                                                     strong Overview.
-                                                                    |  #{row.description}
+                                                                    span.text-muted
+                                                                        |  #{row.description}
+                                                                    hr
                                                                     - var start_D = moment(row.start_date).endOf('day').fromNow();
                                                                     p 
-                                                                        strong Started : 
+                                                                        strong Start : 
                                                                             span.text-muted #{start_D}
-                                                                    - var due_D = moment(row.due_date).endOf('day').fromNow();
-                                                                    p 
-                                                                        strong Expected to end : 
+                                                                        - var due_D = moment(row.due_date).endOf('day').fromNow();
+                                                                        strong.m-3 Expected to end : 
                                                                             span.text-muted #{due_D}
 
                                         //- Else render the message bellow
