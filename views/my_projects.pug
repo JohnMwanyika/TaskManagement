@@ -21,11 +21,25 @@ block content
                                         li.dropdown-header.text-start
                                             h6 Options
                                         li
-                                            a.dropdown-item(href="#") Manage
+                                            a.dropdown-item(href="#")
+                                                span
+                                                    i.bi.bi-sliders.text-danger
+                                                | Manage
                                         li
-                                            a.dropdown-item(href=`/dashboard/milestones/${project.project_id}`) Add Milestone
+                                            a.dropdown-item(href=`/dashboard/milestones/${project.project_id}`)
+                                                span
+                                                    i.bi.bi-file-earmark-text.text-primary
+                                                | Add Milestone
                                         li
-                                            a.dropdown-item(href="#") Add Team member
+                                            a.dropdown-item(href="#")
+                                                span
+                                                    i.bi.bi-person-plus.text-primary
+                                                | Add Team member
+                                        li
+                                            a.dropdown-item(href="#")
+                                                span
+                                                    i.bi.bi-list-task.text-primary
+                                                | Create Task
 
                                 .card-body
                                     h4.fw-lighter.text-secondary.my-4.mx-3 #{project.project_id} #{project.title}
@@ -66,12 +80,20 @@ block content
                                         h6.card-title.border-bottom Team
                                         .row 
                                             .col-lg-6
-                                                ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')
-                                                    each team in project.team
-                                                        li.list-group-item
-                                                            small #{team.userId.first_name} #{team.userId.last_name}
+                                                
+                                                each team in project.team
+                                                    .d-inline
+                                                        img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="", srcset="")
+
+                                                //- ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')
+                                                //-     each team in project.team
+                                                //-         li.list-group-item
+                                                //-             //- small #{team.userId.first_name} #{team.userId.last_name}
+                                                //-             img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="", srcset="")
                 else 
                     p Hey! #{user.first_name} Seems like you have not created any projects yet.
                     p click 
                         a(href="/dashboard/projects/new_project") here 
                         span to create your first project
+    //- script.
+    //-     team = team.filter((member,i) => i <1);
