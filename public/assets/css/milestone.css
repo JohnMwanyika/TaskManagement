@@ -3,3 +3,9 @@
     background-attachment: fixed;
     background-size: cover;
 }
+
+.animate:hover{
+    /* display: inline-block; */
+    animation: slideInRight;
+    animation-duration: 1s;
+}

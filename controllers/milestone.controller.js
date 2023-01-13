@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const moment = require("moment");
 
 module.exports = {
   milestoneForm: (req, res) => {
@@ -33,11 +34,17 @@ module.exports = {
           },
         });
 
-        console.log(milestones);
-        console.log(project);
+        // console.log(milestones);
+        // milestones.forEach(mile => {
+        //   mydate = mile.start_date;
+
+        //   console.log(moment(mydate).format("YYYY-MM-DD"))
+        // });
+        // console.log(project);
         // res.json(milestones);
         res.render("new_milestone", {
           user: req.session.user,
+          moment: require("moment"),
           rows: milestones,
           project,
           title: "Add Project Milestone",
@@ -69,7 +76,7 @@ module.exports = {
         // res.redirect("back")
         res.json({
           message: { info: "Milestone added successfully", type: "success" },
-          rows:milestone,
+          rows: milestone,
           fire: "fire",
         });
         console.log(milestone);
@@ -82,5 +89,27 @@ module.exports = {
     } catch (error) {
       res.render("not_found", { message: error.message });
     }
+  },
+  updateById: async (req, res) => {
+    var id = req.params.id;
+    console.log(id);
+    const { title, description, start_date, due_date, projectId } = req.body;
+    const milestone = await prisma.milestone.update({
+      where: {
+        mile_id: parseInt(id),
+      },
+      data: {
+        name: title,
+        description: description,
+        start_date: new Date(start_date),
+        due_date: new Date(due_date),
+        projectProject_id: parseInt(projectId),
+      },
+    });
+    const project_id = parseInt(projectId);
+    res.redirect('back');
+    // res.render('new_milestone')
+    // res.redirect('/dashboard/milestones/'+project_id);
+    // res.send(`<script>window.location.href=/dashboard/milestones/${project_id};</script>`);
   },
 };
