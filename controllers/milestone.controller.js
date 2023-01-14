@@ -107,6 +107,23 @@ module.exports = {
       },
     });
     const project_id = parseInt(projectId);
-    res.redirect('/dashboard/milestones/'+project_id);
+    res.redirect("/dashboard/milestones/" + project_id);
+  },
+  deleteById: async (req, res) => {
+    try {
+      var id = req.params.id;
+      // const {projectId} = req.body;
+      var milestone = await prisma.milestone.delete({
+        where: {
+          mile_id: parseInt(id),
+        },
+      });
+      console.log(milestone);
+      res.json({
+        message: { info: "Milestone deleted successfully", type: "success" },
+      });
+    } catch (error) {
+      res.render("not_found", { message: error.message });
+    }
   },
 };

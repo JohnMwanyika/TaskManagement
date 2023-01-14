@@ -16,7 +16,7 @@ block content
                 .col-lg-12
                     .card.mb-4
                         .card-body.milestone
-                            
+
                             h4.fw-lighter.text-dark.my-3.mx-3.text-center.border-bottom.mb-3 Project Milestones
                             .row 
                                 .col-lg-6.px-5
@@ -41,13 +41,15 @@ block content
                                                             h2.accordion-header(id=`heading-${row.mile_id}`)
                                                                 //- milestone title
                                                                 button.accordion-button.collapsed(type="button" data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`) (#{index+1})#{row.name}
-                                                                    div
+                                                                    div.actions
                                                                         a.bg-primary.text-white.px-2.mx-3.rounded(href="#" data-bs-toggle="modal", data-bs-target=`#mile_modal_${row.mile_id}`)
                                                                             span
-                                                                                i.bi.bi-pencil-square
-                                                                        a.bg-danger.text-white.px-2.ml-4.rounded(href="#").animate__animated.animate__slideInRight
+                                                                                i.bi.bi-pencil-square(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit")
+                                                                            //- form.d-inline(action=`/deshboard/milestones/delete/${row.mile_id}`,method="DELETE")
+                                                                        a.bg-danger.text-white.px-2.ml-4.rounded(type="button" href='#' class=`delete` id=`delete_${row.mile_id}`)
                                                                             span
-                                                                                i.bi.bi-trash3
+                                                                                i.bi.bi-trash3(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete")
+                                                                            input(type="text" hidden value=`${row.mile_id}`).id
                                                                 include mixins/_milestone_popup
                                                             .accordion-collapse.collapse(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
                                                                 .accordion-body
@@ -67,7 +69,7 @@ block content
                                         else 
                                             .div(style="height:270px").overflow-auto.bg-light.position-relative.bg-opacity-50.border-dark.border
                                                 h3.text-center(class="position-absolute top-50 start-50 translate-middle").text-muted No milestones at the moment
-                                        
+
                                         //- hr.text-light
 
 
@@ -108,6 +110,17 @@ block content
 
     script.
         //- var message = "Empty";
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
         var loading = $('#spina').hide();
         var submitbtn = $('#submit');
         $("#myForm").submit(function(event){
@@ -133,17 +146,7 @@ block content
                 success: function(data){
                     var msg = data.message.type;
                     //- declearing toast
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    })
+                    
                     if(msg == "success"){
                         //- Clears The form fields
                         form[0].reset();
@@ -165,3 +168,50 @@ block content
             });
 
         });
+
+
+        delete milestone
+        //- var loader = $()
+        //- var deletebtn = $('.delete');
+        var deletebtn = $(".actions a:nth-child()2").attr('id');
+        var id = $('.id').val();
+        //- var actual_id = parseInt(id);
+        deletebtn.click(function(e){
+            $(this).attr("id")
+            e.preventDefault();
+
+            $.ajax({
+                url:'/dashboard/milestones/'+id,
+                type:'delete',
+                beforeSend: function(){
+                    //- loader.show(function(){
+                    //-     $("#submit").prop("disabled", true);
+                    //- });
+                    console.log(id);
+                },
+                complete: function(){
+                    //- loader.hide(function(){
+                    //-     $("#submit").removeAttr('disabled'); 
+                    //- });
+                    console.log(id);
+                },
+                success:(data) =>{
+                    var msg = data.message;
+                    if (msg.type == 'success'){
+                        Toast.fire({
+                            icon: msg.type,
+                            title: msg.info
+                        });
+                        $("#myDiv").load(window.location + " #myDiv");
+                    }else{
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Oops! something went wrong'
+                        });
+                    }
+                    
+                },
+                error:(err) =>{alert(err)}
+
+            })
+        })
