@@ -9,7 +9,7 @@ block content
                         a(href="/dashboard") Home
                     li.breadcrumb-item.active=bd
         section.section.dashboard
-            .row
+            .row#demo
                 if (projects.length > 0)
                     each project,index in projects
                         .col-lg-4
@@ -80,20 +80,49 @@ block content
                                         h6.card-title.border-bottom Team
                                         .row 
                                             .col-lg-6
-                                                
+
                                                 each team in project.team
                                                     .d-inline
-                                                        img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="", srcset="")
+                                                        img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="")
 
                                                 //- ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')
                                                 //-     each team in project.team
                                                 //-         li.list-group-item
                                                 //-             //- small #{team.userId.first_name} #{team.userId.last_name}
-                                                //-             img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="", srcset="")
+                                                //-             img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="")
                 else 
                     p Hey! #{user.first_name} Seems like you have not created any projects yet.
                     p click 
                         a(href="/dashboard/projects/new_project") here 
                         span to create your first project
-    //- script.
-    //-     team = team.filter((member,i) => i <1);
+    script.
+
+        $('#demo').pagination({
+            dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
+            locator: 'items',
+            totalNumber: 50,
+            pageSize: 2,
+            showPageNumbers: true,
+            showPrevious: true,
+            showNext: true,
+            showNavigator: true,
+            showFirstOnEllipsisShow: true,
+            showLastOnEllipsisShow: true,
+            ajax: {
+                beforeSend: function() {
+                    container.prev().html('Loading data from flickr.com ...');
+                }
+            },
+            callback: function(response, pagination) {
+                window.console && console.log(22, response, pagination);
+                var dataHtml = '<ul>';
+
+                $.each(response, function (index, item) {
+                    dataHtml += '<li>' + item.title + '</li>';
+                });
+                dataHtml += '</ul>';
+
+                container.prev().html(dataHtml);
+            }
+        })
+

@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 var moment = require("moment");
+
 const prisma = new PrismaClient();
 
 module.exports = {
@@ -124,21 +125,18 @@ module.exports = {
           message: { info: "Project added successfully", type: "success" },
         });
       } else {
-        res.render("login", {
-          message: { info: "You need to login first", type: "error" },
-          // fire: "fire",
+        res.json({
+          message: { info: "Seems like your session just ended, login and try again", type: "error" },
         });
+        // res.render("login", {
+        //   message: { info: "You need to login first", type: "error" },
+        // });
       }
     } catch (error) {
-      res.render("not_found", { message: error.message });
+      // res.render("not_found", { message: error.message });
+      res.json({
+        message: { info: error.message, type: "error" },
+      });
     }
   },
 };
-
-// await prismaClient.$transaction(async prisma => {
-//   await prisma.$queryRaw`INSERT INTO users(name, username, clin_id, createdAt)
-//   VALUES ('transactionTest', 'transaction@test.com', 10, ${new Date().toISOString()})`;
-//   const [{ insertId }] = await prisma.$queryRaw<[{ insertId: number }]>`SELECT LAST_INSERT_ID() as insertId`;
-//   console.log(insertId);
-//   throw new Error(insertId.toString());
-// });

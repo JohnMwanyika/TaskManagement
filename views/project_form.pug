@@ -13,7 +13,7 @@ block content
         section.section
             .row
                 //  Left side 
-                .col-lg-12
+                .col-lg-8
                     //  Basic information 
                     .card.mb-4
                         .card-body
@@ -30,12 +30,12 @@ block content
                                     .col-lg-3
                                         .mb-3
                                             .form-floating
-                                                input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
+                                                input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required).date
                                                 label(for="floatingDate") Start date
                                     .col-lg-3
                                         .mb-3
                                             .form-floating
-                                                input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" required)
+                                                input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" required).date
                                                 label(for="floatingDate") Expected End Date
                                 .row
                                     .col-lg-12.mb-3
@@ -45,10 +45,14 @@ block content
 
                                             .d-grid.gap-2.col-2.mx-auto.mt-3
                                                 //- button.btn.btn-secondary(type="submit") Save
-                                                button.btn.btn-secondary(type="submit")#submit
+                                                button.btn.btn-secondary(type="submit")#submitbtn
                                                     span#lbl Save 
                                                         span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
                                                 button.btn.btn-primary(type="submit") Save and Continue
+                .col-lg-4
+                    .card.mb-4
+                        .card-body
+                            h5.card-title Project Team
 
         //- //  Right side 
         //- .col-lg-4
@@ -91,37 +95,43 @@ block content
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         })
-        $("#submit").click(function(event){
+
+
+   
+        $("#submitbtn").click(function(event){
             event.preventDefault();
             //- get form
             var form = $("#myForm");
             //- ajax call
-            if ($('input').val() == "" && $('input').val() == "" && $('.txtArea').val() == "") {
+            if ($('input').val() == "" && $('.date').val() == "" && $('.txtArea').val() == "") {
                 Toast.fire({
                     icon: "error",
                     title: "All fields are required"
                 });
             }else{
                 $.ajax({
-                    url:form.attr('action'),
+                    url:"/dashboard/projects/new-project-api",
                     type:form.attr('method'),
                     data: form.serialize(),
                     beforeSend: function(){
                         loading.show(function(){
-                            $("#submit").prop("disabled", true);
+                            $("#submitbtn").prop("disabled", true);
                         });
                     },
                     complete: function(){
-                        //- loading.hide(function(){
-                        //-     $("#submit").removeAttr('disabled');
-                        //- });
-                        loading.hide();
+                        loading.hide(function(){
+                            $("#submit").removeAttr('disabled');
+                        });
+                        //- loading.hide();
                     },
                     success: function(data){
                         var msg = data.message.type;
                         if(msg == "success"){
                             //- Clears The form fields
                             form[0].reset();
+                            loading.hide(function(){
+                                $("#submit").removeAttr('disabled');
+                            });
                             //- fires the toast
                             Toast.fire({
                                 icon: data.message.type,
@@ -133,10 +143,86 @@ block content
                                 title: "Oops! an error occured"
                             });
                         }
+                    },
+                    timeout: 5000,
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                        //- Toast.fire({
+                        //-     icon: "error",
+                        //-     title: "Oops! an error occured"
+                        //- });
                     }
 
                 });
             }
+        });
 
+//- 
+        $("#submitbtn").click(function(event){
+            event.preventDefault();
+            //- get form
+            var form = $("#myForm");
+            //- ajax call
+            if ($('input').val() == "" && $('.date').val() == "" && $('.txtArea').val() == "") {
+                Toast.fire({
+                    icon: "error",
+                    title: "All fields are required"
+                });
+            }else{
+                $.ajax({
+                    url:"/dashboard/projects/new-project-api/",
+                    type:form.attr('method'),
+                    data: form.serialize(),
+                    //- async: false,
+                }).then(function(){
+                    loading.show(function(){
+                        $("#submitbtn").prop("disabled", true);
+                    });
+                }).done(function(data){
+                    console.log(data);
+                    loading.hide(function(){
+                        //- alert(message);
+                        //- console.log(Response);
+                        $("#submitbtn").removeAttr('disabled');
+                        var msg = data.message.type;
+                        if(msg == "success"){
+                            //- Clears The form fields
+                            form[0].reset();
+                            loading.hide(function(){
+                                $("#submit").removeAttr('disabled');
+                            });
+                            //- fires the toast
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
 
+                            Toast.fire({
+                                icon: data.message.type,
+                                title: data.message.info
+                            });
+                        }else{
+                            Toast.fire({
+                                icon: "error",
+                                title: "Oops! an error occured"
+                            });
+                        }
+                        });
+                        //- alert(data);
+                    
+                })
+                //- .fail(function(jqXHR, textStatus){
+                //-     //- console.log(jqXHR);
+                //-     if (textStatus == 'timeout'){
+                //-         alert('Failed from timeout')
+                //-     }
+                //- })
+            }
         });
