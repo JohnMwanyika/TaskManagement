@@ -31,6 +31,7 @@ module.exports = {
   },
   myProjects: async (req, res) => {
     if (req.session.user) {
+      const users = await prisma.user.findMany({});
       const projects = await prisma.project.findMany({
         include: {
           project_status: true,
@@ -50,11 +51,13 @@ module.exports = {
         },
       });
       console.log(projects);
+      console.log(users);
       res.render("my_projects", {
         bd: "Projects",
         user: req.session.user,
         projects: projects,
         title: "My Projects",
+        users,
       });
     } else {
       res.render("login", {
@@ -77,7 +80,11 @@ module.exports = {
 
       if (req.session.user) {
         const project = await prisma.project.create({
-          include: { created_by: true, milestone: true },
+          include: {
+            created_by: true,
+            team: { include: { userId: true } },
+            milestone: true,
+          },
           data: {
             title: project_title,
             start_date: new Date(start_date),
@@ -126,7 +133,10 @@ module.exports = {
         });
       } else {
         res.json({
-          message: { info: "Seems like your session just ended, login and try again", type: "error" },
+          message: {
+            info: "Seems like your session just ended, login and try again",
+            type: "error",
+          },
         });
         // res.render("login", {
         //   message: { info: "You need to login first", type: "error" },

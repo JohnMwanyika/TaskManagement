@@ -43,7 +43,7 @@ block content
                                                                 button.accordion-button.collapsed(type="button" data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`) (#{index+1})#{row.name}
                                                                     
                                                                     div.actions
-                                                                        
+                                                                        //- ####Edit Milestone button####
                                                                         a.btn.bg-primary.text-white.px-2.mx-3.rounded(href="#" data-bs-toggle="modal", data-bs-target=`#mile_modal_${row.mile_id}`)
                                                                             span
                                                                                 i.bi.bi-pencil-square(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit")
@@ -52,6 +52,7 @@ block content
                                                                             a.btn.bg-danger.text-white.px-2.ml-4.rounded(type="button" href='#' id=`delete_${row.mile_id}`)
                                                                                 span
                                                                                     i.bi.bi-trash3(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete")
+                                                                //- ###Edit Milestone Popup####
                                                                 include mixins/_milestone_popup
                                                             .accordion-collapse.collapse(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
                                                                 .accordion-body
@@ -105,7 +106,7 @@ block content
                                             .col-lg-12.mb-3
 
                                                 .d-grid.gap-4.col-3.mx-auto.mt-3
-                                                    button.btn.btn-primary(type="submit")#submit
+                                                    button.btn.btn-primary(type="submit")#submitbtn
                                                         span#lbl Add 
                                                         span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
 
@@ -124,7 +125,7 @@ block content
             }
         })
         var loading = $('#spina').hide();
-        var submitbtn = $('#submit');
+        var submitbtn = $('#submitbtn');
         //- Ajax Submit for new milestone form
         $("#myForm").submit(function(event){
             event.preventDefault();
@@ -138,12 +139,12 @@ block content
                 data: form.serialize(),
                 beforeSend: function(){
                     loading.show(function(){
-                        $("#submit").prop("disabled", true);
+                        $("#submitbtn").prop("disabled", true);
                     });
                 },
                 complete: function(){
                     loading.hide(function(){
-                        $("#submit").removeAttr('disabled'); 
+                        $("#submitbtn").removeAttr('disabled'); 
                     });
                 },
                 success: function(data){
@@ -166,7 +167,8 @@ block content
                             title: "Oops! an error occured"
                         })
                     }
-                }
+                },
+
 
             });
 

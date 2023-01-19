@@ -13,7 +13,7 @@ block content
                 if (projects.length > 0)
                     each project,index in projects
                         .col-lg-4
-                            .card.overflow-hidden(style="height:500px")
+                            .card.overflow-hidden(style="height:500px").border
                                 .filter
                                     a.icon(href="#" data-bs-toggle="dropdown").mb-2
                                         i.bi.bi-three-dots
@@ -29,9 +29,9 @@ block content
                                             a.dropdown-item(href=`/dashboard/milestones/${project.project_id}`)
                                                 span
                                                     i.bi.bi-file-earmark-text.text-primary
-                                                | Add Milestone
+                                                | Milestones
                                         li
-                                            a.dropdown-item(href="#")
+                                            a.dropdown-item(href="#" data-bs-toggle="modal", data-bs-target=`#team_modal_${project.project_id}`)
                                                 span
                                                     i.bi.bi-person-plus.text-primary
                                                 | Add Team member
@@ -40,6 +40,10 @@ block content
                                                 span
                                                     i.bi.bi-list-task.text-primary
                                                 | Create Task
+                                //- ###New Member popup###
+                                include includes/add_member_popup
+                                
+                        
 
                                 .card-body
                                     h4.fw-lighter.text-secondary.my-4.mx-3 #{project.project_id} #{project.title}
@@ -83,7 +87,7 @@ block content
 
                                                 each team in project.team
                                                     .d-inline
-                                                        img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="")
+                                                        img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title=`${team.userId.first_name} ${team.userId.last_name}`)
 
                                                 //- ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')
                                                 //-     each team in project.team
@@ -95,7 +99,7 @@ block content
                     p click 
                         a(href="/dashboard/projects/new_project") here 
                         span to create your first project
-    script.
+    //- script.
 
         $('#demo').pagination({
             dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',

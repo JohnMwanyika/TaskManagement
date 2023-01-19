@@ -120,7 +120,7 @@ block content
                     },
                     complete: function(){
                         loading.hide(function(){
-                            $("#submit").removeAttr('disabled');
+                            $("#submitbtn").removeAttr('disabled');
                         });
                         //- loading.hide();
                     },
@@ -129,9 +129,6 @@ block content
                         if(msg == "success"){
                             //- Clears The form fields
                             form[0].reset();
-                            loading.hide(function(){
-                                $("#submit").removeAttr('disabled');
-                            });
                             //- fires the toast
                             Toast.fire({
                                 icon: data.message.type,

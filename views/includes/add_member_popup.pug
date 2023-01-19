@@ -1,0 +1,40 @@
+.modal.fade(id=`team_modal_${project.project_id}`,data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true")
+    .modal-dialog
+        .modal-content(style="border-radius:0px")
+            .modal-header
+                h1.modal-title.fs-5#staticBackdropLabel
+                    span
+                        i.bi.bi-person.fa-2x.text-primary
+                    |  Add team member
+                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+            .modal-body
+                //- form
+                form(action=`/dashboard/team/new_team_members/` method="post").px-5
+                    .mb-3.row
+                        label.col-sm-4.col-form-label(for="title").text-dark Select User
+                        .col-sm-8
+                            select.form-select.form-select-sm(name="userId" data-mdb-filter="true" )
+                                option(selected) Open this select menu
+                                each user,index in users
+                                    option(value=`${user.user_id}`) #{index+1} #{user.first_name} #{user.last_name}
+                                                                
+                            input.form-control#title(type="text" name="projectId" hidden value=`${project.project_id}`)
+
+                    .mb-3.row
+                        label.col-sm-4.col-form-label(for="description").text-dark Existing Members
+                        .col-sm-8
+                            //- textarea.form-control#description(placeholder="Milestone overview" style="height: 100px;" name="description" required)
+                            ol.list-group.list-group-flush.overflow-auto(style="height:100px")
+                                each team,i in (project.team)
+                                    li.list-group-item #{i+1} #{team.userId.first_name} #{team.userId.last_name}
+                                //- li.list-group-item A second item
+                                //- li.list-group-item A third item
+                                //- li.list-group-item A fourth item
+                                //- li.list-group-item And a fifth one
+
+                    .row
+                        .col-lg-12.mb-3
+
+                            .d-grid.gap-4.col-3.mx-auto.mt-3
+                                button.btn.btn-primary(type="submit")#update
+                                    span#lbl Add Members 
