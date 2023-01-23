@@ -4,6 +4,8 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var session = require("express-session");
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
+const { PrismaClient } = require("@prisma/client");
 var app = express();
 // const oneDay = 1000 * 60 * 60 * 24;
 // view engine setup
@@ -21,12 +23,17 @@ app.use(
   session({
     secret: "thisismysecretjohnmwanyikalovesvee",
     saveUninitialized: false,
+    store: new PrismaSessionStore(new PrismaClient(), {
+      checkPeriod: 2 * 60 * 1000, //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
     // cookie: { maxAge: 100000 },
     resave: false,
   })
 );
 const loginRouter = require("./routes/login.route");
-app.use('/',loginRouter);
+app.use("/", loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
