@@ -25,18 +25,5 @@ module.exports = {
     }else{
       res.json({message:{info:'This user exists',type:'error'}})
     }
-    // console.log(existingUser);
-    // result.forEach((team) => {
-    //   // console.log(team)
-    //   if (
-    //     team.userUser_id.includes(parseInt(userId)) &&
-    //     team.projectProject_id.includes(parseInt(projectId))
-    //   ) {
-    //     console.log("This User exists");
-    //   } else {
-    //     console.log("Dint work");
-    //   }
-    // });
-
   },
 };

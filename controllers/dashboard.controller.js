@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 module.exports = {
   mainDashboard: async (req, res) => {
     try {
-    if (req.session.user) {
+    // if (req.session.user) {
       // count Active tasks
       const groupActive = await prisma.task.aggregate({
         _count: {
@@ -118,12 +118,12 @@ module.exports = {
         // total tasks of logged in user
         totalTasks: grpAll,
       });
-    } else {
-      res.render("login", {
-        message: { info: "You need to login first", type: "error" },
-        fire: "fire",
-      });
-    }
+    // } else {
+    //   res.render("login", {
+    //     message: { info: "You need to login first", type: "error" },
+    //     fire: "fire",
+    //   });
+    // }
     } catch (error) {
       res.render("not_found", { message: error.message });
     }

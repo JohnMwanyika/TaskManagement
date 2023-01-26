@@ -3,6 +3,7 @@ var moment = require("moment");
 
 const prisma = new PrismaClient();
 
+
 module.exports = {
   allProjects: async (req, res) => {
     if (req.session.user) {
@@ -43,11 +44,13 @@ module.exports = {
           task: true,
           created_by: true,
         },
+        skip:parseInt(req.query.skip) || 0,
+        take:parseInt(9),
         where: {
           userUser_id: req.session.user.user_id,
         },
         orderBy: {
-          project_id: "desc",
+          project_id: "asc",
         },
       });
       console.log(projects);

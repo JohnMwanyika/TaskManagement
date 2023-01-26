@@ -10,9 +10,9 @@ module.exports = {
         data: {
           title: title,
           description: description,
-          start_at: new Date(start_date),
-          user_id: parseInt(user_id),
-          due_in: new Date(due_in),
+          start_date: new Date(start_date),
+          userUser_id: parseInt(user_id),
+          due_date: new Date(due_in),
         },
       });
       console.log(result);

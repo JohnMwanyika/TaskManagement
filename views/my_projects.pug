@@ -46,7 +46,7 @@ block content
                         
 
                                 .card-body
-                                    h4.fw-lighter.text-secondary.my-4.mx-3 #{project.project_id} #{project.title}
+                                    h4.fw-lighter.text-secondary.my-4.mx-3 #{index+1} #{project.title}
                                     hr
                                     p 
                                         strong created by: 
@@ -94,11 +94,24 @@ block content
                                                 //-         li.list-group-item
                                                 //-             //- small #{team.userId.first_name} #{team.userId.last_name}
                                                 //-             img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="")
+
                 else 
                     p Hey! #{user.first_name} Seems like you have not created any projects yet.
                     p click 
                         a(href="/dashboard/projects/new_project") here 
                         span to create your first project
+            nav(aria-label="...")
+                ul.pagination
+                    li.page-item.disabled
+                        a.page-link Previous
+                    li.page-item
+                        a.page-link(href=`/dashboard/projects/?take=9&&skip=0`) 1
+                    li.page-item.active(aria-current="page")
+                        a.page-link(href=`/dashboard/projects/?skip=9`) 2
+                    li.page-item
+                        a.page-link(href="#") 3
+                    li.page-item
+                        a.page-link(href="#") Next
     //- script.
 
         $('#demo').pagination({
