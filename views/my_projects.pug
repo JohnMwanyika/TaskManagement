@@ -33,8 +33,8 @@ block content
                                         li
                                             a.dropdown-item(href="#" data-bs-toggle="modal", data-bs-target=`#team_modal_${project.project_id}`)
                                                 span
-                                                    i.bi.bi-person-plus.text-primary
-                                                | Add Team member
+                                                    i.bi.bi-people.text-primary
+                                                | Team members
                                         li
                                             a.dropdown-item(href="#")
                                                 span
@@ -83,11 +83,11 @@ block content
                                         //- team members
                                         h6.card-title.border-bottom Team
                                         .row 
-                                            .col-lg-6
+                                            .col-lg-12
 
                                                 each team in project.team
                                                     .d-inline
-                                                        img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title=`${team.userId.first_name} ${team.userId.last_name}`)
+                                                        img.member-overlap-item.rounded-circle(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title=`${team.userId.first_name} ${team.userId.last_name}`)
 
                                                 //- ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')
                                                 //-     each team in project.team

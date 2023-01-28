@@ -1,8 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
+const { createPaginator } = require("prisma-pagination");
+const paginate = new createPaginator({perPage:10})
 var moment = require("moment");
+const { query } = require("express");
 
 const prisma = new PrismaClient();
-
 
 module.exports = {
   allProjects: async (req, res) => {
@@ -32,6 +34,7 @@ module.exports = {
   },
   myProjects: async (req, res) => {
     if (req.session.user) {
+
       const users = await prisma.user.findMany({});
       const projects = await prisma.project.findMany({
         include: {
@@ -44,17 +47,19 @@ module.exports = {
           task: true,
           created_by: true,
         },
-        skip:parseInt(req.query.skip) || 0,
-        take:parseInt(9),
+        // skip: parseInt(req.query.skip) || 0,
+        // take: parseInt(9),
         where: {
           userUser_id: req.session.user.user_id,
         },
         orderBy: {
-          project_id: "asc",
+          project_id: "desc",
         },
       });
-      console.log(projects);
-      console.log(users);
+      // console.log(projects);
+      // console.log(users);
+      console.log('pages')
+      console.log(req.paginate)
       res.render("my_projects", {
         bd: "Projects",
         user: req.session.user,
