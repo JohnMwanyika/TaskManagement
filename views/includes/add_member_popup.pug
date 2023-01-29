@@ -27,14 +27,59 @@
                             ol.list-group.list-group-flush.overflow-auto(style="height:100px")
                                 each team,i in (project.team)
                                     li.list-group-item #{i+1} #{team.userId.first_name} #{team.userId.last_name}
+                                        form(action="/dashboard/team/remove_member", method="post").float-end
+
+                                            input(type="text",value=`${team.userId.user_id}` name='userId' hidden)
+                                            input(type="text",value=`${project.project_id}` name='projectId' hidden)
+
+                                            button.float-end.btn.btn-danger(type="submit", style="--bs-btn-padding-y:.15rem; --bs-btn-padding-x:.3rem; --bs-btn-font-size:.75rem;")
+                                                span 
+                                                    i.bi.bi-trash3
                                 //- li.list-group-item A second item
                                 //- li.list-group-item A third item
                                 //- li.list-group-item A fourth item
                                 //- li.list-group-item And a fifth one
 
-                    .row
+                    .row.my-4
                         .col-lg-12.mb-3
 
                             .d-grid.gap-4.col-3.mx-auto.mt-3
                                 button.btn.btn-primary(type="submit")#update
                                     span#lbl Add Members 
+
+script.
+   function removeUser(){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return fetch(`//dashboard/remove_member/`)
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error(response.statusText)
+                    }
+                    return response.json()
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                    `Request failed: ${error}`
+                    )
+                })
+            },
+            //- allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+   }; 
