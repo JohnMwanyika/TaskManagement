@@ -54,31 +54,38 @@ module.exports = {
       res.render("not_found", { message: error.message, status: error.status });
     }
   },
-  taskForm: async (req, res) => {
-    try {
-      console.log(req.session.user);
-      if (req.session.user) {
-        const allUsers = await prisma.user.findMany();
-        console.log(allUsers);
-        res.render("task_form", { rows: allUsers, user: req.session.user });
-      } else {
-        res.render("login", {
-          message: { info: "You need to login first", type: "error" },
-          fire: "fire",
-        });
-      }
-    } catch (error) {
-      res.render("not_found", { message: error.message, status: error.status });
-    }
-  },
-  activateTask: async (req, res) => {
-    const id = req.params.user_id;
-    console.log(id);
-    res.json(id);
-    // const result = await prisma.task.update({
-    //   where:{id:id}
-    // })
-  },
+  // taskForm: async (req, res) => {
+  //   try {
+  //     // console.log(req.session.user);
+  //     if (req.session.user) {
+  //       const allUsers = await prisma.user.findMany();
+  //       const allprojects = await prisma.project.findMany({
+  //         where:{created_by:parseInt(req.session.user.user_id) }
+  //       });
+  //       console.log(allprojects);
+  //       res.render("task_form", {
+  //         rows: allUsers,
+  //         user: req.session.user,
+  //         projects: allprojects,
+  //       });
+  //     } else {
+  //       res.render("login", {
+  //         message: { info: "You need to login first", type: "error" },
+  //         fire: "fire",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     res.render("not_found", { message: error.message, status: error.status });
+  //   }
+  // },
+  // activateTask: async (req, res) => {
+  //   const id = req.params.user_id;
+  //   console.log(id);
+  //   res.json(id);
+  //   // const result = await prisma.task.update({
+  //   //   where:{id:id}
+  //   // })
+  // },
   getTaskById: async (req, res) => {
     try {
       if (req.session.user) {

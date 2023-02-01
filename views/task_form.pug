@@ -16,15 +16,29 @@ block content
                     .card
                         .card-body
                             h5.card-title Create new task
-                            form.row.g-3(action="/dashboard/my_tasks/new_task" method="POST")
-                                .col-md-12
-                                    .form-floating
-                                        input.form-control#floatingName(type="text" placeholder="Your Name" name="title"  required)
-                                        label(for="floatingName") Title
-                                .col-12
-                                    .form-floating
-                                        textarea.form-control#floatingTextarea(placeholder="Address" style="height: 100px;" name="description" required)
-                                        label(for="floatingTextarea") Description
+                            form(action="/dashboard/my_tasks/new_task" method="POST")
+                                .row
+                                    .col-6
+                                        .form-floating.mb-3
+                                            input.form-control#floatingName(type="text" placeholder="Your Name" name="title"  required)
+                                            label(for="floatingName") Title
+                                        .form-floating
+                                            textarea.form-control#floatingTextarea(placeholder="Address" style="height: 100px;" name="description" required)
+                                            label(for="floatingTextarea") Description
+                                    .col-6
+                                        .form-floating.mb-3
+                                            select.form-select#floatingSelect(aria-label="Floating label select example").project_sel
+                                                option(selected) select project
+                                                each project in projects
+                                                    option(value=`${project.project_id}`) #{project.title}
+                                
+                                            label(for="floatingSelect") Project
+
+                                        .form-floating
+                                            select.form-select#floatingSelect(aria-label="Floating label select example").milestone_sel
+                                                option(selected) Select milestne
+                                            label(for="floatingSelect") Milestone
+
                                 .col-md-6
                                     .col-md-12
                                         .row
@@ -54,3 +68,35 @@ block content
                                 .text-center
                                     button.btn.btn-primary(type="submit") Submit
                                     button.btn.btn-secondary(type="reset") Reset
+
+    script.
+        $('.project_sel').on('change', function () {
+            //- event.preventDefault();
+            var milestone_select = $('.milestone_sel');
+            milestone_select.text('');
+            milestone_select.val('');
+
+            var project_select = $(this).val();
+            var id = parseInt(project_select);
+
+            console.log(id);
+            $.ajax({
+                url: `/dashboard/projects/api/${id}`,
+                type: 'GET',
+                success: function (res) {
+                    console.log(res.project.milestone)
+
+                    var miles = res.project.milestone
+                    for (var index = 0; index < miles.length; index++) {
+                        var el = miles[index];
+                        var mile_option = document.createElement('option');
+                        mile_option.innerHTML = el.name;
+                        mile_option.value = el.mile_id;
+                        milestone_select.append(mile_option);
+
+                    }
+
+                }
+
+            })
+        })

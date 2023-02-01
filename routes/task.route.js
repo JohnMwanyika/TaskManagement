@@ -5,7 +5,7 @@ const {
   createTask,
   getMyTasks,
   taskForm,
-  activateTask,
+  // activateTask,
   getTaskById,
   assignTask,
 } = require("../controllers/task.controller");
@@ -14,7 +14,7 @@ const {
 router.post("/new_task", createTask);
 router.get("/", getMyTasks);
 router.get("/new_task", taskForm);
-router.post("/:id", activateTask);
+// router.post("/:id", activateTask);
 
 router.get("/assign", assignTask);
 router.get("/:id", getTaskById);

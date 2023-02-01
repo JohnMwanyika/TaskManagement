@@ -1,8 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
 const { createPaginator } = require("prisma-pagination");
-const paginate = new createPaginator({perPage:10})
+const paginate = new createPaginator({ perPage: 10 });
 var moment = require("moment");
 const { query } = require("express");
+const { parse } = require("dotenv");
 
 const prisma = new PrismaClient();
 
@@ -34,7 +35,6 @@ module.exports = {
   },
   myProjects: async (req, res) => {
     if (req.session.user) {
-
       const users = await prisma.user.findMany({});
       const projects = await prisma.project.findMany({
         include: {
@@ -58,8 +58,8 @@ module.exports = {
       });
       // console.log(projects);
       // console.log(users);
-      console.log('pages')
-      console.log(req.paginate)
+      console.log("pages");
+      console.log(req.paginate);
       res.render("my_projects", {
         bd: "Projects",
         user: req.session.user,
@@ -152,6 +152,29 @@ module.exports = {
       }
     } catch (error) {
       // res.render("not_found", { message: error.message });
+      res.json({
+        message: { info: error.message, type: "error" },
+      });
+    }
+  },
+  // load projects and their respective milestones
+  projectApi: async (req, res) => {
+    try {
+      let { id } = req.params;
+      const project = await prisma.project
+        .findUnique({
+          include: { milestone: true },
+          where: {
+            project_id: parseInt(id),
+          },
+        })
+        .then(console.log());
+      console.log(project);
+      res.json({
+        project: project,
+        // milestones:project.milestone
+      });
+    } catch (error) {
       res.json({
         message: { info: error.message, type: "error" },
       });

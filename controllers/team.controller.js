@@ -2,8 +2,6 @@ const { PrismaClient } = require("@prisma/client");
 const axios = require("axios");
 const prisma = new PrismaClient();
 const axiosSendSMS = require("../middlewares/sendSms");
-const ajaxSendText = require("../middlewares/sendSms");
-const sendSMS = require("../middlewares/sendSms");
 
 module.exports = {
   createNewTeam: async (req, res) => {

@@ -1,5 +1,6 @@
 const express = require("express");
 const { mainDashboard } = require("../controllers/dashboard.controller");
+// const { islogedIn } = require("../middlewares/loggedInStatus");
 const router = express.Router();
 
 var taskRouter = require("./task.route");
@@ -14,13 +15,15 @@ const teamRouter = require("./team.route");
 router.use((req, res, next) => {
   if (!req.session.user) {
     res.render("login", {
-      message: { info: "You need to login first", type: "error" },
+      message: { info: "Seems like your session just ended!!", type: "error" },
       fire: "fire",
     });
   } else {
     next();
   }
 });
+// router.use(islogedIn);
+
 
 router.get("/", mainDashboard);
 router.use("/my_tasks", taskRouter);

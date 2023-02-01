@@ -56,11 +56,19 @@ module.exports = {
   },
   taskForm: async (req, res) => {
     try {
-      console.log(req.session.user);
+      // console.log(req.session.user);
       if (req.session.user) {
         const allUsers = await prisma.user.findMany();
-        console.log(allUsers);
-        res.render("task_form", { rows: allUsers, user: req.session.user });
+        const userProjects = await prisma.user.findUnique({
+          include:{project:true},
+          where:{user_id:parseInt(req.session.user.user_id) }
+        });
+        console.log(userProjects.project);
+        res.render("task_form", {
+          rows: allUsers,
+          user: req.session.user,
+          projects: userProjects.project,
+        });
       } else {
         res.render("login", {
           message: { info: "You need to login first", type: "error" },
@@ -68,7 +76,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      res.render("not-found", { message: error.message, status: error.status });
+      res.render("not_found", { message: error.message, status: error.status });
     }
   },
   activateTask: async (req, res) => {

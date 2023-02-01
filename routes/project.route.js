@@ -12,6 +12,7 @@ const {
   projectForm,
   newProject,
   newProjectApi,
+  projectApi,
 } = require("../controllers/project.controller");
 
 router.use(pagination);
@@ -21,5 +22,6 @@ router.get("/new_project/", projectForm);
 router.post("/new-project/", newProject);
 // This is an ajax post submit for a new project
 router.post("/new-project-api/", newProjectApi);
+router.get('/api/:id',projectApi)
 
 module.exports = router;
