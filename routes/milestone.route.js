@@ -6,7 +6,8 @@ const {
   getMileById,
   createNewMilestone,
   updateById,
-  deleteById
+  deleteById,
+  getMilestoneByIdApi
 } = require("../controllers/milestone.controller");
 
 router.get("/new", milestoneForm);
@@ -14,5 +15,6 @@ router.get("/:id", getMileById);
 router.post("/",createNewMilestone);
 router.post("/update_milestone/:id",updateById);
 router.delete("/:id",deleteById);
+router.get("/api/:id",getMilestoneByIdApi)
 
 module.exports = router;

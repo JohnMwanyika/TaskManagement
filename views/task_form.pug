@@ -39,9 +39,9 @@ block content
                                             label(for="floatingSelect") Milestone
 
                                         //- .form-floating.mb-3
-                                            //- select.form-select#floatingSelect(aria-label="Floating label select example" name="userId").team_sel
-                                            //-     option(selected) select member
-                                            //- label(for="floatingSelect") Asignee
+                                        //-     select.form-select#floatingSelect(aria-label="Floating label select example" name="userId").team_sel
+                                        //-         option(selected) select member
+                                        //-     label(for="floatingSelect") Asignee
                                         .row 
                                             .col-md-6
                                                 .form-floating
@@ -51,36 +51,11 @@ block content
                                                 .form-floating
                                                     input.form-control#floatingZip(type="date" placeholder="Due date" name="due_in" required)
                                                     label(for="floatingDate") Due date
+        
 
-                                //- .col-md-6
-                                    .col-md-12
-                                        .row
-                                            .col-md-6
-                                                .form-floating
-                                                    input.form-control#floatingCity(type="text" placeholder="Status" value="active" disabled)
-                                                    label(for="floatingStatus") Status
-                                            .col-md-6
-                                                .form-floating
-                                                    input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
-                                                    label(for="floatingDate") Start date
-                                .col-md-4
-                                    //- .form-floating.mb-3
-                                        select.form-select#floatingSelect(aria-label="Assignee" name="user_id" required)
-                                            if (user.role.role_name == 'Admin')
-                                                each row in rows
-                                                    option(value=row.user_id).
-                                                        #{row.first_name} #{row.last_name}
-                                            else 
-                                                option(value=user.user_id).
-                                                    #{user.first_name} #{user.last_name}
-                                        label(for="floatingSelect") Assignee
-                                //- .col-md-2
-                                //-     .form-floating
-                                //-         input.form-control#floatingZip(type="date" placeholder="Due date" name="due_in" required)
-                                //-         label(for="floatingDate") Due date
-                                .text-center.my-5
-                                    button.btn.btn-primary(type="submit") Submit
-                                    button.btn.btn-secondary(type="reset") Reset
+                                    .text-center.my-4
+                                        button.btn.btn-primary.px-lg-5.mr-3(type="submit") Submit
+                                        button.btn.btn-secondary(type="reset") Reset
 
     script.
         $('.project_sel').on('change', function () {

@@ -168,12 +168,13 @@ module.exports = {
             team: {
               include: { userId: true },
             },
+            task:true
           },
           where: {
             project_id: parseInt(id),
           },
         })
-        .then(console.log());
+        // .then(console.log());
       console.log(project);
       res.json({
         project: project,
