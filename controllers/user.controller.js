@@ -3,30 +3,42 @@ const prisma = new PrismaClient();
 
 module.exports = {
   getUsers: async (req, res) => {
-    if (req.session.user) {
-      const allUsers = await prisma.user.findMany({
-        include: {
-          role: true,
-        },
-      });
-      const allRoles = await prisma.role.findMany({});
-      console.log(allUsers);
-      console.log(allRoles);
-      res.render("manage_users", {
-        title: "Users",
-        rows: allUsers,
-        results: allRoles,
-        user: req.session.user,
-      });
-    } else {
-      res.render("login", { message: "You need to log in first" });
+    try {
+      if (req.session.user) {
+        const allUsers = await prisma.user.findMany({
+          include: {
+            role: true,
+          },
+        });
+        const allRoles = await prisma.role.findMany({});
+        console.log(allUsers);
+        console.log(allRoles);
+        res.render("manage_users", {
+          title: "Users",
+          rows: allUsers,
+          results: allRoles,
+          user: req.session.user,
+        });
+      } else {
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
+      }
+    } catch (error) {
+      return res
+        .status(404)
+        .render("not_found", { message: error.message, status: error.status });
     }
   },
   // submit new user
   createUser: (req, res) => {
     if (req.session.user) {
     } else {
-      res.render("login", { messgage: "You need to log in first" });
+      res.render("login", {
+        message: { info: "You need to login first", type: "error" },
+        fire: "fire",
+      });
     }
   },
   // get user by id
@@ -50,7 +62,10 @@ module.exports = {
           user: req.session.user,
         });
       } else {
-        res.render("login", { messgage: "You need to log in first" });
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
       }
     } catch (error) {
       return res
@@ -59,12 +74,12 @@ module.exports = {
     }
   },
   update_byId: async (req, res) => {
-    try {
+    // try {
       console.log(req.session.user);
-      console.log('Request.body is')
+      console.log("Request.body is");
       console.log(req.body);
       if (req.session.user) {
-        const id = parseInt(req.params.id) ;
+        const id = parseInt(req.params.id);
         const { first_name, last_name, email, role } = req.body;
         const newData = await prisma.user.update({
           where: {
@@ -74,19 +89,22 @@ module.exports = {
             first_name: first_name,
             last_name: last_name,
             email: email,
-            role_id: parseInt(role)
+            roleRole_id: parseInt(role),
           },
         });
         console.log(newData);
         res.redirect("/dashboard/users");
       } else {
-        res.render("login", { message: "You need to log in first" });
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
       }
-    } catch (error) {
-      return res.status(404).render("not_found", {
-        message: error.message,
-        status: error.status,
-      });
-    }
+    // } catch (error) {
+    //   return res.status(404).render("not_found", {
+    //     message: error.message,
+    //     status: error.status,
+    //   });
+    // }
   },
 };

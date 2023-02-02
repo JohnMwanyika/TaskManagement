@@ -1,0 +1,93 @@
+.modal.fade(id=`team_modal_${project.project_id}`,data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true")
+    .modal-dialog
+        .modal-content
+            .modal-header
+                h1.display-6.modal-title.fs-5#staticBackdropLabel
+                    span.h-1.display-6.ml-lg-5
+                        //- i.bi.bi-person-plus.bi-2x.text-primary
+                        h4.text-center Project Team
+                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+            .modal-body
+                //- form
+                form(action=`/dashboard/team/new_team_members/` method="post").px-5
+                    .mb-3.row
+                        label.col-sm-4.col-form-label(for="title").text-dark Select User
+                        .col-sm-8
+                            select.form-select.form-select-sm(name="userId" data-mdb-filter="true" required)
+                                //- option(disabled) Open this select menu
+                                each user,index in users
+                                    option(value=`${user.user_id}`) #{index+1} #{user.first_name} #{user.last_name}
+                                                                
+                            input.form-control#title(type="text" name="projectId" hidden value=`${project.project_id}`)
+                        
+                    .row
+                        .col-lg-12
+                            .d-grid.gap-4.col-3.mx-auto.mt-3
+                                button.btn.btn-primary(type="submit")#update
+                                    span#lbl Add Member 
+                    hr
+
+                row.my-3
+                    .col-lg-8.container.mt-4
+                        h4.text-center
+                            |Existing Members
+
+                        //- textarea.form-control#description(placeholder="Milestone overview" style="height: 100px;" name="description" required)
+                        ol.list-group.list-group.list-group-numbered.overflow-auto(style="height:320px")
+                            each team in (project.team)
+                                li.list-group-item
+                                    span 
+                                        i.fa.fa-user-o(aria-hidden="true")
+                                        |  #{team.userId.first_name} #{team.userId.last_name}
+                                    form(action="/dashboard/team/remove_member", method="post").float-end
+
+                                        input(type="text",value=`${team.userId.user_id}` name='user' hidden)
+                                        input(type="text",value=`${project.project_id}` name='project' hidden)
+
+                                        button.float-end.btn.btn-danger(type="submit", data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Remove" style="--bs-btn-padding-y:.15rem; --bs-btn-padding-x:.3rem; --bs-btn-font-size:.75rem;")
+                                            span 
+                                                i.bi.bi-trash3
+
+                    //- .row.my-4
+                    //-     .col-lg-12.mb-3
+
+                    //-         .d-grid.gap-4.col-3.mx-auto.mt-3
+                    //-             button.btn.btn-primary(type="submit")#update
+                    //-                 span#lbl Add Member 
+
+script.
+   function removeUser(){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return fetch(`//dashboard/remove_member/`)
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error(response.statusText)
+                    }
+                    return response.json()
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                    `Request failed: ${error}`
+                    )
+                })
+            },
+            //- allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+   }; 

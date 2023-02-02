@@ -4,23 +4,25 @@ const prisma = new PrismaClient();
 module.exports = {
   createTask: async (req, res) => {
     if (req.session.user) {
-      const { title, description, start_date, user_id, due_in } = req.body;
+      const { title, description,mileId,projectId, start_date, userId, due_in } = req.body;
       console.log(req.body);
       const result = await prisma.task.create({
         data: {
           title: title,
           description: description,
-          start_at: new Date(start_date),
-          user_id: parseInt(user_id),
-          due_in: new Date(due_in),
+          milestoneMile_id:parseInt(mileId),
+          projectProject_id:parseInt(projectId),
+          start_date: new Date(start_date),
+          userUser_id: parseInt(userId),
+          due_date: new Date(due_in),
         },
       });
       console.log(result);
       res.redirect("/dashboard/my_tasks");
     } else {
       res.render("login", {
-        message: "You need to log in first",
-        user: req.session.user,
+        message: { info: "You need to login first", type: "error" },
+        fire: "fire",
       });
     }
   },
@@ -33,7 +35,7 @@ module.exports = {
             task_id: "desc",
           },
           where: {
-            user_id: req.session.user.user_id,
+            userUser_id: req.session.user.user_id,
           },
         });
         console.log(req.session.user);
@@ -46,26 +48,37 @@ module.exports = {
         });
       } else {
         res.render("login", {
-          message: "You need to login first",
-          user: req.session.user,
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
         });
       }
     } catch (error) {
-      res.render("not-found", { message: error.message, status: error.status });
+      res.render("not_found", { message: error.message, status: error.status });
     }
   },
   taskForm: async (req, res) => {
     try {
-      console.log(req.session.user);
+      // console.log(req.session.user);
       if (req.session.user) {
         const allUsers = await prisma.user.findMany();
-        console.log(allUsers);
-        res.render("task_form", { rows: allUsers, user: req.session.user });
+        const userProjects = await prisma.user.findUnique({
+          include:{project:true},
+          where:{user_id:parseInt(req.session.user.user_id) }
+        });
+        console.log(userProjects.project);
+        res.render("task_form", {
+          rows: allUsers,
+          user: req.session.user,
+          projects: userProjects.project,
+        });
       } else {
-        res.render("login", { message: "You need to log in first" });
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
       }
     } catch (error) {
-      res.render("not-found", { message: error.message, status: error.status });
+      res.render("not_found", { message: error.message, status: error.status });
     }
   },
   activateTask: async (req, res) => {
@@ -96,7 +109,10 @@ module.exports = {
           moment: require("moment"),
         });
       } else {
-        res.render("login", { message: "You need to log in first" });
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
       }
     } catch (error) {
       res.render("not_found", { message: error.message, status: error.status });
@@ -104,15 +120,22 @@ module.exports = {
   },
   assignTask: async (req, res) => {
     try {
-        if (req.session.user) {
-          const tasks = await prisma.task.findMany({
-            include:{user:true}
-          })
-          console.log(tasks)
-          res.render("assign_task", { user: req.session.user,title:'Assign Task',tasks:tasks });
-        } else {
-          res.render("login", { messgage: "You need to log in first" });
-        }
+      if (req.session.user) {
+        const tasks = await prisma.task.findMany({
+          include: { user: true },
+        });
+        console.log(tasks);
+        res.render("assign_task", {
+          user: req.session.user,
+          title: "Assign Task",
+          tasks: tasks,
+        });
+      } else {
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
+      }
     } catch (error) {
       res.render("not_found", { message: error.message, status: error.status });
     }

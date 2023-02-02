@@ -36,7 +36,8 @@ mixin user_form(user,type)
                             <div class="col-6">
                                 <div class="form-floating">
                                     <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="role">
-                                        <option value="" selected >select role</option>  
+                                        //- <option value="" selected >select role</option>  
+                                        <option value="#{user.roleRole_id}" selected >#{user.role.role_name}</option>  
                                     each role in results
                                         <option value="#{role.role_id}">#{role.role_name}</option>
                                     </select>
@@ -53,17 +54,9 @@ mixin user_form(user,type)
                             </div>
                         </div>
 
-                        //- <div class="col-12 d-grid pt-2">
-                        //-     <button class="btn btn-primary btn-sm" type="submit">submit</button>
-                        //- </div>
                         //- form end
                     </form>
-                    //- form end
                 </div>
-                //- <div class="modal-footer">
-                //-     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                //-     <button type="button" class="btn btn-primary">Understood</button>
-                //- </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,145 @@
+extends sub-layout 
+block content 
+    main#main.main
+        .pagetitle
+            h1=title 
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="/dashboard") Home
+                    li.breadcrumb-item.active=bd
+        section.section.dashboard
+            .row#demo
+                if (projects.length > 0)
+                    each project,index in projects
+                        .col-lg-4
+                            .card.overflow-hidden(style="height:500px").border
+                                .filter
+                                    a.icon(href="#" data-bs-toggle="dropdown").mb-2
+                                        i.bi.bi-three-dots
+                                    ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow
+                                        li.dropdown-header.text-start
+                                            h6 Options
+                                        li
+                                            a.dropdown-item(href="#")
+                                                span
+                                                    i.bi.bi-sliders.text-danger
+                                                | Manage
+                                        li
+                                            a.dropdown-item(href=`/dashboard/milestones/${project.project_id}`)
+                                                span
+                                                    i.bi.bi-file-earmark-text.text-primary
+                                                | Milestones
+                                        li
+                                            a.dropdown-item(href="#" data-bs-toggle="modal", data-bs-target=`#team_modal_${project.project_id}`)
+                                                span
+                                                    i.bi.bi-people.text-primary
+                                                | Team members
+                                        li
+                                            a.dropdown-item(href="#")
+                                                span
+                                                    i.bi.bi-list-task.text-primary
+                                                | Create Task
+                                //- ###New Member popup###
+                                include includes/add_member_popup
+                                
+                        
+
+                                .card-body
+                                    h4.fw-lighter.text-secondary.my-4.mx-3 #{index+1} #{project.title}
+                                    hr
+                                    p 
+                                        strong created by: 
+                                        |#{project.created_by.first_name} #{project.created_by.last_name}
+                                    //- project status
+                                    if (project.project_status.name == 'Active')
+                                        p 
+                                            strong  Status: 
+                                            <span class="badge text-bg-primary">#{project.project_status.name}</span>
+                                    if (project.project_status.name == 'Pending')
+                                        p 
+                                            strong  Status: 
+                                            <span class="badge text-bg-warning">#{project.project_status.name}</span>
+                                    if (project.project_status.name == 'Complete')
+                                        p 
+                                            strong  Status: 
+                                            <span class="badge text-bg-success">#{project.project_status.name}</span>
+                                    if (project.project_status.name == 'Suspended')
+                                        p 
+                                            strong  Status: 
+                                            <span class="badge text-bg-info">#{project.project_status.name}</span>
+                                    //- Project Description
+                                    strong Overview
+                                    p.text-muted.
+                                        #{project.description}
+                                    //- total tasks
+                                    p
+                                        //- <i class="bi bi-list-task"></i> #{milestoneCount._count._all} Milestone(s)
+                                        <i class="bi bi-list-task"></i> #{project.milestone.length} Milestone(s)
+                                    p
+                                        <i class="bi bi-list-task"></i> #{project.task.length} Task(s)  
+                                        //- each task in project.task 
+                                        //-     p #{task.title}
+                                        //- team members
+                                        h6.card-title.border-bottom Team
+                                        .row 
+                                            .col-lg-12
+
+                                                each team in project.team
+                                                    .d-inline
+                                                        img.member-overlap-item.rounded-circle(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title=`${team.userId.first_name} ${team.userId.last_name}`)
+
+                                                //- ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')
+                                                //-     each team in project.team
+                                                //-         li.list-group-item
+                                                //-             //- small #{team.userId.first_name} #{team.userId.last_name}
+                                                //-             img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="")
+
+                else 
+                    p Hey! #{user.first_name} Seems like you have not created any projects yet.
+                    p click 
+                        a(href="/dashboard/projects/new_project") here 
+                        span to create your first project
+            nav(aria-label="...")
+                ul.pagination
+                    li.page-item.disabled
+                        a.page-link Previous
+                    li.page-item
+                        a.page-link(href=`/dashboard/projects/?take=9&&skip=0`) 1
+                    li.page-item.active(aria-current="page")
+                        a.page-link(href=`/dashboard/projects/?skip=9`) 2
+                    li.page-item
+                        a.page-link(href="#") 3
+                    li.page-item
+                        a.page-link(href="#") Next
+    //- script.
+
+        $('#demo').pagination({
+            dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
+            locator: 'items',
+            totalNumber: 50,
+            pageSize: 2,
+            showPageNumbers: true,
+            showPrevious: true,
+            showNext: true,
+            showNavigator: true,
+            showFirstOnEllipsisShow: true,
+            showLastOnEllipsisShow: true,
+            ajax: {
+                beforeSend: function() {
+                    container.prev().html('Loading data from flickr.com ...');
+                }
+            },
+            callback: function(response, pagination) {
+                window.console && console.log(22, response, pagination);
+                var dataHtml = '<ul>';
+
+                $.each(response, function (index, item) {
+                    dataHtml += '<li>' + item.title + '</li>';
+                });
+                dataHtml += '</ul>';
+
+                container.prev().html(dataHtml);
+            }
+        })
+

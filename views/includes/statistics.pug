@@ -60,17 +60,25 @@
                                   show: false
                               },
                               data: [{
-                                  value: #{totalActive._count.status_id},
+                                  value: #{totalActive._count._all},
                                   name: 'Active Tasks'
                                   },
                                   {
-                                      value: #{totalCompleted._count.status_id},
+                                      value: #{totalCompleted._count._all},
                                       name: 'Completed Tasks'
                                   },
-                                  //- {
-                                  //-     value: 580,
-                                  //-     name: 'Abandoned Tasks'
-                                  //- },
+                                  {
+                                      value: #{totalPending._count._all},
+                                      name: 'Pending'
+                                  },
+                                  {
+                                      value: #{totalFailed._count._all},
+                                      name: 'Failed'
+                                  },
+                                  {
+                                      value: #{totalOverdue._count._all},
+                                      name: 'Overdue'
+                                  },
                               ]
                           }]
                       });

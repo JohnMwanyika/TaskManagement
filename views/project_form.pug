@@ -1,0 +1,225 @@
+extends sub-layout
+
+block content
+    main#main.main
+        .pagetitle
+            h1=title
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="/dashboard") Home
+                    li.breadcrumb-item Project
+                    li.breadcrumb-item.active Add New
+        section.section
+            .row
+                //  Left side 
+                .col-lg-8
+                    //  Basic information 
+                    .card.mb-4
+                        .card-body
+                            if (message)
+                                h1 #{message}
+                            h5.card-title Project Details
+                            form#myForm(action="/dashboard/projects/new-project/" method="post") 
+                                .row
+                                    .col-lg-6
+                                        .mb-3
+                                            .form-floating
+                                                input.form-control#floatingName(type="text" placeholder="Project Name" name="project_title"  required)
+                                                label(for="floatingName") Project Name
+                                    .col-lg-3
+                                        .mb-3
+                                            .form-floating
+                                                input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required).date
+                                                label(for="floatingDate") Start date
+                                    .col-lg-3
+                                        .mb-3
+                                            .form-floating
+                                                input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" required).date
+                                                label(for="floatingDate") Expected End Date
+                                .row
+                                    .col-lg-12.mb-3
+                                        .form-floating
+                                            textarea.txtArea.form-control#floatingTextarea(placeholder="Address" style="height: 200px;" name="description" required)
+                                            label(for="floatingTextarea") Overview
+
+                                            .d-grid.gap-2.col-2.mx-auto.mt-3
+                                                //- button.btn.btn-secondary(type="submit") Save
+                                                button.btn.btn-secondary(type="submit")#submitbtn
+                                                    span#lbl Save 
+                                                        span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
+                                                button.btn.btn-primary(type="submit") Save and Continue
+                .col-lg-4
+                    .card.mb-4
+                        .card-body
+                            h5.card-title Project Team
+
+        //- //  Right side 
+        //- .col-lg-4
+        //-     //  Status 
+        //-     .card.mb-4
+        //-         .card-body
+        //-             h3.h6 Status
+        //-             select.form-select
+        //-                 option(value="draft", selected) Draft
+        //-                 option(value="active") Active
+        //-                 option(value="active") Inactive
+        //- //  Avatar 
+        //- .card.mb-4
+        //-     .card-body
+        //-         h3.h6 Avatar
+        //-         input.form-control(type="file")
+        //- //  Notes 
+        //- .card.mb-4
+        //-     .card-body
+        //-         h3.h6 Notes
+        //-         textarea.form-control(rows="3")
+
+    script.
+        var loading = $('#spina').hide();
+        //- var submitbtn = $('#submit');
+        //-  $(':input[type="submit"]').prop('disabled', true);
+        //-  $('input[type="text"], input[type="date"], .txtArea').keyup(function() {
+        //- if($('input[type="text"]').val() && $('input[type="date"]').val() && $('.txtArea').val() != '') {
+        //-     $(':input[type="submit"]').prop('disabled', false);
+        //- }
+        //- });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+
+   
+        $("#submitbtn").click(function(event){
+            event.preventDefault();
+            //- get form
+            var form = $("#myForm");
+            //- ajax call
+            if ($('input').val() == "" && $('.date').val() == "" && $('.txtArea').val() == "") {
+                Toast.fire({
+                    icon: "error",
+                    title: "All fields are required"
+                });
+            }else{
+                $.ajax({
+                    url:"/dashboard/projects/new-project-api",
+                    type:form.attr('method'),
+                    data: form.serialize(),
+                    beforeSend: function(){
+                        loading.show(function(){
+                            $("#submitbtn").prop("disabled", true);
+                        });
+                    },
+                    complete: function(){
+                        loading.hide(function(){
+                            $("#submitbtn").removeAttr('disabled');
+                        });
+                        //- loading.hide();
+                    },
+                    success: function(data){
+                        var msg = data.message.type;
+                        if(msg == "success"){
+                            //- Clears The form fields
+                            form[0].reset();
+                            //- fires the toast
+                            Toast.fire({
+                                icon: data.message.type,
+                                title: data.message.info
+                            });
+                        }else{
+                            Toast.fire({
+                                icon: "error",
+                                title: "Oops! an error occured"
+                            });
+                        }
+                    },
+                    timeout: 5000,
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                        //- Toast.fire({
+                        //-     icon: "error",
+                        //-     title: "Oops! an error occured"
+                        //- });
+                    }
+
+                });
+            }
+        });
+
+//- 
+        $("#submitbtn").click(function(event){
+            event.preventDefault();
+            //- get form
+            var form = $("#myForm");
+            //- ajax call
+            if ($('input').val() == "" && $('.date').val() == "" && $('.txtArea').val() == "") {
+                Toast.fire({
+                    icon: "error",
+                    title: "All fields are required"
+                });
+            }else{
+                $.ajax({
+                    url:"/dashboard/projects/new-project-api/",
+                    type:form.attr('method'),
+                    data: form.serialize(),
+                    //- async: false,
+                }).then(function(){
+                    loading.show(function(){
+                        $("#submitbtn").prop("disabled", true);
+                    });
+                }).done(function(data){
+                    console.log(data);
+                    loading.hide(function(){
+                        //- alert(message);
+                        //- console.log(Response);
+                        $("#submitbtn").removeAttr('disabled');
+                        var msg = data.message.type;
+                        if(msg == "success"){
+                            //- Clears The form fields
+                            form[0].reset();
+                            loading.hide(function(){
+                                $("#submit").removeAttr('disabled');
+                            });
+                            //- fires the toast
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: data.message.type,
+                                title: data.message.info
+                            });
+                        }else{
+                            Toast.fire({
+                                icon: "error",
+                                title: "Oops! an error occured"
+                            });
+                        }
+                        });
+                        //- alert(data);
+                    
+                })
+                //- .fail(function(jqXHR, textStatus){
+                //-     //- console.log(jqXHR);
+                //-     if (textStatus == 'timeout'){
+                //-         alert('Failed from timeout')
+                //-     }
+                //- })
+            }
+        });
