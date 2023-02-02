@@ -31,13 +31,17 @@ block content
                                                 option(selected) select project
                                                 each project in projects
                                                     option(value=`${project.project_id}`) #{project.title}
-                                
                                             label(for="floatingSelect") Project
 
-                                        .form-floating
+                                        .form-floating.mb-3
                                             select.form-select#floatingSelect(aria-label="Floating label select example").milestone_sel
                                                 option(selected) Select milestne
                                             label(for="floatingSelect") Milestone
+
+                                        .form-floating.mb-3
+                                            select.form-select#floatingSelect(aria-label="Floating label select example").team_sel
+                                                option(selected) select member
+                                            label(for="floatingSelect") Asignee
 
                                 .col-md-6
                                     .col-md-12
@@ -71,11 +75,18 @@ block content
 
     script.
         $('.project_sel').on('change', function () {
-            //- event.preventDefault();
+            //- select milestone dropdown
             var milestone_select = $('.milestone_sel');
+            //- clear milestone select
             milestone_select.text('');
             milestone_select.val('');
+            //- select asignee dropdown
+            var team_select = $('.team_sel');
+            //- clear asignee dropdown
+            team_select.text('');
+            team_select.val('');
 
+            //- select project id from the selected project dropdown
             var project_select = $(this).val();
             var id = parseInt(project_select);
 
@@ -84,9 +95,10 @@ block content
                 url: `/dashboard/projects/api/${id}`,
                 type: 'GET',
                 success: function (res) {
-                    console.log(res.project.milestone)
+                    //- console.log(res.project.team)
 
                     var miles = res.project.milestone
+                    var members = res.project.team;
                     for (var index = 0; index < miles.length; index++) {
                         var el = miles[index];
                         var mile_option = document.createElement('option');
@@ -94,6 +106,14 @@ block content
                         mile_option.value = el.mile_id;
                         milestone_select.append(mile_option);
 
+                    };
+                    for (let i = 0; i < members.length; i ++) {
+                        let el =members[i];
+                        console.log(el.userId.first_name)
+                        let member_option = document.createElement('option');
+                        member_option.innerHTML = el.userId.first_name;
+                        member_option.value = el.userId.user_id;
+                        team_select.append(member_option);
                     }
 
                 }

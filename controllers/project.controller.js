@@ -163,7 +163,12 @@ module.exports = {
       let { id } = req.params;
       const project = await prisma.project
         .findUnique({
-          include: { milestone: true },
+          include: {
+            milestone: true,
+            team: {
+              include: { userId: true },
+            },
+          },
           where: {
             project_id: parseInt(id),
           },
