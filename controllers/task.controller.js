@@ -13,7 +13,7 @@ module.exports = {
           milestoneMile_id:parseInt(mileId),
           projectProject_id:parseInt(projectId),
           start_date: new Date(start_date),
-          userUser_id: parseInt(userId),
+          userUser_id: parseInt(req.session.user.user_id),
           due_date: new Date(due_in),
         },
       });
