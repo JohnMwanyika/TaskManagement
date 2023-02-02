@@ -4,14 +4,16 @@ const prisma = new PrismaClient();
 module.exports = {
   createTask: async (req, res) => {
     if (req.session.user) {
-      const { title, description, start_date, user_id, due_in } = req.body;
+      const { title, description,mileId,projectId, start_date, userId, due_in } = req.body;
       console.log(req.body);
       const result = await prisma.task.create({
         data: {
           title: title,
           description: description,
+          milestoneMile_id:parseInt(mileId),
+          projectProject_id:parseInt(projectId),
           start_date: new Date(start_date),
-          userUser_id: parseInt(user_id),
+          userUser_id: parseInt(userId),
           due_date: new Date(due_in),
         },
       });

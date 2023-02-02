@@ -27,19 +27,19 @@ block content
                                             label(for="floatingTextarea") Description
                                     .col-6
                                         .form-floating.mb-3
-                                            select.form-select#floatingSelect(aria-label="Floating label select example").project_sel
+                                            select.form-select#floatingSelect(aria-label="Floating label select example" name="projectId" required).project_sel
                                                 option(selected) select project
                                                 each project in projects
                                                     option(value=`${project.project_id}`) #{project.title}
                                             label(for="floatingSelect") Project
 
                                         .form-floating.mb-3
-                                            select.form-select#floatingSelect(aria-label="Floating label select example").milestone_sel
+                                            select.form-select#floatingSelect(aria-label="Floating label select example" name="mileId" required).milestone_sel
                                                 option(selected) Select milestne
                                             label(for="floatingSelect") Milestone
 
                                         .form-floating.mb-3
-                                            select.form-select#floatingSelect(aria-label="Floating label select example").team_sel
+                                            select.form-select#floatingSelect(aria-label="Floating label select example" name="userId" required).team_sel
                                                 option(selected) select member
                                             label(for="floatingSelect") Asignee
 
@@ -55,7 +55,7 @@ block content
                                                     input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
                                                     label(for="floatingDate") Start date
                                 .col-md-4
-                                    .form-floating.mb-3
+                                    //- .form-floating.mb-3
                                         select.form-select#floatingSelect(aria-label="Assignee" name="user_id" required)
                                             if (user.role.role_name == 'Admin')
                                                 each row in rows
