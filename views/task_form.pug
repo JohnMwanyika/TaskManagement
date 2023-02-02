@@ -38,12 +38,21 @@ block content
                                                 option(selected) Select milestne
                                             label(for="floatingSelect") Milestone
 
-                                        .form-floating.mb-3
-                                            select.form-select#floatingSelect(aria-label="Floating label select example" name="userId" required).team_sel
-                                                option(selected) select member
-                                            label(for="floatingSelect") Asignee
+                                        //- .form-floating.mb-3
+                                            //- select.form-select#floatingSelect(aria-label="Floating label select example" name="userId").team_sel
+                                            //-     option(selected) select member
+                                            //- label(for="floatingSelect") Asignee
+                                        .row 
+                                            .col-md-6
+                                                .form-floating
+                                                    input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
+                                                    label(for="floatingDate") Start date
+                                            .col-md-6
+                                                .form-floating
+                                                    input.form-control#floatingZip(type="date" placeholder="Due date" name="due_in" required)
+                                                    label(for="floatingDate") Due date
 
-                                .col-md-6
+                                //- .col-md-6
                                     .col-md-12
                                         .row
                                             .col-md-6
@@ -65,11 +74,11 @@ block content
                                                 option(value=user.user_id).
                                                     #{user.first_name} #{user.last_name}
                                         label(for="floatingSelect") Assignee
-                                .col-md-2
-                                    .form-floating
-                                        input.form-control#floatingZip(type="date" placeholder="Due date" name="due_in" required)
-                                        label(for="floatingDate") Due date
-                                .text-center
+                                //- .col-md-2
+                                //-     .form-floating
+                                //-         input.form-control#floatingZip(type="date" placeholder="Due date" name="due_in" required)
+                                //-         label(for="floatingDate") Due date
+                                .text-center.my-5
                                     button.btn.btn-primary(type="submit") Submit
                                     button.btn.btn-secondary(type="reset") Reset
 
@@ -80,11 +89,11 @@ block content
             //- clear milestone select
             milestone_select.text('');
             milestone_select.val('');
-            //- select asignee dropdown
-            var team_select = $('.team_sel');
-            //- clear asignee dropdown
-            team_select.text('');
-            team_select.val('');
+            //- //- select asignee dropdown
+            //- var team_select = $('.team_sel');
+            //- //- clear asignee dropdown
+            //- team_select.text('');
+            //- team_select.val('');
 
             //- select project id from the selected project dropdown
             var project_select = $(this).val();
@@ -107,14 +116,14 @@ block content
                         milestone_select.append(mile_option);
 
                     };
-                    for (let i = 0; i < members.length; i ++) {
-                        let el =members[i];
-                        console.log(el.userId.first_name)
-                        let member_option = document.createElement('option');
-                        member_option.innerHTML = el.userId.first_name;
-                        member_option.value = el.userId.user_id;
-                        team_select.append(member_option);
-                    }
+                    //- for (let i = 0; i < members.length; i ++) {
+                    //-     let el =members[i];
+                    //-     console.log(el.userId.first_name)
+                    //-     let member_option = document.createElement('option');
+                    //-     member_option.innerHTML = el.userId.first_name;
+                    //-     member_option.value = el.userId.user_id;
+                    //-     team_select.append(member_option);
+                    //- }
 
                 }
 
