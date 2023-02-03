@@ -20,13 +20,6 @@ block content
                                 .row
                                     .col-6
                                         .form-floating.mb-3
-                                            input.form-control#floatingName(type="text" placeholder="Your Name" name="title"  required)
-                                            label(for="floatingName") Title
-                                        .form-floating
-                                            textarea.form-control#floatingTextarea(placeholder="Address" style="height: 100px;" name="description" required)
-                                            label(for="floatingTextarea") Description
-                                    .col-6
-                                        .form-floating.mb-3
                                             select.form-select#floatingSelect(aria-label="Floating label select example" name="projectId" required).project_sel
                                                 option(selected) select project
                                                 each project in projects
@@ -37,7 +30,7 @@ block content
                                             select.form-select#floatingSelect(aria-label="Floating label select example" name="mileId" required).milestone_sel
                                                 option(selected) Select milestne
                                             label(for="floatingSelect") Milestone
-
+                                        
                                         //- .form-floating.mb-3
                                         //-     select.form-select#floatingSelect(aria-label="Floating label select example" name="userId").team_sel
                                         //-         option(selected) select member
@@ -51,6 +44,13 @@ block content
                                                 .form-floating
                                                     input.form-control#floatingZip(type="date" placeholder="Due date" name="due_in" required)
                                                     label(for="floatingDate") Due date
+                                    .col-6
+                                        .form-floating.mb-3
+                                            input.form-control#floatingName(type="text" placeholder="Your Name" name="title"  required)
+                                            label(for="floatingName") Title
+                                        .form-floating
+                                            textarea.form-control#floatingTextarea(placeholder="Address" style="height: 100px;" name="description" required)
+                                            label(for="floatingTextarea") Description
         
 
                                     .text-center.my-4

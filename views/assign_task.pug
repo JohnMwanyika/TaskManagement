@@ -11,12 +11,12 @@ block content
                     li.breadcrumb-item Task
                     li.breadcrumb-item.active Assign task
         section.section
-            .row
+            form(action="/dashboard/my_tasks/api/assign" method="POST").row
                 .col-lg-6
                     .card
                         .card-body
-                            h5.card-title Create And Assign
-                            form.row.g-3(action="/dashboard/my_tasks/new_task" method="POST")
+                            h5.card-title Task Assignment
+                            .row
                                 .col-12
                                     .form-floating.mb-3
                                         select.form-select#floatingSelect(aria-label="Floating label select example" name="projectId" required).project_sel
@@ -33,43 +33,21 @@ block content
                                         select.form-select#floatingSelect(aria-label="Floating label select example" name="taskId" required).task_sel
                                             option(selected) Select task
                                         label(for="floatingSelect") Task
-                                //- .col-md-12
-                                //-     .form-floating
-                                //-         input.form-control#floatingName(type="text" placeholder="Your Name" name="title"  required)
-                                //-         label(for="floatingName") Title
-                                //- .col-12
-                                //-     .form-floating
-                                //-         textarea.form-control#floatingTextarea(placeholder="Address" style="height: 100px;" name="description" required)
-                                //-         label(for="floatingTextarea") Description
-                                //- .col-md-6
-                                //-     .col-md-12
-                                //-         .row
-                                //-             .col-md-6
-                                //-                 .form-floating
-                                //-                     input.form-control#floatingCity(type="text" placeholder="Status" value="active" disabled)
-                                //-                     label(for="floatingStatus") Status
-                                //-             .col-md-6
-                                //-                 .form-floating
-                                //-                     input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
-                                //-                     label(for="floatingDate") Start date
-                                .text-center
-                                    button.btn.btn-primary(type="submit") Submit
-                                    button.btn.btn-secondary(type="reset") Reset
+                                
                 .col-lg-6
                     .card
                         .card-body
                             h5.card-title Team Members
-                            form.row.g-3(action="/dashboard/my_tasks/new_task" method="POST")
+                            //- form.row.g-3(action="/dashboard/my_tasks/new_task" method="POST")
+                            .row
                                 .col-md-12
                                     .form-floating.mb-3
                                         select.form-select#floatingSelect(aria-label="Floating label select example" name="userId" multiple style="height:250px" required).team_sel
                                             option(selected) select member
                                         label(for="floatingSelect") Asignee
-                                    //- .form-floating
-                                    //-     select.form-select#floatingSelect(aria-label="Assignee" multiple name="user_id" size="25" style="height:250px" required)
-                                    //-         //- each task in tasks
-                                    //-             option(value=task.task_id)  #{task.title} | Created by | #{task.user_id}
-                                    //-     label(for="floatingSelect") Assignee
+                                    .text-center
+                                        button.btn.btn-primary.px-5(type="submit") Assign
+                                        button.btn.btn-secondary(type="reset") Reset
 
     script.
         $('.project_sel').on('change', function () {
@@ -118,7 +96,7 @@ block content
 
             })
         })
-        $('.milestone_sel').on('change', function () {
+        $('.milestone_sel').on('click', function () {
             //- select task dropdown
             var task_select = $('.task_sel');
             //- clear task select

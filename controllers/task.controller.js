@@ -161,7 +161,15 @@ module.exports = {
     }
   },
   createAssignmentApi: async (req, res) => {
-    const { taskID, userId } = req.body;
+    const { taskId, userId } = req.body;
+    const assignment = await prisma.task_assignment.create({
+      data: {
+        taskTask_id: parseInt(taskId),
+        userUser_id: parseInt(userId),
+      },
+    });
+    console.log(assignment);
+    res.redirect("back");
   },
 };
 
