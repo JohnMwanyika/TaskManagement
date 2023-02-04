@@ -165,18 +165,22 @@ module.exports = {
     // Check if task is already assigned
     const checkAssignment = await prisma.task_assignment.findMany({
       where: {
-        taskTask_id: parseInt(taskId),
-        userUser_id: parseInt(userId),
+        AND: [
+          { taskTask_id: parseInt(taskId) },
+          { userUser_id: parseInt(userId) },
+        ],
       },
     });
-    if (!checkAssignment) {
+    // .then(console.log);
+    console.log("assignement is :", checkAssignment);
+    if (checkAssignment == '') {
       const assignment = await prisma.task_assignment.create({
         data: {
           taskTask_id: parseInt(taskId),
           userUser_id: parseInt(userId),
         },
       });
-      console.log(assignment);
+      // console.log(assignment);
       // res.redirect("back");
       res.json({
         message: { info: "Task assigned successfully", type: "success" },

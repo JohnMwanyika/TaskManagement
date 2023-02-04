@@ -161,25 +161,31 @@ module.exports = {
   projectApi: async (req, res) => {
     try {
       let { id } = req.params;
-      const project = await prisma.project
-        .findUnique({
+      if (id) {
+        const project = await prisma.project.findUnique({
           include: {
             milestone: true,
             team: {
               include: { userId: true },
             },
-            task:true
+            task: true,
           },
           where: {
             project_id: parseInt(id),
           },
-        })
+        });
         // .then(console.log());
-      console.log(project);
-      res.json({
-        project: project,
-        // milestones:project.milestone
-      });
+        console.log(project);
+        res.json({
+          project: project,
+          // milestones:project.milestone
+        });
+      }else{
+        res.json({
+          message:{info:'Nothing found here',type:'error'}
+          // milestones:project.milestone
+        });
+      }
     } catch (error) {
       res.json({
         message: { info: error.message, type: "error" },

@@ -1,6 +1,6 @@
 extends sub-layout
 block content
-    
+
     <main id="main" class="main">
 
         <div class="pagetitle">
@@ -39,7 +39,7 @@ block content
 
                     <div class="card">
                         <div class="card-body pt-3">
-                            <!-- Bordered Tabs -->
+                            //- <!-- Bordered Tabs -->
                             <ul class="nav nav-tabs nav-tabs-bordered">
 
                                 <li class="nav-item">
@@ -79,7 +79,8 @@ block content
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">Designation</div>
-                                        <div class="col-lg-9 col-md-8">#{user.role.role_name}</div>
+                                        <div class="col-lg-9 col-md-8">#{user.designation.title}</div>
+                                        //- <div class="col-lg-9 col-md-8">#{user.role.role_name}</div>
                                     </div>
 
                                     <div class="row">
@@ -97,7 +98,7 @@ block content
                                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                     <!-- Profile Edit Form -->
-                                    <form>
+                                    form(method="POST" action=`/dashboard/profile/update_user/${user.user_id}`)
                                         <div class="row mb-3">
                                             <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                             <div class="col-md-8 col-lg-9">
@@ -112,54 +113,54 @@ block content
                                         <div class="row mb-3">
                                             <label for="firstname" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="first_name" type="text" class="form-control" id="firstname" value=#{user.first_name} required>
+                                                input.form-control#firstname(name="fname", type="text", value=`${user.first_name}`, required)
                                             </div>
                                         </div>    
                                         <div class="row mb-3">
                                             <label for="lastname" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="last_name" type="text" class="form-control" id="lastname" value=#{user.last_name} required>
+                                                input.form-control#lastname(name="lname", type="text", value=`${user.last_name}`, required)
                                             </div>
-                                            
+
                                         </div>
 
-                                        <div class="row mb-3">
-                                            <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <textarea name="about" class="form-control" id="about" style="height: 100px"></textarea>
-                                            </div>
-                                        </div>
+                                        //- <div class="row mb-3">
+                                        //-     <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+                                        //-     <div class="col-md-8 col-lg-9">
+                                        //-         <textarea name="about" class="form-control" id="about" style="height: 100px"></textarea>
+                                        //-     </div>
+                                        //- </div>
 
-                                        <div class="row mb-3">
-                                            <label for="company" class="col-md-4 col-lg-3 col-form-label">Organization</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="company" type="text" class="form-control" id="company">
-                                            </div>
-                                        </div>
+                                        //- <div class="row mb-3">
+                                        //-     <label for="company" class="col-md-4 col-lg-3 col-form-label">Organization</label>
+                                        //-     <div class="col-md-8 col-lg-9">
+                                        //-         <input name="company" type="text" class="form-control" id="company">
+                                        //-     </div>
+                                        //- </div>
 
                                         <div class="row mb-3">
                                             <label for="Job" class="col-md-4 col-lg-3 col-form-label">Designation</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="job" type="text" class="form-control" id="Job" value=#{user.role.role_name} required>
+                                                input.form-control#Job(name="job" ,type="text", value=`${user.designation.title}`, required)
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
                                             <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="phone" type="text" class="form-control" id="Phone" value=#{user.phone}>
+                                                input.form-control#Phone(name="phone", type="text", value=`${user.phone}`)
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
                                             <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="email" type="email" class="form-control" id="Email" value=#{user.email} required>
+                                                input.form-control#Email(name="email", type="email" value=`${user.email}`, required)
                                             </div>
                                         </div>
 
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            button.btn.btn-primary(type="submit") Save Changes
                                         </div>
                                     </form><!-- End Profile Edit Form -->
 

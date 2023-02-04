@@ -75,9 +75,6 @@ module.exports = {
   },
   update_byId: async (req, res) => {
     // try {
-      console.log(req.session.user);
-      console.log("Request.body is");
-      console.log(req.body);
       if (req.session.user) {
         const id = parseInt(req.params.id);
         const { first_name, last_name, email, role } = req.body;

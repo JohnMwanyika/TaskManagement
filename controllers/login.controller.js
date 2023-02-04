@@ -53,7 +53,7 @@ module.exports = {
       return res.status(401).render("sign_up", {
         message: { info: "Oops!! sorry cant reach database", type: "error" },
         fire: "fire",
-        Swal:require("sweetalert2")
+        Swal: require("sweetalert2"),
       });
     }
   },
@@ -62,7 +62,7 @@ module.exports = {
       const { username, password } = req.body;
       // check if user exists
       let user = await prisma.user.findUnique({
-        include: { role: true },
+        include: { role: true, designation: true },
         where: {
           username: username,
         },
@@ -87,7 +87,7 @@ module.exports = {
             req.session.pass = password;
             // res.redirect("/dashboard");
           }
-          // console.log(user.push({pass:req.body}))
+          // setting the user session
           req.session.user = user;
           console.log(req.session.user, req.session.pass);
           // return res.status(200).redirect("/dashboard");

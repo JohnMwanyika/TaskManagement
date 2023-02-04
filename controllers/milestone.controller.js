@@ -127,15 +127,19 @@ module.exports = {
     }
   },
   getMilestoneByIdApi: async (req, res) => {
-    const { id } = req.params;
-
-    const milestones = await prisma.milestone
-      .findMany({
-        where: { mile_id: parseInt(id) },
-        include: { task: true },
-      })
-      // .then(console.log);
-      console.log(milestones)
-    res.json({ results: milestones });
+    try {
+      const { id } = req.params;
+      if (id) {
+        const milestones = await prisma.milestone.findMany({
+          where: { mile_id: parseInt(id) },
+          include: { task: true },
+        });
+        // .then(console.log);
+        console.log(milestones);
+        res.json({ results: milestones });
+      }
+    } catch (error) {
+      res.json({ message: { info: "Something Went wrong", type: "error" } });
+    }
   },
 };
