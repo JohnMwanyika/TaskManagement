@@ -31,6 +31,7 @@ block content
                   <th scope="col">#</th>
                   <th scope="col">First Name</th>
                   <th scope="col">Last Name</th>
+                  <th scope="col">Username</th>
                   <th scope="col"><i class="bi bi-envelope"></i> Email</th>
                   <th scope="col"><i class="bi bi-telephone"></i> Phone</th>
                   <th scope="col">Role</th>
@@ -45,6 +46,7 @@ block content
                     <th scope="row"><a href="#">#{index+1}</a></th>
                     <td>#{row.first_name}</td>
                     <td>#{row.last_name}</td>
+                    <td>#{row.username}</td>
                     <td> #{row.email}</td>
                     <td><i class="bi bi-telephone-fill text-secondary"></i> #{row.phone}</td>
                     <td>#{row.role.role_name}</td>

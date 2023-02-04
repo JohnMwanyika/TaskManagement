@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 module.exports = {
   getUsers: async (req, res) => {
     try {
-      if (req.session.user) {
+      // if (req.session.user) {
         const allUsers = await prisma.user.findMany({
           include: {
             role: true,
@@ -19,12 +19,12 @@ module.exports = {
           results: allRoles,
           user: req.session.user,
         });
-      } else {
-        res.render("login", {
-          message: { info: "You need to login first", type: "error" },
-          fire: "fire",
-        });
-      }
+      // } else {
+      //   res.render("login", {
+      //     message: { info: "You need to login first", type: "error" },
+      //     fire: "fire",
+      //   });
+      // }
     } catch (error) {
       return res
         .status(404)

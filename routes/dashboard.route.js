@@ -1,6 +1,6 @@
 const express = require("express");
 const { mainDashboard, statisticsApi } = require("../controllers/dashboard.controller");
-// const { islogedIn } = require("../middlewares/loggedInStatus");
+// const {  } = require("../middlewares/loggedInStatus");
 const router = express.Router();
 
 var taskRouter = require("./task.route");
@@ -9,20 +9,20 @@ const usersRouter = require("./user.route");
 const projectRouter = require("./project.route");
 const milestoneRouter = require("./milestone.route");
 const teamRouter = require("./team.route");
+const checkLogin = require("../middlewares/loggedInStatus");
 
-// router.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
 
-router.use((req, res, next) => {
-  if (!req.session.user) {
-    res.render("login", {
-      message: { info: "Seems like your session just ended!!", type: "error" },
-      fire: "fire",
-    });
-  } else {
-    next();
-  }
-});
-// router.use(islogedIn);
+// router.use((req, res, next) => {
+//   if (!req.session.user) {
+//     res.render("login", {
+//       message: { info: "Seems like your session just ended!!", type: "error" },
+//       fire: "fire",
+//     });
+//   } else {
+//     next();
+//   }
+// });
+router.use(checkLogin);
 
 
 router.get("/", mainDashboard);
