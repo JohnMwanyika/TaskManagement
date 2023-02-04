@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcrypt");
 const prisma = new PrismaClient();
 
 module.exports = {
@@ -47,5 +48,42 @@ module.exports = {
       res.redirect("/dashboard/profile");
       // res.json({ "user Details :": userDetails });
     }
+  },
+  changePassword: async (req, res) => {
+    var { currPassword, newPassword } = req.body;
+    if (!currPassword && !newPassword) {
+      throw "Both passwords needed";
+    }
+    // get user pass
+    const userPass = await prisma.user.findUnique({
+      where: {
+        user_id: parseInt(req.session.user.user_id),
+      },
+      select: {
+        password: true,
+      },
+    });
+    console.log(userPass);
+    bcrypt.compare(currPassword, userPass.password, async (err, result) => {
+      if (err) throw err;
+      console.log(result);
+      if (result) {
+        newPassword = bcrypt.hashSync(newPassword, 10);
+        // update user pass
+        const updatedPass = await prisma.user.update({
+          where: { user_id: parseInt(req.session.user.user_id) },
+          data: {
+            password: newPassword,
+          },
+        });
+        res.redirect("/dashboard/profile");
+      } else {
+        res.json({
+          message: { info: "Your old password is incorrect", type: "error" },
+        });
+      }
+    });
+
+    console.log(currPassword, newPassword);
   },
 };

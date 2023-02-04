@@ -82,6 +82,7 @@ module.exports = {
       //   compare passswords
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) throw err;
+  
         if (result) {
           if (password == "1234") {
             req.session.pass = password;
