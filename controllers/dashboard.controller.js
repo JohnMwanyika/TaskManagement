@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 module.exports = {
   mainDashboard: async (req, res) => {
     try {
-    // if (req.session.user) {
+      // if (req.session.user) {
       // count Active tasks
       const groupActive = await prisma.task.aggregate({
         _count: {
@@ -118,14 +118,58 @@ module.exports = {
         // total tasks of logged in user
         totalTasks: grpAll,
       });
-    // } else {
-    //   res.render("login", {
-    //     message: { info: "You need to login first", type: "error" },
-    //     fire: "fire",
-    //   });
-    // }
+      // } else {
+      //   res.render("login", {
+      //     message: { info: "You need to login first", type: "error" },
+      //     fire: "fire",
+      //   });
+      // }
     } catch (error) {
       res.render("not_found", { message: error.message });
+    }
+  },
+  statisticsApi: async (req, res) => {
+    if (req.session.user) {
+      const [myTasks, assignedTasks, activeAss, completedAss, pendingAss] =
+        await prisma.$transaction([
+          // myTasks
+          prisma.task.findMany({
+            where: {
+              userUser_id: req.session.user.user_id,
+            },
+          }),
+          // assignedTasks
+          prisma.task_assignment.findMany({
+            include: { user: true, task: true },
+            where: {
+              userUser_id: req.session.user.user_id,
+            },
+          }),
+          // activeAss
+          prisma.task_assignment.findMany({
+            select: {
+              user: true,
+              task: true,
+            },
+            where: {
+              userUser_id: req.session.user.user_id,
+            },
+          }),
+        ]);
+      console.log(
+        "My Tasks :" + myTasks.length,
+        "Assigned :" + assignedTasks.length,
+        "Active ass :" + activeAss
+      );
+      res.json({
+        data: {
+          myTasks: myTasks,
+          assignedTasks: assignedTasks,
+          activeAss: activeAss,
+        },
+      });
+    } else {
+      res.json({ message: { type: "error", info: "You need to login first" } });
     }
   },
 };

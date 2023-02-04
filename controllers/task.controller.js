@@ -162,14 +162,30 @@ module.exports = {
   },
   createAssignmentApi: async (req, res) => {
     const { taskId, userId } = req.body;
-    const assignment = await prisma.task_assignment.create({
-      data: {
+    // Check if task is already assigned
+    const checkAssignment = await prisma.task_assignment.findMany({
+      where: {
         taskTask_id: parseInt(taskId),
         userUser_id: parseInt(userId),
       },
     });
-    console.log(assignment);
-    res.redirect("back");
+    if (!checkAssignment) {
+      const assignment = await prisma.task_assignment.create({
+        data: {
+          taskTask_id: parseInt(taskId),
+          userUser_id: parseInt(userId),
+        },
+      });
+      console.log(assignment);
+      // res.redirect("back");
+      res.json({
+        message: { info: "Task assigned successfully", type: "success" },
+      });
+    } else {
+      res.json({
+        message: { info: "Task already assigned to this user", type: "error" },
+      });
+    }
   },
 };
 

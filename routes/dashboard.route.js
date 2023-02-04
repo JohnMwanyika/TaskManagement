@@ -1,5 +1,5 @@
 const express = require("express");
-const { mainDashboard } = require("../controllers/dashboard.controller");
+const { mainDashboard, statisticsApi } = require("../controllers/dashboard.controller");
 // const { islogedIn } = require("../middlewares/loggedInStatus");
 const router = express.Router();
 
@@ -26,6 +26,9 @@ router.use((req, res, next) => {
 
 
 router.get("/", mainDashboard);
+// statistics API
+router.get("/api",statisticsApi)
+
 router.use("/my_tasks", taskRouter);
 router.use("/profile", profileRouter);
 router.use("/users", usersRouter);
