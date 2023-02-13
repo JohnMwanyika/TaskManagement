@@ -78,7 +78,7 @@ module.exports = {
       // Assigned Tasks
       const assignedTasks = await prisma.task_assignment.findMany({
         include: {
-          user: true,
+          user: { select: { first_name: true } },
           task: {
             include: {
               task_status: true,
@@ -93,13 +93,25 @@ module.exports = {
           assignment_id: "desc",
         },
       });
-      console.log(assignedTasks);
+      // console.log(assignedTasks);
       // console.log(allTasks)
+      const _ = require("lodash");
+
+      var at = new Array();
+      assignedTasks.forEach((task, index) => {
+        // console.log("each assigned task", task);
+        at[index] = task.task;
+      });
+      console.log("assigned only", at);
+      // console.log("assigned only",assignedTasks[0].task)
+      let allMyTasks = _.concat(at, allTasks);
+      // console.log("All My Tasks are", allTasks);
 
       res.render("sub-layout", {
-        rows: allTasks,
+        rows: allMyTasks,
+        // rows: allTasks,
         // list all assigned tasks
-        assignedTasks: assignedTasks,
+        // assignedTasks: assignedTasks,
         bd: "Dashboard",
         card_title: "Recent Tasks",
         user: req.session.user,
@@ -161,6 +173,7 @@ module.exports = {
         "Assigned :" + assignedTasks.length,
         "Active ass :" + activeAss
       );
+
       res.json({
         data: {
           myTasks: myTasks,
