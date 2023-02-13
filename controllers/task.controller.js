@@ -162,7 +162,7 @@ module.exports = {
   },
   createAssignmentApi: async (req, res) => {
     const { taskId, userId } = req.body;
-    // Check if task is already assigned
+    // Check if task is already assigned to the selected
     const checkAssignment = await prisma.task_assignment.findMany({
       where: {
         AND: [
@@ -173,6 +173,7 @@ module.exports = {
     });
     // .then(console.log);
     console.log("assignement is :", checkAssignment);
+    // assign the task if it is not assigned to the selected user
     if (checkAssignment == '') {
       const assignment = await prisma.task_assignment.create({
         data: {
