@@ -4,27 +4,28 @@ const prisma = new PrismaClient();
 module.exports = {
   getUsers: async (req, res) => {
     try {
-      if (req.session.user) {
-        const allUsers = await prisma.user.findMany({
-          include: {
-            role: true,
-          },
-        });
-        const allRoles = await prisma.role.findMany({});
-        console.log(allUsers);
-        console.log(allRoles);
-        res.render("manage_users", {
-          title: "Users",
-          rows: allUsers,
-          results: allRoles,
-          user: req.session.user,
-        });
-      } else {
-        res.render("login", {
-          message: { info: "You need to login first", type: "error" },
-          fire: "fire",
-        });
-      }
+      // if (req.session.user) {
+      const allUsers = await prisma.user.findMany({
+        include: {
+          role: true,
+          designation: true,
+        },
+      });
+      const allRoles = await prisma.role.findMany({});
+      console.log(allUsers);
+      console.log(allRoles);
+      res.render("manage_users", {
+        title: "Users",
+        rows: allUsers,
+        results: allRoles,
+        user: req.session.user,
+      });
+      // } else {
+      //   res.render("login", {
+      //     message: { info: "You need to login first", type: "error" },
+      //     fire: "fire",
+      //   });
+      // }
     } catch (error) {
       return res
         .status(404)
@@ -75,31 +76,28 @@ module.exports = {
   },
   update_byId: async (req, res) => {
     // try {
-      console.log(req.session.user);
-      console.log("Request.body is");
-      console.log(req.body);
-      if (req.session.user) {
-        const id = parseInt(req.params.id);
-        const { first_name, last_name, email, role } = req.body;
-        const newData = await prisma.user.update({
-          where: {
-            user_id: id,
-          },
-          data: {
-            first_name: first_name,
-            last_name: last_name,
-            email: email,
-            roleRole_id: parseInt(role),
-          },
-        });
-        console.log(newData);
-        res.redirect("/dashboard/users");
-      } else {
-        res.render("login", {
-          message: { info: "You need to login first", type: "error" },
-          fire: "fire",
-        });
-      }
+    if (req.session.user) {
+      const id = parseInt(req.params.id);
+      const { first_name, last_name, email, role } = req.body;
+      const newData = await prisma.user.update({
+        where: {
+          user_id: id,
+        },
+        data: {
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          roleRole_id: parseInt(role),
+        },
+      });
+      console.log(newData);
+      res.redirect("/dashboard/users");
+    } else {
+      res.render("login", {
+        message: { info: "You need to login first", type: "error" },
+        fire: "fire",
+      });
+    }
     // } catch (error) {
     //   return res.status(404).render("not_found", {
     //     message: error.message,

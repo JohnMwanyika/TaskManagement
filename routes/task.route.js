@@ -6,8 +6,10 @@ const {
   getMyTasks,
   taskForm,
   // activateTask,
+
+  assignTaskForm,
+  createAssignmentApi,
   getTaskById,
-  assignTask,
 } = require("../controllers/task.controller");
 
 // router.get('/',getTasks);
@@ -15,8 +17,10 @@ router.post("/new_task", createTask);
 router.get("/", getMyTasks);
 router.get("/new_task", taskForm);
 // router.post("/:id", activateTask);
-
-router.get("/assign", assignTask);
+// get the task assign form
+router.get("/assign", assignTaskForm);
+// assign team member task
+router.post("/api/assign",createAssignmentApi)
 router.get("/:id", getTaskById);
 
 

@@ -21,7 +21,7 @@
               td #{aTask.task.title}
               td #{aTask.task.description}
               td #{moment(aTask.task.due_date).format('LLL')}
-              td #{aTask.task.user.first_name} (#{aTask.task.user.designation.title})
+              td #{aTask.task.user.designation.title} (#{aTask.task.user.first_name})
               td #{aTask.task.task_status.name}
   
           each row,index in rows

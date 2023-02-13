@@ -4,16 +4,24 @@ const prisma = new PrismaClient();
 module.exports = {
   createTask: async (req, res) => {
     if (req.session.user) {
-      const { title, description,mileId,projectId, start_date, userId, due_in } = req.body;
+      const {
+        title,
+        description,
+        mileId,
+        projectId,
+        start_date,
+        userId,
+        due_in,
+      } = req.body;
       console.log(req.body);
       const result = await prisma.task.create({
         data: {
           title: title,
           description: description,
-          milestoneMile_id:parseInt(mileId),
-          projectProject_id:parseInt(projectId),
+          milestoneMile_id: parseInt(mileId),
+          projectProject_id: parseInt(projectId),
           start_date: new Date(start_date),
-          userUser_id: parseInt(userId),
+          userUser_id: parseInt(req.session.user.user_id),
           due_date: new Date(due_in),
         },
       });
@@ -62,8 +70,8 @@ module.exports = {
       if (req.session.user) {
         const allUsers = await prisma.user.findMany();
         const userProjects = await prisma.user.findUnique({
-          include:{project:true},
-          where:{user_id:parseInt(req.session.user.user_id) }
+          include: { project: true },
+          where: { user_id: parseInt(req.session.user.user_id) },
         });
         console.log(userProjects.project);
         res.render("task_form", {
@@ -118,17 +126,29 @@ module.exports = {
       res.render("not_found", { message: error.message, status: error.status });
     }
   },
-  assignTask: async (req, res) => {
+  assignTaskForm: async (req, res) => {
     try {
       if (req.session.user) {
-        const tasks = await prisma.task.findMany({
-          include: { user: true },
+        // const all = await prisma.task.findMany({
+        //   include: { user: true },
+        //   where: {
+        //     user_id:parseInt(req.session.user.user_id),
+        //   },
+        // });
+        const userProjects = await prisma.user.findUnique({
+          include: {
+            project: {
+              include: { task: true },
+            },
+          },
+          where: { user_id: parseInt(req.session.user.user_id) },
         });
-        console.log(tasks);
+        // console.log(tasks);
         res.render("assign_task", {
           user: req.session.user,
           title: "Assign Task",
-          tasks: tasks,
+          // tasks: tasks,
+          projects: userProjects.project,
         });
       } else {
         res.render("login", {
@@ -138,6 +158,37 @@ module.exports = {
       }
     } catch (error) {
       res.render("not_found", { message: error.message, status: error.status });
+    }
+  },
+  createAssignmentApi: async (req, res) => {
+    const { taskId, userId } = req.body;
+    // Check if task is already assigned
+    const checkAssignment = await prisma.task_assignment.findMany({
+      where: {
+        AND: [
+          { taskTask_id: parseInt(taskId) },
+          { userUser_id: parseInt(userId) },
+        ],
+      },
+    });
+    // .then(console.log);
+    console.log("assignement is :", checkAssignment);
+    if (checkAssignment == '') {
+      const assignment = await prisma.task_assignment.create({
+        data: {
+          taskTask_id: parseInt(taskId),
+          userUser_id: parseInt(userId),
+        },
+      });
+      // console.log(assignment);
+      // res.redirect("back");
+      res.json({
+        message: { info: "Task assigned successfully", type: "success" },
+      });
+    } else {
+      res.json({
+        message: { info: "Task already assigned to this user", type: "error" },
+      });
     }
   },
 };

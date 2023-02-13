@@ -36,14 +36,19 @@ block content
                                                     i.bi.bi-people.text-primary
                                                 | Team members
                                         li
-                                            a.dropdown-item(href="#")
+                                            a.dropdown-item(href="/dashboard/my_tasks/new_task")
                                                 span
                                                     i.bi.bi-list-task.text-primary
                                                 | Create Task
+                                        li
+                                            a.dropdown-item(href="/dashboard/projects/report")
+                                                span
+                                                    i.bi.bi-file-earmark-pdf.text-primary
+                                                | Report.
                                 //- ###New Member popup###
                                 include includes/add_member_popup
-                                
-                        
+
+
 
                                 .card-body
                                     h4.fw-lighter.text-secondary.my-4.mx-3 #{index+1} #{project.title}
@@ -99,7 +104,7 @@ block content
                     p Hey! #{user.first_name} Seems like you have not created any projects yet.
                     p click 
                         a(href="/dashboard/projects/new_project") here 
-                        span to create your first project
+                        span let's create your first project
             nav(aria-label="...")
                 ul.pagination
                     li.page-item.disabled
