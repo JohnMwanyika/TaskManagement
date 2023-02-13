@@ -34,6 +34,7 @@ block content
                   <th scope="col">Username</th>
                   <th scope="col"><i class="bi bi-envelope"></i> Email</th>
                   <th scope="col"><i class="bi bi-telephone"></i> Phone</th>
+                  <th scope="col"><i class="bi bi-telephone"></i> Designation</th>
                   <th scope="col">Role</th>
                   <th scope="col">Action</th>
                 </tr>
@@ -49,6 +50,10 @@ block content
                     <td>#{row.username}</td>
                     <td> #{row.email}</td>
                     <td><i class="bi bi-telephone-fill text-secondary"></i> #{row.phone}</td>
+                      if (!row.designation)
+                        <td>unset</td>
+                      else
+                        <td>#{row.designation.title}</td>
                     <td>#{row.role.role_name}</td>
                     <td>
                       <div class="dropdown text-center">

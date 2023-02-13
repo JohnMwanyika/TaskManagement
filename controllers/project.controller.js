@@ -1,9 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
-const { createPaginator } = require("prisma-pagination");
-const paginate = new createPaginator({ perPage: 10 });
-var moment = require("moment");
-const { query } = require("express");
-const { parse } = require("dotenv");
+// const { createPaginator } = require("prisma-pagination");
+// const paginate = new createPaginator({ perPage: 10 });
+// var moment = require("moment");
+// const { query } = require("express");
+// const { parse } = require("dotenv");
+
+const generateReport = require("../middlewares/jspdf");
 
 const prisma = new PrismaClient();
 
@@ -180,9 +182,9 @@ module.exports = {
           project: project,
           // milestones:project.milestone
         });
-      }else{
+      } else {
         res.json({
-          message:{info:'Nothing found here',type:'error'}
+          message: { info: "Nothing found here", type: "error" },
           // milestones:project.milestone
         });
       }
@@ -190,6 +192,14 @@ module.exports = {
       res.json({
         message: { info: error.message, type: "error" },
       });
+    }
+  },
+  viewReport: (req, res) => {
+    try {
+      generateReport();
+      res.redirect("back");
+    } catch (error) {
+      console.log(error);
     }
   },
 };
