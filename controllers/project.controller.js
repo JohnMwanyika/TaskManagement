@@ -58,8 +58,29 @@ module.exports = {
           project_id: "desc",
         },
       });
-      // console.log(projects);
+
+      // const _ = require("lodash");
+      // var milestones = new Array();
+      // projects.forEach((project, i) => {
+      //   milestones[i] = project;
+      // });
+
+      // console.log(milestones);
+      // var results = _.filter(milestones, (mile) => {
+      //   return mile.milestone_statusStatus_id == 1;
+      // });
+      // console.log(results);
       // console.log(users);
+      const completedMilestones = await prisma.milestone.aggregate({
+        // include: { project: true },
+        where: {
+          projectProject_id: 1,
+          milestone_statusStatus_id: 3,
+        },
+        _count: { _all: true },
+      });
+
+      console.log(completedMilestones);
       console.log("pages");
       console.log(req.paginate);
       res.render("my_projects", {
@@ -68,6 +89,8 @@ module.exports = {
         projects: projects,
         title: "My Projects",
         users,
+        completedMilestones: completedMilestones._count._all,
+        lodash: require("lodash"),
       });
     } else {
       res.render("login", {

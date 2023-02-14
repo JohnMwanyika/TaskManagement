@@ -80,12 +80,16 @@ block content
                                     //- total tasks
                                     p
                                         //- <i class="bi bi-list-task"></i> #{milestoneCount._count._all} Milestone(s)
-                                        <i class="bi bi-list-task"></i> #{project.milestone.length} Milestone(s)
+                                        <i class="fa fa-cogs" aria-hidden="true"></i> #{project.milestone.length} Milestone(s)
                                     p
-                                        <i class="bi bi-list-task"></i> #{project.task.length} Task(s)  
-                                        //- each task in project.task 
-                                        //-     p #{task.title}
-                                        //- team members
+                                        <i class="fa fa-tasks" aria-hidden="true"></i> #{project.task.length} Task(s)
+                                            //- populate the progress bar ny filtering milestones completed Vs Toatal Milestones  
+                                            -var _ = lodash
+                                            -var totalCompleted = _.filter(project.milestone, function(o){return o.milestone_statusStatus_id == 3})
+                                            //- h1 #{totalCompleted.length}
+                                            .progress(style="height: 20px;")
+                                                .progress-bar(role="progressbar" aria-label="Progress bar" style=`width: ${totalCompleted.length}%;` aria-valuenow=`${totalCompleted.length}` aria-valuemin="0", aria-valuemax=`${project.milestone.length}` ) #{project.milestone.length}%
+
                                         h6.card-title.border-bottom Team
                                         .row 
                                             .col-lg-12

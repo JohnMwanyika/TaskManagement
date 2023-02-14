@@ -94,9 +94,8 @@ module.exports = {
         },
       });
       // console.log(assignedTasks);
-      // console.log(allTasks)
+      // concatenate user's own task with the assigned and display them in recent task table
       const _ = require("lodash");
-
       var at = new Array();
       assignedTasks.forEach((task, index) => {
         // console.log("each assigned task", task);
@@ -109,9 +108,6 @@ module.exports = {
 
       res.render("sub-layout", {
         rows: allMyTasks,
-        // rows: allTasks,
-        // list all assigned tasks
-        // assignedTasks: assignedTasks,
         bd: "Dashboard",
         card_title: "Recent Tasks",
         user: req.session.user,
