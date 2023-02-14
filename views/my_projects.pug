@@ -96,10 +96,13 @@ block content
                                             -var mile_ptg = totalCompleted.length/totalMiles*100
                                             -var result = round(mile_ptg)
                                             //- Round off to the nearest 0 decimal point
-                                            
+                                            //-check if there are no milestones
                                             if (project.milestone.length != 0)
                                                 //- h1 #{result}%
-                                                if (result <= 20)
+                                                if (result <= 1)
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-danger(role="progressbar" aria-label="Example with label" style=`width: ${4}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{0}%
+                                                else if (result <= 20)
                                                     .progress(style="height: 20px;").w-75
                                                         .progress-bar.bg-danger(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
                                                 else if (result <= 49 )
@@ -117,7 +120,7 @@ block content
                                             else 
                                                 //- h1 0%
                                                 .progress(style="height: 20px;").w-75
-                                                    .progress-bar.bg-success(role="progressbar" aria-label="Example with label" style=`width: ${0}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{0}%
+                                                    .progress-bar.bg-success(role="progressbar" aria-label="Example with label" style=`width: ${0}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") No Milestones
                                             //- .progress(style="height: 20px;")
                                             //-     .progress-bar(role="progressbar" aria-label="Progress bar" style=`width: ${totalCompleted.length}%;` aria-valuenow=`${totalCompleted.length}` aria-valuemin="0", aria-valuemax=`${totalMiles}` ) #{project.milestone.length}%
                                             //- hr
