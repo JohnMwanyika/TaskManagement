@@ -29,7 +29,6 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.3",
-    "jsreport": "^3.10.0",
     "nodemon": "^2.0.20",
     "prisma": "^4.7.1"
   }

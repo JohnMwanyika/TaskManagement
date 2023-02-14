@@ -71,16 +71,16 @@ module.exports = {
       // });
       // console.log(results);
       // console.log(users);
-      const completedMilestones = await prisma.milestone.aggregate({
-        // include: { project: true },
-        where: {
-          projectProject_id: 1,
-          milestone_statusStatus_id: 3,
-        },
-        _count: { _all: true },
-      });
+      // const completedMilestones = await prisma.milestone.aggregate({
+      //   // include: { project: true },
+      //   where: {
+      //     projectProject_id: 1,
+      //     milestone_statusStatus_id: 3,
+      //   },
+      //   _count: { _all: true },
+      // });
 
-      console.log(completedMilestones);
+      // console.log(completedMilestones);
       console.log("pages");
       console.log(req.paginate);
       res.render("my_projects", {
@@ -89,7 +89,12 @@ module.exports = {
         projects: projects,
         title: "My Projects",
         users,
-        completedMilestones: completedMilestones._count._all,
+        // function to round off the milestone progress percentage
+        round: function round(value, precision) {
+          var multiplier = Math.pow(10, precision || 0);
+          return Math.round(value * multiplier) / multiplier;
+        },
+        // completedMilestones: completedMilestones._count._all,
         lodash: require("lodash"),
       });
     } else {

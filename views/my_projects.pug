@@ -33,12 +33,13 @@ block content
                                         li
                                             a.dropdown-item(href="#" data-bs-toggle="modal", data-bs-target=`#team_modal_${project.project_id}`)
                                                 span
-                                                    i.bi.bi-people.text-primary
+                                                    //- i.bi.bi-people.text-primary
+                                                    i.fa.fa-users(aria-hidden="true").text-primary
                                                 | Team members
                                         li
                                             a.dropdown-item(href="/dashboard/my_tasks/new_task")
                                                 span
-                                                    i.bi.bi-list-task.text-primary
+                                                    i.fa.fa-list(aria-hidden="true").text-primary
                                                 | Create Task
                                         li
                                             a.dropdown-item(href="/dashboard/projects/report")
@@ -86,10 +87,22 @@ block content
                                             //- populate the progress bar ny filtering milestones completed Vs Toatal Milestones  
                                             -var _ = lodash
                                             -var totalCompleted = _.filter(project.milestone, function(o){return o.milestone_statusStatus_id == 3})
-                                            //- h1 #{totalCompleted.length}
-                                            .progress(style="height: 20px;")
-                                                .progress-bar(role="progressbar" aria-label="Progress bar" style=`width: ${totalCompleted.length}%;` aria-valuenow=`${totalCompleted.length}` aria-valuemin="0", aria-valuemax=`${project.milestone.length}` ) #{project.milestone.length}%
-
+                                            -var totalMiles = project.milestone.length
+                                            -var mile_ptg = totalCompleted.length/totalMiles*100
+                                            -var result = round(mile_ptg)
+                                            //- Round off to the nearest 0 decimal point
+                                            if (project.milestone.length != 0)
+                                                //- h1 #{result}%
+                                                .progress(style="height: 20px;").w-75
+                                                    .progress-bar.bg-success(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}% complete
+                                            else 
+                                                //- h1 0%
+                                                .progress(style="height: 20px;").w-75
+                                                    .progress-bar.bg-success(role="progressbar" aria-label="Example with label" style=`width: ${0}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{0}% complete
+                                            //- .progress(style="height: 20px;")
+                                            //-     .progress-bar(role="progressbar" aria-label="Progress bar" style=`width: ${totalCompleted.length}%;` aria-valuenow=`${totalCompleted.length}` aria-valuemin="0", aria-valuemax=`${totalMiles}` ) #{project.milestone.length}%
+                                            //- hr
+                                            
                                         h6.card-title.border-bottom Team
                                         .row 
                                             .col-lg-12
