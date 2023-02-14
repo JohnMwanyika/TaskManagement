@@ -31,7 +31,7 @@
                   a(href="#") #{index+1}
                 td #{row.title}
                 td
-                  a.text-primary(href="#") #{row.description}
+                  a.text-primary(href=`/dashboard/my_tasks/${row.task_id}`) #{row.description}
                 td #{moment(row.due_in).format('LLL')}
                 if (row.user.first_name == user.first_name)
                   td self 
@@ -62,7 +62,7 @@
                   a(href="#") #{index+1}
                 td #{row.title}
                 td
-                  a.text-primary(href="#") #{row.description}
+                  a.text-primary(href=`/dashboard/my_tasks/${row.task_id}`) #{row.description}
                 td #{moment(row.due_in).format('LLL')}
                 if (row.user.first_name == user.first_name)
                   td self 

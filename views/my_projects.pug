@@ -33,12 +33,13 @@ block content
                                         li
                                             a.dropdown-item(href="#" data-bs-toggle="modal", data-bs-target=`#team_modal_${project.project_id}`)
                                                 span
-                                                    i.bi.bi-people.text-primary
+                                                    //- i.bi.bi-people.text-primary
+                                                    i.fa.fa-users(aria-hidden="true").text-primary
                                                 | Team members
                                         li
                                             a.dropdown-item(href="/dashboard/my_tasks/new_task")
                                                 span
-                                                    i.bi.bi-list-task.text-primary
+                                                    i.fa.fa-list(aria-hidden="true").text-primary
                                                 | Create Task
                                         li
                                             a.dropdown-item(href="/dashboard/projects/report")
@@ -79,13 +80,51 @@ block content
                                         #{project.description}
                                     //- total tasks
                                     p
-                                        //- <i class="bi bi-list-task"></i> #{milestoneCount._count._all} Milestone(s)
-                                        <i class="bi bi-list-task"></i> #{project.milestone.length} Milestone(s)
-                                    p
-                                        <i class="bi bi-list-task"></i> #{project.task.length} Task(s)  
-                                        //- each task in project.task 
-                                        //-     p #{task.title}
-                                        //- team members
+                                        i.fa.fa-cogs(aria-hidden="true") 
+                                        span 
+                                            strong.text-muted #{project.milestone.length} Milestone(s)  
+                                        span.mx-3
+                                            i.fa.fa-tasks(aria-hidden="true") 
+                                            span  
+                                                strong.text-muted #{project.task.length} Task(s)
+                                    p 
+                                        strong Progress:
+                                            //- populate the progress bar ny filtering milestones completed Vs Toatal Milestones  
+                                            -var _ = lodash
+                                            -var totalCompleted = _.filter(project.milestone, function(o){return o.milestone_statusStatus_id == 3})
+                                            -var totalMiles = project.milestone.length
+                                            -var mile_ptg = totalCompleted.length/totalMiles*100
+                                            -var result = round(mile_ptg)
+                                            //- Round off to the nearest 0 decimal point
+                                            //-check if there are no milestones
+                                            if (project.milestone.length != 0)
+                                                //- h1 #{result}%
+                                                if (result <= 1)
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-danger(role="progressbar" aria-label="Example with label" style=`width: ${4}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{0}%
+                                                else if (result <= 20)
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-danger(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                                else if (result <= 49 )
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-warning(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                                else if (result <= 59 )
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-info(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                                else if (result <= 79 )
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-primary(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                                else
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-success(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                            else 
+                                                //- h1 0%
+                                                .progress(style="height: 20px;").w-75
+                                                    .progress-bar.bg-success(role="progressbar" aria-label="Example with label" style=`width: ${0}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") No Milestones
+                                            //- .progress(style="height: 20px;")
+                                            //-     .progress-bar(role="progressbar" aria-label="Progress bar" style=`width: ${totalCompleted.length}%;` aria-valuenow=`${totalCompleted.length}` aria-valuemin="0", aria-valuemax=`${totalMiles}` ) #{project.milestone.length}%
+                                            //- hr
+                                            
                                         h6.card-title.border-bottom Team
                                         .row 
                                             .col-lg-12
