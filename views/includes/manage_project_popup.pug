@@ -8,5 +8,55 @@
                         h4.text-center Manage Project
                 button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
             .modal-body
-                //- form
-                form(action=`/dashboard/team/new_team_members/` method="post").px-5
+                //- form to update project details
+                form#myForm(action=`/dashboard/projects/update/${project.project_id}` method="post").px-5
+                    .row
+
+                        .col-lg-6
+                            h5.text-center Project Details
+                            .row
+                                .col-lg-12
+                                    .mb-3
+                                        .form-floating
+                                            input.form-control#floatingName(type="text" placeholder="Project Name" name="project_title" value=`${project.title}` required)
+                                            label(for="floatingName") Project Name
+                            .row
+                                .col-lg-12.mb-3
+                                    .form-floating
+                                        textarea.txtArea.form-control#floatingTextarea(placeholder="Address" style="height: 200px;" name="description" required)
+                                            |#{project.description}
+                                        label(for="floatingTextarea") Overview
+                                        -var sdate = moment(project.start_date).format("YYYY-MM-DD");
+                                        -var ddate = moment(project.due_date).format("YYYY-MM-DD");
+                                .col-lg-6
+                                    .mb-3
+                                        .form-floating
+                                            input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" value=`${sdate}` required).date
+                                            label(for="floatingDate") Start date
+                                .col-lg-6
+                                    .mb-3
+                                        .form-floating
+                                            input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" value=`${ddate}` required).date
+                                            label(for="floatingDate") Expected End Date
+
+                                                //- .d-grid.gap-2.col-2.mx-auto.mt-3
+                        .col-lg-6
+                            h5.text-center Project status
+                            .mybox.border.p-4
+                                .form-check.form-switch.float-center
+                                    input.form-check-input#flexSwitchCheckDefault(type="checkbox" role="switch")
+                                    label.form-check-label(for="flexSwitchCheckDefault") Active
+                                .form-check.form-switch.float-center
+                                    input.form-check-input#flexSwitchCheckDefault(type="checkbox" role="switch")
+                                    label.form-check-label(for="flexSwitchCheckDefault") Pending
+                                .form-check.form-switch.float-center
+                                    input.form-check-input#flexSwitchCheckDefault(type="checkbox" role="switch")
+                                    label.form-check-label(for="flexSwitchCheckDefault") Completed
+                                .form-check.form-switch.float-center
+                                    input.form-check-input#flexSwitchCheckDefault(type="checkbox" role="switch")
+                                    label.form-check-label(for="flexSwitchCheckDefault") Overdue
+                    .row
+                        .container-fluid
+                            button.btn.btn-primary(type="submit").float-end Update
+
+
