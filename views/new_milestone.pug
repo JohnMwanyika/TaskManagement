@@ -36,14 +36,14 @@ block content
                                         if rows.length>0
                                             .div(style="height:270px").overflow-auto.border-bottom
                                                 each row,index in rows
-                                                    .accordion#accordionExample
+                                                    .accordion#accordionExample.shadow-lg
                                                         .accordion-item
                                                             h2.accordion-header(id=`heading-${row.mile_id}`)
                                                                 //- milestone title
                                                                 button.accordion-button.collapsed(type="button" data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`) (#{index+1})#{row.name}
-                                                                    
-                                                                    div.actions
-                                                                        //- ####Edit Milestone button####
+
+                                                                    //- div.actions.float-end
+                                                                        ####Edit Milestone button####
                                                                         a.btn.bg-primary.text-white.px-2.mx-3.rounded(href="#" data-bs-toggle="modal", data-bs-target=`#mile_modal_${row.mile_id}`)
                                                                             span
                                                                                 i.bi.bi-pencil-square(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit")
@@ -61,17 +61,33 @@ block content
                                                                         |  #{row.description}
                                                                     hr
                                                                     - var start_D = moment(row.start_date).endOf('day').fromNow();
-                                                                    p 
-                                                                        strong Start : 
-                                                                            span.text-muted #{start_D}
-                                                                        - var due_D = moment(row.due_date).endOf('day').fromNow();
-                                                                        strong.m-3 Expected to end : 
-                                                                            span.text-muted #{due_D}
+                                                                    .row 
+                                                                        p 
+                                                                            strong Start : 
+                                                                                span.text-muted #{start_D}
+                                                                            - var due_D = moment(row.due_date).endOf('day').fromNow();
+                                                                            strong.m-3 Expected to end : 
+                                                                                span.text-muted #{due_D}
+                                                                            strong.m-3 status : 
+                                                                                span.text-muted #{row.milestone_status.name}
+                                                                        p 
+                                                                            strong Actions :
+                                                                                span
+                                                                                    div.actions
+                                                                                        //- ####Edit Milestone button####
+                                                                                        a.btn.bg-primary.text-white.px-2.mx-3.rounded(href="#" data-bs-toggle="modal", data-bs-target=`#mile_modal_${row.mile_id}`)
+                                                                                            span
+                                                                                                i.bi.bi-pencil-square(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit")
+                                                                                        form.d-inline(action=`/dashboard/milestones/${row.mile_id}`,method="POST")#deleteForm
+                                                                                            //- input(type="text" hidden value=`${row.mile_id}`).id
+                                                                                            a.btn.bg-danger.text-white.px-2.ml-4.rounded(type="button" href='#' id=`delete_${row.mile_id}`)
+                                                                                                span
+                                                                                                    i.bi.bi-trash3(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete")
 
                                         //- Else render the message bellow
                                         else 
-                                            .div(style="height:270px").overflow-auto.bg-light.position-relative.bg-opacity-50.border-dark.border
-                                                h3.text-center(class="position-absolute top-50 start-50 translate-middle").text-muted No milestones at the moment
+                                            .div(style="height:270px").overflow-auto.bg-light.position-relative.bg-opacity-50.border-secondary.border.rounded.shadow-lg
+                                                h3.text-center(class="position-absolute top-50 start-50 translate-middle").text-muted No milestones at the moment!
 
                                         //- hr.text-light
 
@@ -106,7 +122,7 @@ block content
                                             .col-lg-12.mb-3
 
                                                 .d-grid.gap-4.col-3.mx-auto.mt-3
-                                                    button.btn.btn-primary(type="submit")#submitbtn
+                                                    button.btn.btn-primary(type="submit")#submitbtn.shadow-lg
                                                         span#lbl Add 
                                                         span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
 
@@ -150,7 +166,7 @@ block content
                 success: function(data){
                     var msg = data.message.type;
                     //- declearing toast
-                    
+
                     if(msg == "success"){
                         //- Clears The form fields
                         form[0].reset();
@@ -195,7 +211,7 @@ block content
         //-                     title: 'Oops! something went wrong'
         //-                 });
         //-             }
-                    
+
         //-         },
         //-         error:(err) =>{alert(err)}
         //-     })
@@ -240,7 +256,7 @@ block content
         //-                     title: 'Oops! something went wrong'
         //-                 });
         //-             }
-                    
+
         //-         },
         //-         error:(err) =>{alert(err)}
 

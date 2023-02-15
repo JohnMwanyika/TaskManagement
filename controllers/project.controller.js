@@ -59,28 +59,6 @@ module.exports = {
         },
       });
 
-      // const _ = require("lodash");
-      // var milestones = new Array();
-      // projects.forEach((project, i) => {
-      //   milestones[i] = project;
-      // });
-
-      // console.log(milestones);
-      // var results = _.filter(milestones, (mile) => {
-      //   return mile.milestone_statusStatus_id == 1;
-      // });
-      // console.log(results);
-      // console.log(users);
-      // const completedMilestones = await prisma.milestone.aggregate({
-      //   // include: { project: true },
-      //   where: {
-      //     projectProject_id: 1,
-      //     milestone_statusStatus_id: 3,
-      //   },
-      //   _count: { _all: true },
-      // });
-
-      // console.log(completedMilestones);
       console.log("pages");
       console.log(req.paginate);
       res.render("my_projects", {
@@ -89,6 +67,8 @@ module.exports = {
         projects: projects,
         title: "My Projects",
         users,
+        // serve the moment function
+        moment: require("moment"),
         // function to round off the milestone progress percentage
         round: function round(value, precision) {
           var multiplier = Math.pow(10, precision || 0);
@@ -194,7 +174,7 @@ module.exports = {
       if (id) {
         const project = await prisma.project.findUnique({
           include: {
-            milestone: true,
+            milestone: { include: { milestone_status: true } },
             team: {
               include: { userId: true },
             },
@@ -221,6 +201,25 @@ module.exports = {
         message: { info: error.message, type: "error" },
       });
     }
+  },
+  updateProjectById: async (req, res) => {
+    const id = parseInt(req.params.id);
+    const { project_title, description, start_date, due_date } = req.body;
+    const details = await prisma.project
+      .update({
+        where: {
+          project_id: id,
+        },
+        data: {
+          title: project_title,
+          description: description,
+          start_date: new Date(start_date),
+          due_date: new Date(due_date),
+        },
+      })
+      .then(console.log)
+      .then(res.redirect('/dashboard/projects/'));
+    // req.redirect("back");
   },
   viewReport: (req, res) => {
     try {

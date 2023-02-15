@@ -13,6 +13,7 @@ const {
   newProject,
   newProjectApi,
   projectApi,
+  updateProjectById,
   viewReport,
 } = require("../controllers/project.controller");
 
@@ -24,6 +25,8 @@ router.post("/new-project/", newProject);
 // This is an ajax post submit for a new project
 router.post("/new-project-api/", newProjectApi);
 router.get("/api/:id", projectApi);
+// update project by ID
+router.post("/update/:id", updateProjectById);
 router.get("/report", viewReport);
 
 module.exports = router;
