@@ -21,7 +21,7 @@ block content
                                         li.dropdown-header.text-start
                                             h6 Options
                                         li
-                                            a.dropdown-item(href="#")
+                                            a.dropdown-item(href="#" data-bs-toggle="modal", data-bs-target=`#manager_${project.project_id}`)
                                                 span
                                                     i.bi.bi-sliders.text-danger
                                                 | Manage
@@ -48,6 +48,7 @@ block content
                                                 | Report.
                                 //- ###New Member popup###
                                 include includes/add_member_popup
+                                include includes/manage_project_popup
 
 
 

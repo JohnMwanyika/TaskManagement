@@ -67,11 +67,13 @@ block content
                                                                         - var due_D = moment(row.due_date).endOf('day').fromNow();
                                                                         strong.m-3 Expected to end : 
                                                                             span.text-muted #{due_D}
+                                                                        strong.m-3 status : 
+                                                                            span.text-muted #{row.milestone_status.name}
 
                                         //- Else render the message bellow
                                         else 
-                                            .div(style="height:270px").overflow-auto.bg-light.position-relative.bg-opacity-50.border-dark.border
-                                                h3.text-center(class="position-absolute top-50 start-50 translate-middle").text-muted No milestones at the moment
+                                            .div(style="height:270px").overflow-auto.bg-light.position-relative.bg-opacity-50.border-secondary.border.rounded.shadow-lg
+                                                h3.text-center(class="position-absolute top-50 start-50 translate-middle").text-muted No milestones at the moment!
 
                                         //- hr.text-light
 
@@ -106,7 +108,7 @@ block content
                                             .col-lg-12.mb-3
 
                                                 .d-grid.gap-4.col-3.mx-auto.mt-3
-                                                    button.btn.btn-primary(type="submit")#submitbtn
+                                                    button.btn.btn-primary(type="submit")#submitbtn.shadow-lg
                                                         span#lbl Add 
                                                         span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
 

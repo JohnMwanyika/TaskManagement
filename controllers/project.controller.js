@@ -194,7 +194,7 @@ module.exports = {
       if (id) {
         const project = await prisma.project.findUnique({
           include: {
-            milestone: true,
+            milestone: { include: { milestone_status: true } },
             team: {
               include: { userId: true },
             },

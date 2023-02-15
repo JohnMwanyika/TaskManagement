@@ -18,7 +18,7 @@ module.exports = {
       if (req.session.user) {
         const id = req.params.id;
         const milestones = await prisma.milestone.findMany({
-          include: { project: true },
+          include: { project: true, milestone_status: true },
           orderBy: {
             mile_id: "desc",
           },
@@ -132,7 +132,7 @@ module.exports = {
       if (id) {
         const milestones = await prisma.milestone.findMany({
           where: { mile_id: parseInt(id) },
-          include: { task: true },
+          include: { task: true, milestone_status: true },
         });
         // .then(console.log);
         console.log(milestones);

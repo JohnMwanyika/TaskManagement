@@ -1,0 +1,12 @@
+.modal.fade.modal-lg(id=`manager_${project.project_id}`,data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true")
+    .modal-dialog
+        .modal-content
+            .modal-header
+                h1.display-6.modal-title.fs-5#staticBackdropLabel
+                    span.h-1.display-6.ml-lg-5
+                        //- i.bi.bi-person-plus.bi-2x.text-primary
+                        h4.text-center Manage Project
+                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+            .modal-body
+                //- form
+                form(action=`/dashboard/team/new_team_members/` method="post").px-5
