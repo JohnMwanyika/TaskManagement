@@ -204,7 +204,14 @@ module.exports = {
   },
   updateProjectById: async (req, res) => {
     const id = parseInt(req.params.id);
-    const { project_title, description, start_date, due_date } = req.body;
+    const { project_title, description, start_date, due_date, isActive } =
+      req.body;
+    let activeStatus;
+    if (isActive == "on") {
+      activeStatus = 3;
+    }else{
+      activeStatus = 1;
+    }
     const details = await prisma.project
       .update({
         where: {
@@ -215,10 +222,11 @@ module.exports = {
           description: description,
           start_date: new Date(start_date),
           due_date: new Date(due_date),
+          project_statusStatus_id:activeStatus,
         },
       })
       .then(console.log)
-      .then(res.redirect('/dashboard/projects/'));
+      .then(res.redirect("/dashboard/projects/"));
     // req.redirect("back");
   },
   viewReport: (req, res) => {
