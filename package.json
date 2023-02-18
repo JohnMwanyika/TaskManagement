@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon app.js"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",
@@ -25,6 +25,7 @@
     "nodemailer": "^6.8.0",
     "prisma-pagination": "^0.2.3",
     "pug": "^3.0.2",
+    "socket.io": "^4.6.0",
     "sweetalert2": "^11.4.8"
   },
   "devDependencies": {

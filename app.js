@@ -6,7 +6,12 @@ var logger = require("morgan");
 var session = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("@prisma/client");
-var app = express();
+const http = require("http");
+// require socket io
+const socketio = require("socket.io");
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
 
 // const oneDay = 1000 * 60 * 60 * 24;
 // view engine setup
@@ -37,7 +42,7 @@ const loginRouter = require("./routes/login.route");
 app.use("/", loginRouter);
 
 const reportingApp = express();
-app.use('/reporting',reportingApp);
+app.use("/reporting", reportingApp);
 
 // const jsreport = require('j')
 
@@ -57,4 +62,9 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-module.exports = app;
+// module.exports = app;
+const PORT = 3000 || process.env.PORT;
+
+server.listen(PORT, () => {
+  console.log(`server running at port:${PORT}`);
+});
