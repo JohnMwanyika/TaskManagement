@@ -1,9 +1,17 @@
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt");
 const prisma = new PrismaClient();
+const socket = require('../app');//import object
 
 module.exports = {
   getProfile: async (req, res) => {
+    socket.ioObject.on('connection',(socket)=>{
+      console.log('user connected')
+      socket.on('profile',(msg)=>{
+        console.log('server says that:',msg)
+      })
+    })
+
     if (req.session.user) {
       const user = await prisma.user.findUnique({
         include: { role: true, designation: true },

@@ -11,6 +11,7 @@ const http = require("http");
 const socketio = require("socket.io");
 const app = express();
 const server = http.createServer(app);
+
 const io = socketio(server);
 
 // const oneDay = 1000 * 60 * 60 * 24;
@@ -62,14 +63,20 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-io.on('connection', (socket)=>{
-  console.log('A user just logged in');
-  socket.on('disconnect',()=>{
-    console.log('A user just logged out')
-  })
-})
+io.on("connection", (socket) => {
+  console.log("A user just logged in");
+  socket.on("taskForm", (msg) => {
+    console.log("Server says", msg);
+  });
 
-// module.exports = app;
+  socket.on("disconnect", () => {
+    console.log("A user just logged out");
+  });
+});
+// module.exports = {io};
+const socketIoObject = io;
+module.exports.ioObject = socketIoObject;
+
 const PORT = 3000 || process.env.PORT;
 
 server.listen(PORT, () => {

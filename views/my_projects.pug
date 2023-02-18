@@ -90,9 +90,10 @@ block content
                                                 strong.text-muted #{project.task.length} Task(s)
                                     p 
                                         strong Progress:
-                                            //- populate the progress bar ny filtering milestones completed Vs Toatal Milestones  
+                                            //- populate the progress bar by filtering milestones completed Vs Toatal Milestones  
                                             -var _ = lodash
-                                            -var totalCompleted = _.filter(project.milestone, function(o){return o.milestone_statusStatus_id == 3})
+                                            //- this fetches all milestones of a particulat project and filter out the completed ones
+                                            -var totalCompleted = _.filter(project.milestone, function(object){return object.milestone_statusStatus_id == 3})
                                             -var totalMiles = project.milestone.length
                                             -var mile_ptg = totalCompleted.length/totalMiles*100
                                             -var result = round(mile_ptg)

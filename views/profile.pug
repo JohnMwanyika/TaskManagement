@@ -257,3 +257,7 @@ block content
         </section>
 
     </main>
+    script(src="/socket.io/socket.io.js") 
+    script.
+        const socket = io();
+        socket.emit('profile','User visited their profile');

@@ -73,7 +73,7 @@ module.exports = {
           include: { project: true },
           where: { user_id: parseInt(req.session.user.user_id) },
         });
-        console.log(userProjects.project);
+        // console.log(userProjects.project);
         res.render("task_form", {
           rows: allUsers,
           user: req.session.user,

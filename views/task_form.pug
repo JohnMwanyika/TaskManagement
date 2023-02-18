@@ -56,8 +56,11 @@ block content
                                     .text-center.my-4
                                         button.btn.btn-primary.px-lg-5.mr-3(type="submit") Submit
                                         button.btn.btn-secondary(type="reset") Reset
-
+    script(src="/socket.io/socket.io.js") 
     script.
+        const socket = io();
+        socket.emit('taskForm','User visited the create task page');
+
         $('.project_sel').on('change', function () {
             //- select milestone dropdown
             var milestone_select = $('.milestone_sel');
