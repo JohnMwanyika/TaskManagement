@@ -62,6 +62,13 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+io.on('connection', (socket)=>{
+  console.log('A user just logged in');
+  socket.on('disconnect',()=>{
+    console.log('A user just logged out')
+  })
+})
+
 // module.exports = app;
 const PORT = 3000 || process.env.PORT;
 
