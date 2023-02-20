@@ -1,6 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
-// var session = require("express-session");
+const { Socket } = require("socket.io");
 const prisma = new PrismaClient();
+const io = require("../app");
+
 module.exports = {
   mainDashboard: async (req, res) => {
     try {
@@ -126,6 +128,7 @@ module.exports = {
         // total tasks of logged in user
         totalTasks: grpAll,
       });
+
       // } else {
       //   res.render("login", {
       //     message: { info: "You need to login first", type: "error" },

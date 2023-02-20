@@ -26,6 +26,8 @@
   <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  //- jquery
+  script(src="/assets/js/jquery.min.js")
 
 
   <!-- Template Main CSS File -->
@@ -68,7 +70,7 @@
                     <p class="text-center small">Enter your username & password to login</p>
                   </div>
 
-                  <form method="POST" action="/login" class="row g-3 needs-validation" novalidate>
+                  <form id="login" method="POST" action="/api/signIn" class="row g-3 needs-validation" novalidate>
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>
@@ -92,7 +94,7 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
+                      <button id="submitbtn" class="btn btn-primary w-100" type="submit">Login</button>
                     </div>
                     <div class="col-12">
                       <p class="small mb-0">Don't have account? <a href="/sign_up">Create an account</a></p>
@@ -113,6 +115,79 @@
   <!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  script.
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+
+    $("#login").submit(function(event){
+        event.preventDefault();
+        //- get form
+        var form = $("#login");
+        //- ajax call
+        if ($('input').val() == "") {
+            Toast.fire({
+                icon: "error",
+                title: "All fields are required"
+            });
+        }else{
+            $.ajax({
+                url:"/api/signIn",
+                type:form.attr('method'),
+                data: form.serialize(),
+                beforeSend: function(){
+                    //- loading.show(function(){
+                    //-     $("#submitbtn").prop("disabled", true);
+                    //- });
+                  Toast.fire({
+                      title: "Authorizing.."
+                  });
+                },
+                complete: function(){
+                  //- Toast.fire({
+                  //-     title: "Login Sucess!!"
+                  //- });
+                },
+                success: function(data){
+                    var msg = data.message.type;
+                    if(msg == "success"){
+                        //- Clears The form fields
+                        //- fires the toast
+                        Toast.fire({
+                            icon: data.message.type,
+                            title: data.message.info
+                        });
+                      window.location.href = '/dashboard'
+                    }else{
+                        Toast.fire({
+                            icon: "error",
+                            title: data.message.info
+                        });
+                        form[0].reset();
+                    }
+                },
+                timeout: 5000,
+                error: function (request, status, error) {
+                    alert(request.responseText);
+                    //- Toast.fire({
+                    //-     icon: "error",
+                    //-     title: "Oops! an error occured"
+                    //- });
+                }
+
+            });
+        }
+    });
 
   <!-- Vendor JS Files -->
   <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -145,6 +220,81 @@
           icon: '#{message.type}',
           title: "#{message.info}"
         })
+
+  //- Ajax Login
+  //- script.
+
+  //-   const Toast = Swal.mixin({
+  //-     toast: true,
+  //-     position: 'top',
+  //-     showConfirmButton: false,
+  //-     timer: 3000,
+  //-     timerProgressBar: true,
+  //-     didOpen: (toast) => {
+  //-       toast.addEventListener('mouseenter', Swal.stopTimer)
+  //-       toast.addEventListener('mouseleave', Swal.resumeTimer)
+  //-     }
+  //-   })
+
+  //-   $("#login").submit(function(event){
+  //-       event.preventDefault();
+  //-       //- get form
+  //-       var form = $("#login");
+  //-       //- ajax call
+  //-       if ($('input').val() == "") {
+  //-           Toast.fire({
+  //-               icon: "error",
+  //-               title: "All fields are required"
+  //-           });
+  //-       }else{
+  //-           $.ajax({
+  //-               url:"/api/signIn",
+  //-               type:form.attr('method'),
+  //-               data: form.serialize(),
+  //-               beforeSend: function(){
+  //-                   //- loading.show(function(){
+  //-                   //-     $("#submitbtn").prop("disabled", true);
+  //-                   //- });
+  //-                 Toast.fire({
+  //-                     title: "Authorizing.."
+  //-                 });
+  //-               },
+  //-               complete: function(){
+  //-                 //- Toast.fire({
+  //-                 //-     title: "Login Sucess!!"
+  //-                 //- });
+  //-               },
+  //-               success: function(data){
+  //-                   var msg = data.message.type;
+  //-                   if(msg == "success"){
+  //-                       //- Clears The form fields
+  //-                       //- fires the toast
+  //-                       Toast.fire({
+  //-                           icon: data.message.type,
+  //-                           title: data.message.info
+  //-                       });
+  //-                       $('html').load('/dashboard');
+  //-                   }else{
+  //-                       Toast.fire({
+  //-                           icon: "error",
+  //-                           title: data.message.info
+  //-                       });
+  //-                       form[0].reset();
+  //-                   }
+  //-               },
+  //-               timeout: 5000,
+  //-               error: function (request, status, error) {
+  //-                   alert(request.responseText);
+  //-                   //- Toast.fire({
+  //-                   //-     icon: "error",
+  //-                   //-     title: "Oops! an error occured"
+  //-                   //- });
+  //-               }
+
+  //-           });
+  //-       }
+  //-   });
+
 </body>
 
 </html>

@@ -63,16 +63,16 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-io.on("connection", (socket) => {
-  console.log("A user just logged in");
-  socket.on("taskForm", (msg) => {
-    console.log("Server says", msg);
-  });
+// io.on("connection", (socket) => {
+//   console.log("A user just logged in");
+//   socket.on("taskForm", (msg) => {
+//     console.log("Server says", msg);
+//   });
 
-  socket.on("disconnect", () => {
-    console.log("A user just logged out");
-  });
-});
+//   socket.on("disconnect", () => {
+//     console.log("A user just logged out");
+//   });
+// });
 // module.exports = {io};
 const socketIoObject = io;
 module.exports.ioObject = socketIoObject;

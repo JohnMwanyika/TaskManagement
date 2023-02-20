@@ -1,10 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const io = require("../app");
 
 module.exports = {
   getUsers: async (req, res) => {
     try {
-      // if (req.session.user) {
       const allUsers = await prisma.user.findMany({
         include: {
           role: true,
@@ -20,12 +20,6 @@ module.exports = {
         results: allRoles,
         user: req.session.user,
       });
-      // } else {
-      //   res.render("login", {
-      //     message: { info: "You need to login first", type: "error" },
-      //     fire: "fire",
-      //   });
-      // }
     } catch (error) {
       return res
         .status(404)
@@ -75,34 +69,55 @@ module.exports = {
     }
   },
   update_byId: async (req, res) => {
-    // try {
-    if (req.session.user) {
-      const id = parseInt(req.params.id);
-      const { first_name, last_name, email, role } = req.body;
-      const newData = await prisma.user.update({
-        where: {
-          user_id: id,
-        },
-        data: {
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          roleRole_id: parseInt(role),
-        },
-      });
-      console.log(newData);
-      res.redirect("/dashboard/users");
-    } else {
-      res.render("login", {
-        message: { info: "You need to login first", type: "error" },
-        fire: "fire",
+    try {
+      if (req.session.user) {
+        const id = parseInt(req.params.id);
+        const { first_name, last_name, email, role } = req.body;
+        const newData = await prisma.user.update({
+          where: {
+            user_id: id,
+          },
+          data: {
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            roleRole_id: parseInt(role),
+          },
+        });
+        console.log(newData);
+        res.redirect("/dashboard/users");
+      } else {
+        res.render("login", {
+          message: { info: "You need to login first", type: "error" },
+          fire: "fire",
+        });
+      }
+    } catch (error) {
+      return res.status(404).render("not_found", {
+        message: error.message,
+        status: error.status,
       });
     }
-    // } catch (error) {
-    //   return res.status(404).render("not_found", {
-    //     message: error.message,
-    //     status: error.status,
-    //   });
-    // }
+  },
+  getUsersApi: async (req, res) => {
+    const allUsers = await prisma.user.findMany({
+      include: {
+        role: true,
+        designation: true,
+      },
+    });
+    const allRoles = await prisma.role.findMany({});
+    // console.log(allUsers);
+    // console.log(allRoles);
+
+    res.json({
+      title: "Users",
+      rows: allUsers,
+      results: allRoles,
+      user: req.session.user,
+    });
+    // io.ioObject.on("connection", (socket) => {
+    //   console.log("socket connected");
+    // });
   },
 };

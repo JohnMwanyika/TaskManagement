@@ -2,7 +2,6 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 var Swal = require("sweetalert2");
-// const { mainDashboard } = require("./dashboard.controller");
 module.exports = {
   loginForm: (req, res) => {
     sess = req.session;
@@ -82,7 +81,7 @@ module.exports = {
       //   compare passswords
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) throw err;
-  
+
         if (result) {
           if (password == "1234") {
             req.session.pass = password;
@@ -117,5 +116,57 @@ module.exports = {
       console.log(req.session);
       res.redirect("/");
     });
+  },
+  signInApi: async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      // check if user exists
+      let user = await prisma.user.findUnique({
+        include: { role: true, designation: true },
+        where: {
+          username: username,
+        },
+      });
+
+      if (!user) {
+        return res.render("login", {
+          Swal: require("sweetalert2"),
+          message: {
+            info: "No user with the supplied username",
+            type: "error",
+          },
+          fire: "fire",
+        });
+      }
+
+      //   compare passswords
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (err) throw err;
+
+        if (result) {
+          if (password == "1234") {
+            req.session.pass = password;
+            // res.redirect("/dashboard");
+          }
+          // setting the user session
+          req.session.user = user;
+          console.log(req.session.user, req.session.pass);
+          // return res.status(200).redirect("/dashboard");
+          return res.status(200).json({
+            message: { info: "Sign in Successfully", type: "success" },
+          });
+        } else {
+          return res.json({
+            message: { info: "Invalid Credentials", type: "alert-danger" },
+          });
+        }
+      });
+    } catch (error) {
+      res.status(401).render("login", {
+        message: { info: "Oops! server unavailable, try again", type: "error" },
+        Swal: require("sweetalert2"),
+        fire: "fire",
+      });
+    }
   },
 };
