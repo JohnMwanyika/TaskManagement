@@ -136,11 +136,11 @@
       });
 
   script.
-    const Toast = Swal.mixin({
+    var Toast = Swal.mixin({
       toast: true,
       position: 'top',
       showConfirmButton: false,
-      timer: 3000,
+      //- timer: 3000,
       timerProgressBar: true,
       didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -177,19 +177,19 @@
                   //- });
                 },
                 success: function(data){
-                    var msg = data.message.type;
+                    var msg = data.messages.type;
                     if(msg == "success"){
                         //- Clears The form fields
                         //- fires the toast
                         Toast.fire({
-                            icon: data.message.type,
-                            title: data.message.info
+                            icon: data.messages.type,
+                            title: data.messages.info
                         });
                       window.location.href = '/dashboard'
                     }else{
                         Toast.fire({
                             icon: "error",
-                            title: data.message.info
+                            title: data.messages.info
                         });
                         form[0].reset();
                     }

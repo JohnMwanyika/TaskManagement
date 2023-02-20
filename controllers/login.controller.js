@@ -153,11 +153,11 @@ module.exports = {
           console.log(req.session.user, req.session.pass);
           // return res.status(200).redirect("/dashboard");
           return res.status(200).json({
-            message: { info: "Sign in Successfully", type: "success" },
+            messages: { info: "Sign in Successfully", type: "success" },
           });
         } else {
           return res.json({
-            message: { info: "Invalid Credentials", type: "alert-danger" },
+            messages: { info: "Invalid Credentials", type: "alert-danger" },
           });
         }
       });
