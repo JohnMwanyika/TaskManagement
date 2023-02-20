@@ -140,19 +140,19 @@ block content
 
     //- })
 
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
+    //- const Toast = Swal.mixin({
+    //-   toast: true,
+    //-   position: 'top-end',
+    //-   showConfirmButton: false,
+    //-   timer: 3000,
+    //-   timerProgressBar: true,
+    //-   didOpen: (toast) => {
+    //-     toast.addEventListener('mouseenter', Swal.stopTimer)
+    //-     toast.addEventListener('mouseleave', Swal.resumeTimer)
+    //-   }
+    //- })
 
-    Toast.#{toast}({
-      icon: 'success',
-      title: 'Signed in successfully'
-    })
+    //- Toast.#{toast}({
+    //-   icon: 'success',
+    //-   title: 'Signed in successfully'
+    //- })

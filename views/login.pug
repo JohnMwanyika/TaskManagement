@@ -116,8 +116,26 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  script.
+  if (message)
+    script.
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
 
+      Toast.fire({
+        icon: "#{message.type}",
+        title: "#{message.info}"
+      });
+
+  script.
     const Toast = Swal.mixin({
       toast: true,
       position: 'top',
