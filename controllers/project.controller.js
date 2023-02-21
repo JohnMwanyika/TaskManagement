@@ -1,9 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-// const { createPaginator } = require("prisma-pagination");
-// const paginate = new createPaginator({ perPage: 10 });
-// var moment = require("moment");
-// const { query } = require("express");
-// const { parse } = require("dotenv");
+
 
 const generateReport = require("../middlewares/jspdf");
 
@@ -60,7 +56,6 @@ module.exports = {
       });
 
       console.log("pages");
-      console.log(req.paginate);
       res.render("my_projects", {
         bd: "Projects",
         user: req.session.user,
