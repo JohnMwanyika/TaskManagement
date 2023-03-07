@@ -1,0 +1,107 @@
+extends sub-layout
+
+block content
+  main#main.main
+    .pagetitle
+      h1 #{bd}
+      nav
+        ol.breadcrumb
+          li.breadcrumb-item
+            a(href="/dashboard") Home
+          li.breadcrumb-item.active Dashboard
+            h5#jqtest jquery off
+    section.section.dashboard
+      .row
+        .col-lg-12
+          .row
+            //- Mytasks table
+            .col-12
+              .card.recent-sales.overflow-auto
+                .filter
+                  a.icon(href="#" data-bs-toggle="dropdown")
+                    i.bi.bi-three-dots
+                  ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow
+                    li.dropdown-header.text-start
+                      h6 Filter
+                    li
+                      a.dropdown-item(href="#") Today
+                    li
+                      a.dropdown-item(href="#") This Month
+                    li
+                      a.dropdown-item(href="#") This Year
+                .card-body
+                  h5.card-title
+                    | #{card_title} 
+                    span | Today
+                      span#loader
+                        span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")
+                  table.table.datatable.table-hover
+                    thead
+                      tr
+                        th(scope="col") #
+                        th(scope="col") Task
+                        th(scope="col") Description
+                        th(scope="col") Due_in
+                        th(scope="col") User
+                        th(scope="col") Status
+                        th(scope="col") Mark
+                    tbody
+                      each row,index in rows
+                        tr
+                          th(scope="row")
+                            a(href="#") #{index+1}
+                          td #{row.title}
+                          td
+                            a.text-primary(href="#") #{row.description}
+                          td #{moment(row.due_in).format('ll')}
+                          td #{row.user.first_name} #{row.user.last_name}
+
+                          if row.task_status.status_name === 'Active'
+                            td
+                              span.badge.bg-warning #{row.task_status.status_name}
+                              
+                          else
+                            td
+                              span.badge.bg-success #{row.task_status.status_name}
+                                
+                          td 
+                            .dropdown.text-center
+                              button.btn.btn-light.btn-sm.dropdown-toggle(type="button" data-bs-toggle="dropdown" aria-expanded="false").
+
+                              ul.dropdown-menu.border
+                                li
+                                  a.dropdown-item(href=`/dashboard/my_tasks/${row.task_id}`) View
+                                li
+                                  a.dropdown-item#active(href=`#`) Active 
+                                    //- span#loader
+                                    //-   span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")
+                                li
+                                  a.dropdown-item(href=`/my_task/${row.user.user_id}`) Completed
+                                //- li
+                                //-   a.dropdown-item(href="#") Something else here
+
+  script.
+    $('#loader').hide();
+    $('#jqtest').hide();
+      $('#active').on('click', function (event) {
+        event.preventDefault();
+        $('#jqtest').show();
+        alert('Hello')
+        //- jQuery.ajax({
+        //-   url: '/my_task/1',
+        //-   type: 'POST',
+        //-   data: 1,
+        //-   beforeSend: function () {
+        //-     $("#loader").show();
+        //-   },
+        //-   success: function (data) {
+        //-     console.log(data);
+        //-     $("#loader").hide(function(){
+        //-       $("#main").load(location.href + " #main");
+        //-       //- $("#MainFormDiv").hide();
+        //-       //- $("#text-message").fadeIn();
+        //-     });
+        //-   }
+        //- });
+      });
+

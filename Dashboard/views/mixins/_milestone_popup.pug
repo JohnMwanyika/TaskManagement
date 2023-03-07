@@ -1,0 +1,64 @@
+.modal.fade(id=`mile_modal_${row.mile_id}`,data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true")
+    .modal-dialog
+        .modal-content(style="border-radius:0px")
+            .modal-header
+                h1.modal-title.fs-5#staticBackdropLabel
+                    span
+                        i.bi.bi-pencil-square.fa-2x.text-primary
+                    |  Edit milestone
+                button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+            .modal-body
+                //- form
+                form(action=`/dashboard/milestones/update_milestone/${row.mile_id}` method="post").px-5
+                    .mb-3.row
+                        label.col-sm-4.col-form-label(for="title").text-dark Name of Milestone
+                        .col-sm-8
+                            input.form-control#title(type="text" name="title" value=`${row.name}`)
+                            input.form-control#title(type="text" name="projectId" hidden value=`${project.project_id}`)
+
+                    .mb-3.row
+                        label.col-sm-4.col-form-label(for="description").text-dark Description
+                        .col-sm-8
+                            textarea.form-control#description(placeholder="Milestone overview" style="height: 100px;" name="description" required)
+                                | #{row.description}
+                            .mt-3.row
+                                .col-6 
+                                    .form-floating
+                                        //- variable holding start date and expected end date
+                                        -var sdate = moment(row.start_date).format("YYYY-MM-DD");
+                                        -var ddate = moment(row.due_date).format("YYYY-MM-DD");
+                                        input.form-control#floatingZip.today(type="date" placeholder="Start date" name="start_date" value=`${sdate}`  required)
+                                        label(for="floatingDate") Start date
+                                .col-6
+                                    .form-floating
+                                        input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" value=`${ddate}` required)
+                                        label(for="floatingDate") Expected End Date
+
+                    .row
+                        .col-lg-12.mb-3
+
+                            .d-grid.gap-4.col-3.mx-auto.mt-3
+                                button.btn.btn-primary(type="submit")#update
+                                    span#lbl Update 
+    
+    //- script.
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: "error",
+            title: "data.message.info"
+        })
+        var sdate = #{row.start_date};
+        
+        let today = new Date(#{row.start_date}).toISOString().substr(0,10);
+        document.querySelector(".today").value = today;

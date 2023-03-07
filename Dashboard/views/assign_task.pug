@@ -1,0 +1,135 @@
+extends sub-layout
+
+block content
+    main#main.main
+        .pagetitle
+            h1=title
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="/dashboard") Home
+                    li.breadcrumb-item Task
+                    li.breadcrumb-item.active Assign task
+        section.section
+            form(action="/dashboard/my_tasks/api/assign" method="POST").row
+                .col-lg-6
+                    .card
+                        .card-body
+                            h5.card-title Task Assignment
+                            .row
+                                .col-12
+                                    .form-floating.mb-3
+                                        select.form-select#floatingSelect(aria-label="Floating label select example" name="projectId" required).project_sel
+                                            option(selected) select project
+                                            each project in projects
+                                                option(value=`${project.project_id}`) #{project.title}
+                                        label(for="floatingSelect") Project
+
+                                    .form-floating.mb-3
+                                        select.form-select#floatingSelect(aria-label="Floating label select example" name="mileId" required).milestone_sel
+                                            option(selected) Select milestne
+                                        label(for="floatingSelect") Milestone
+                                    .form-floating.mb-3
+                                        select.form-select#floatingSelect(aria-label="Floating label select example" name="taskId" required).task_sel
+                                            option(selected) Select task
+                                        label(for="floatingSelect") Task
+                                
+                .col-lg-6
+                    .card
+                        .card-body
+                            h5.card-title Team Members
+                            //- form.row.g-3(action="/dashboard/my_tasks/new_task" method="POST")
+                            .row
+                                .col-md-12
+                                    .form-floating.mb-3
+                                        select.form-select#floatingSelect(aria-label="Floating label select example" name="userId" multiple style="height:250px" required).team_sel
+                                            option(selected) select member
+                                        label(for="floatingSelect") Asignee
+                                    .text-center
+                                        button.btn.btn-primary.px-5(type="submit") Assign
+                                        button.btn.btn-secondary(type="reset") Reset
+
+    script.
+        $('.project_sel').on('click', function () {
+            //- select milestone dropdown
+            var milestone_select = $('.milestone_sel');
+            //- clear milestone select
+            milestone_select.text('');
+            milestone_select.val('');
+            //- //- select asignee dropdown
+            var team_select = $('.team_sel');
+            //- clear asignee dropdown
+            team_select.text('');
+            team_select.val('');
+
+            //- select project id from the selected project dropdown
+            var project_select = $(this).val();
+            var id = parseInt(project_select);
+
+            //- console.log(id);
+            $.ajax({
+                url: `/dashboard/projects/api/${id}`,
+                type: 'GET',
+                success: function (res) {
+                    //- console.log(res.project.team)
+
+                    var miles = res.project.milestone
+                    var members = res.project.team;
+                    for (var index = 0; index < miles.length; index++) {
+                        var el = miles[index];
+                        var mile_option = document.createElement('option');
+                        mile_option.innerHTML = el.name;
+                        mile_option.value = el.mile_id;
+                        milestone_select.append(mile_option);
+
+                    };
+                    for (let i = 0; i < members.length; i ++) {
+                        let el =members[i];
+                        //- console.log(el.userId.first_name)
+                        let member_option = document.createElement('option');
+                        member_option.innerHTML = el.userId.first_name +' ' + el.userId.last_name;
+                        member_option.value = el.userId.user_id;
+                        team_select.append(member_option);
+                    }
+
+                }
+
+            })
+        })
+        $('.milestone_sel').on('click', function () {
+            //- select task dropdown
+            var task_select = $('.task_sel');
+            //- clear task select
+            task_select.text('');
+            task_select.val('');
+
+            //- select project id from the selected project dropdown
+            var milestone_select = $(this).val();
+            var id = parseInt(milestone_select);
+
+            console.log(id);
+            $.ajax({
+                url: `/dashboard/milestones/api/${id}`,
+                type: 'GET',
+                success: function (res) {
+                    //- console.log(res.results)
+
+                    var miles = res.results;
+                    //- var members = res.project.team;
+                    for (var index = 0; index < miles.length; index++) {
+                        var el = miles[index];
+                        let tasks = el.task
+
+                        for (let i = 0; i < tasks.length; i++){
+                            let opt = tasks[i];
+                            let task_option = document.createElement('option');
+                            task_option.innerHTML = opt.title;
+                            task_option.value = opt.task_id;
+                            task_select.append(task_option);
+                        }
+                        
+                    };
+                }
+
+            })
+        })

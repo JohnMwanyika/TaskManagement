@@ -1,0 +1,191 @@
+extends sub-layout 
+block content 
+    main#main.main
+        .pagetitle
+            h1=title 
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="/dashboard") Home
+                    li.breadcrumb-item.active=bd
+        section.section.dashboard
+            .row#demo
+                if (projects.length > 0)
+                    each project,index in projects
+                        .col-lg-4
+                            .card.overflow-hidden(style="height:500px").border
+                                .filter
+                                    a.icon(href="#" data-bs-toggle="dropdown").mb-2
+                                        i.bi.bi-three-dots
+                                    ul.dropdown-menu.dropdown-menu-end.dropdown-menu-arrow
+                                        li.dropdown-header.text-start
+                                            h6 Options
+                                        li
+                                            a.dropdown-item(href="#" data-bs-toggle="modal", data-bs-target=`#manager_${project.project_id}`)
+                                                span
+                                                    i.bi.bi-sliders.text-danger
+                                                | Manage
+                                        li
+                                            a.dropdown-item(href=`/dashboard/milestones/${project.project_id}`)
+                                                span
+                                                    i.bi.bi-file-earmark-text.text-primary
+                                                | Milestones
+                                        li
+                                            a.dropdown-item(href="#" data-bs-toggle="modal", data-bs-target=`#team_modal_${project.project_id}`)
+                                                span
+                                                    //- i.bi.bi-people.text-primary
+                                                    i.fa.fa-users(aria-hidden="true").text-primary
+                                                | Team members
+                                        li
+                                            a.dropdown-item(href="/dashboard/my_tasks/new_task")
+                                                span
+                                                    i.fa.fa-list(aria-hidden="true").text-primary
+                                                | Create Task
+                                        li
+                                            a.dropdown-item(href="/dashboard/projects/report")
+                                                span
+                                                    i.bi.bi-file-earmark-pdf.text-primary
+                                                | Report.
+                                //- ###New Member popup###
+                                include includes/add_member_popup
+                                include includes/manage_project_popup
+
+
+
+                                .card-body
+                                    h4.fw-lighter.text-secondary.my-4.mx-3 #{index+1} #{project.title}
+                                    hr
+                                    p 
+                                        strong created by: 
+                                        |#{project.created_by.first_name} #{project.created_by.last_name}
+                                    //- project status
+                                    if (project.project_status.name == 'Active')
+                                        p 
+                                            strong  Status: 
+                                            <span class="badge text-bg-primary">#{project.project_status.name}</span>
+                                    if (project.project_status.name == 'Pending')
+                                        p 
+                                            strong  Status: 
+                                            <span class="badge text-bg-warning">#{project.project_status.name}</span>
+                                    if (project.project_status.name == 'Complete')
+                                        p 
+                                            strong  Status: 
+                                            <span class="badge text-bg-success">#{project.project_status.name}</span>
+                                    if (project.project_status.name == 'Suspended')
+                                        p 
+                                            strong  Status: 
+                                            <span class="badge text-bg-info">#{project.project_status.name}</span>
+                                    //- Project Description
+                                    strong Overview
+                                    p.text-muted.
+                                        #{project.description}
+                                    //- total tasks
+                                    p
+                                        i.fa.fa-cogs(aria-hidden="true") 
+                                        span 
+                                            strong.text-muted #{project.milestone.length} Milestone(s)  
+                                        span.mx-3
+                                            i.fa.fa-tasks(aria-hidden="true") 
+                                            span  
+                                                strong.text-muted #{project.task.length} Task(s)
+                                    p 
+                                        strong Progress:
+                                            //- populate the progress bar by filtering milestones completed Vs Toatal Milestones  
+                                            -var _ = lodash
+                                            //- this fetches all milestones of a particulat project and filter out the completed ones
+                                            -var totalCompleted = _.filter(project.milestone, function(object){return object.milestone_statusStatus_id == 3})
+                                            -var totalMiles = project.milestone.length
+                                            -var mile_ptg = totalCompleted.length/totalMiles*100
+                                            -var result = round(mile_ptg)
+                                            //- Round off to the nearest 0 decimal point
+                                            //-check if there are no milestones
+                                            if (project.milestone.length != 0)
+                                                //- h1 #{result}%
+                                                if (result <= 1)
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-danger(role="progressbar" aria-label="Example with label" style=`width: ${4}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{0}%
+                                                else if (result <= 20)
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-danger(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                                else if (result <= 49 )
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-warning(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                                else if (result <= 59 )
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-info(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                                else if (result <= 79 )
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-primary(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                                else
+                                                    .progress(style="height: 20px;").w-75
+                                                        .progress-bar.bg-success(role="progressbar" aria-label="Example with label" style=`width: ${result}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") #{result}%
+                                            else 
+                                                //- h1 0%
+                                                .progress(style="height: 20px;").w-75
+                                                    .progress-bar.bg-success(role="progressbar" aria-label="Example with label" style=`width: ${0}%;` aria-valuenow="5" aria-valuemin="0" aria-valuemax="100") No Milestones
+                                            //- .progress(style="height: 20px;")
+                                            //-     .progress-bar(role="progressbar" aria-label="Progress bar" style=`width: ${totalCompleted.length}%;` aria-valuenow=`${totalCompleted.length}` aria-valuemin="0", aria-valuemax=`${totalMiles}` ) #{project.milestone.length}%
+                                            //- hr
+                                            
+                                        h6.card-title.border-bottom Team
+                                        .row 
+                                            .col-lg-12
+
+                                                each team in project.team
+                                                    .d-inline
+                                                        img.member-overlap-item.rounded-circle(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title=`${team.userId.first_name} ${team.userId.last_name}`)
+
+                                                //- ul.list-group.list-group-flush.list-group-numbered.overflow-auto(style='max-height:150px')
+                                                //-     each team in project.team
+                                                //-         li.list-group-item
+                                                //-             //- small #{team.userId.first_name} #{team.userId.last_name}
+                                                //-             img(src=`https://ui-avatars.com/api/?name=${team.userId.first_name}+${team.userId.last_name}&background=random&size=30&rounded=true`, alt="" srcset="")
+
+                else 
+                    p Howdy! #{user.first_name} Seems like you have not created any projects yet.
+                    p click 
+                        a(href="/dashboard/projects/new_project") here 
+                        span let's create your first project
+            nav(aria-label="...")
+                ul.pagination
+                    li.page-item.disabled
+                        a.page-link Previous
+                    li.page-item
+                        a.page-link(href=`/dashboard/projects/?take=9&&skip=0`) 1
+                    li.page-item.active(aria-current="page")
+                        a.page-link(href=`/dashboard/projects/?skip=9`) 2
+                    li.page-item
+                        a.page-link(href="#") 3
+                    li.page-item
+                        a.page-link(href="#") Next
+    //- script.
+
+        $('#demo').pagination({
+            dataSource: 'https://api.flickr.com/services/feeds/photos_public.gne?tags=cat&tagmode=any&format=json&jsoncallback=?',
+            locator: 'items',
+            totalNumber: 50,
+            pageSize: 2,
+            showPageNumbers: true,
+            showPrevious: true,
+            showNext: true,
+            showNavigator: true,
+            showFirstOnEllipsisShow: true,
+            showLastOnEllipsisShow: true,
+            ajax: {
+                beforeSend: function() {
+                    container.prev().html('Loading data from flickr.com ...');
+                }
+            },
+            callback: function(response, pagination) {
+                window.console && console.log(22, response, pagination);
+                var dataHtml = '<ul>';
+
+                $.each(response, function (index, item) {
+                    dataHtml += '<li>' + item.title + '</li>';
+                });
+                dataHtml += '</ul>';
+
+                container.prev().html(dataHtml);
+            }
+        })
+

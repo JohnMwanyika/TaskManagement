@@ -196,11 +196,10 @@
                 },
                 timeout: 5000,
                 error: function (request, status, error) {
-                    //- alert(request.responseText);
-                    //- Toast.fire({
-                    //-     icon: "error",
-                    //-     title: "Oops! an error occured"
-                    //- });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Oops! an error occured try again"
+                    });
                 }
 
             });

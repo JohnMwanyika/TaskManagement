@@ -1,0 +1,264 @@
+extends sub-layout
+
+block content
+    main#main.main
+        .pagetitle
+            h1=title
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="/dashboard") Home
+                    li.breadcrumb-item Project
+                    li.breadcrumb-item Milestone
+                    li.breadcrumb-item.active New Milestone
+        section.section
+            .row
+                .col-lg-12
+                    .card.mb-4
+                        .card-body.milestone
+
+                            h4.fw-lighter.text-dark.my-3.mx-3.text-center.border-bottom.mb-3 Project Milestones
+                            .row 
+                                .col-lg-6.px-5
+                                    .text-center
+                                        p
+                                            strong Project : 
+                                            span #{project.title}
+                                        p
+                                            strong By : 
+                                            span #{project.created_by.first_name} #{project.created_by.last_name}
+
+                                    //- ################ div to be refreshed by AJAX #################
+                                    .col-lg-12#myDiv
+                                        p.text-center 
+                                            strong Existing Milestones 
+                                        //- if milestones exists render them
+                                        if rows.length>0
+                                            .div(style="height:270px").overflow-auto.border-bottom
+                                                each row,index in rows
+                                                    .accordion#accordionExample.shadow-lg
+                                                        .accordion-item
+                                                            h2.accordion-header(id=`heading-${row.mile_id}`)
+                                                                //- milestone title
+                                                                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse", data-bs-target=`#collapse-${row.mile_id}`,aria-expanded="false", aria-controls=`collapse-${row.mile_id}`) (#{index+1})#{row.name}
+
+                                                                    //- div.actions.float-end
+                                                                        ####Edit Milestone button####
+                                                                        a.btn.bg-primary.text-white.px-2.mx-3.rounded(href="#" data-bs-toggle="modal", data-bs-target=`#mile_modal_${row.mile_id}`)
+                                                                            span
+                                                                                i.bi.bi-pencil-square(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit")
+                                                                        form.d-inline(action=`/dashboard/milestones/${row.mile_id}`,method="POST")#deleteForm
+                                                                            //- input(type="text" hidden value=`${row.mile_id}`).id
+                                                                            a.btn.bg-danger.text-white.px-2.ml-4.rounded(type="button" href='#' id=`delete_${row.mile_id}`)
+                                                                                span
+                                                                                    i.bi.bi-trash3(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete")
+                                                                //- ###Edit Milestone Popup####
+                                                                include mixins/_milestone_popup
+                                                            .accordion-collapse.collapse(aria-labelledby=`heading-${row.mile_id}`, data-bs-parent="#accordionExample", id=`collapse-${row.mile_id}`)
+                                                                .accordion-body
+                                                                    strong Overview.
+                                                                    span.text-muted
+                                                                        |  #{row.description}
+                                                                    hr
+                                                                    - var start_D = moment(row.start_date).endOf('day').fromNow();
+                                                                    .row 
+                                                                        p 
+                                                                            strong Start : 
+                                                                                span.text-muted #{start_D}
+                                                                            - var due_D = moment(row.due_date).endOf('day').fromNow();
+                                                                            strong.m-3 Expected to end : 
+                                                                                span.text-muted #{due_D}
+                                                                            strong.m-3 status : 
+                                                                                span.text-muted #{row.milestone_status.name}
+                                                                        p 
+                                                                            strong Actions :
+                                                                                span
+                                                                                    div.actions
+                                                                                        //- ####Edit Milestone button####
+                                                                                        a.btn.bg-primary.text-white.px-2.mx-3.rounded(href="#" data-bs-toggle="modal", data-bs-target=`#mile_modal_${row.mile_id}`)
+                                                                                            span
+                                                                                                i.bi.bi-pencil-square(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Edit")
+                                                                                        form.d-inline(action=`/dashboard/milestones/${row.mile_id}`,method="POST")#deleteForm
+                                                                                            //- input(type="text" hidden value=`${row.mile_id}`).id
+                                                                                            a.btn.bg-danger.text-white.px-2.ml-4.rounded(type="button" href='#' id=`delete_${row.mile_id}`)
+                                                                                                span
+                                                                                                    i.bi.bi-trash3(data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Delete")
+
+                                        //- Else render the message bellow
+                                        else 
+                                            .div(style="height:270px").overflow-auto.bg-light.position-relative.bg-opacity-50.border-secondary.border.rounded.shadow-lg
+                                                h3.text-center(class="position-absolute top-50 start-50 translate-middle").text-muted No milestones at the moment!
+
+                                        //- hr.text-light
+
+
+
+                                .col-lg-6.border-start.border-bottom
+                                    p.text-center 
+                                        strong.text-light  New Milestone
+                                    form#myForm(action="/dashboard/milestones/" method="post").px-5
+                                        .mb-3.row
+                                            label.col-sm-4.col-form-label(for="title").text-dark Name of Milestone
+                                            .col-sm-8
+                                                input.form-control#title(type="text" name="title")
+                                                input.form-control#title(type="text" name="projectId" hidden value=`${project.project_id}`)
+
+                                        .mb-3.row
+                                            label.col-sm-4.col-form-label(for="description").text-dark Description
+                                            .col-sm-8
+                                                textarea.form-control#description(placeholder="Milestone overview" style="height: 100px;" name="description" required)
+
+                                                .mt-3.row
+                                                    .col-6 
+                                                        .form-floating
+                                                            input.form-control#floatingZip(type="date" placeholder="Start date" name="start_date" required)
+                                                            label(for="floatingDate") Start date
+                                                    .col-6
+                                                        .form-floating
+                                                            input.form-control#floatingZip(type="date" placeholder="Start date" name="due_date" required)
+                                                            label(for="floatingDate") Expected End Date
+
+                                        .row
+                                            .col-lg-12.mb-3
+
+                                                .d-grid.gap-4.col-3.mx-auto.mt-3
+                                                    button.btn.btn-primary(type="submit")#submitbtn.shadow-lg
+                                                        span#lbl Add 
+                                                        span.spinner-border.spinner-border-sm(role="status" aria-hidden="true")#spina
+
+
+    script.
+        //- var message = "Empty";
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        var loading = $('#spina').hide();
+        var submitbtn = $('#submitbtn');
+        //- Ajax Submit for new milestone form
+        $("#myForm").submit(function(event){
+            event.preventDefault();
+            //- get form
+            var form = $(this);
+            //- ajax call
+            $.ajax({
+                url: form.attr('action'),
+                type:form.attr('method'),
+                //- dataType: "application/json",
+                data: form.serialize(),
+                beforeSend: function(){
+                    loading.show(function(){
+                        $("#submitbtn").prop("disabled", true);
+                    });
+                },
+                complete: function(){
+                    loading.hide(function(){
+                        $("#submitbtn").removeAttr('disabled'); 
+                    });
+                },
+                success: function(data){
+                    var msg = data.message.type;
+                    //- declearing toast
+
+                    if(msg == "success"){
+                        //- Clears The form fields
+                        form[0].reset();
+                        //- refresh the milestone div
+                        $("#myDiv").load("/dashboard/milestones/"+#{project.project_id} + " #myDiv");
+                        //- fires the toast
+                        Toast.fire({
+                            icon: data.message.type,
+                            title: data.message.info
+                        })
+                    }else{
+                        Toast.fire({
+                            icon: "error",
+                            title: "Oops! an error occured"
+                        })
+                    }
+                },
+
+
+            });
+
+        });
+
+        //- delete milestone
+        //- $('#delForm').submit(function(e){
+        //-     e.preventDefault();
+        //-     let form = $(this);
+        //-     $.ajax({
+        //-         url:form.attr('action'),
+        //-         type:form.attr('method'),
+        //-         success:(data) =>{
+        //-             var msg = data.message;
+        //-             if (msg.type == 'success'){
+        //-                 Toast.fire({
+        //-                     icon: msg.type,
+        //-                     title: msg.info
+        //-                 });
+        //-                 $("#myDiv").load(window.location + " #myDiv");
+        //-             }else{
+        //-                 Toast.fire({
+        //-                     icon: 'error',
+        //-                     title: 'Oops! something went wrong'
+        //-                 });
+        //-             }
+
+        //-         },
+        //-         error:(err) =>{alert(err)}
+        //-     })
+        //- })
+
+        //- delete milestone
+        //- //- var loader = $()
+        //- //- var deletebtn = $('.delete');
+        //- var deletebtn = $(".actions a:nth-child(2)[id]");
+        //- var id = $('.id').val();
+        //- //- var actual_id = parseInt(id);
+        //- deletebtn.click(function(e){
+        //-     $(this).attr("id")
+        //-     e.preventDefault();
+
+        //-     $.ajax({
+        //-         url:'/dashboard/milestones/'+id,
+        //-         type:'delete',
+        //-         beforeSend: function(){
+        //-             //- loader.show(function(){
+        //-             //-     $("#submit").prop("disabled", true);
+        //-             //- });
+        //-             console.log(id);
+        //-         },
+        //-         complete: function(){
+        //-             //- loader.hide(function(){
+        //-             //-     $("#submit").removeAttr('disabled'); 
+        //-             //- });
+        //-             console.log(id);
+        //-         },
+        //-         success:(data) =>{
+        //-             var msg = data.message;
+        //-             if (msg.type == 'success'){
+        //-                 Toast.fire({
+        //-                     icon: msg.type,
+        //-                     title: msg.info
+        //-                 });
+        //-                 $("#myDiv").load(window.location + " #myDiv");
+        //-             }else{
+        //-                 Toast.fire({
+        //-                     icon: 'error',
+        //-                     title: 'Oops! something went wrong'
+        //-                 });
+        //-             }
+
+        //-         },
+        //-         error:(err) =>{alert(err)}
+
+        //-     })
+        //- })

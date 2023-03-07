@@ -1,0 +1,14 @@
+extends sub-layout
+block content 
+    main#main.main
+        .pagetitle
+            h1=title
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="index.html") Home
+                    li.breadcrumb-item Users
+                    li.breadcrumb-item.active view User
+        ul 
+            li #{row.first_name} #{row.last_name }
+            li=row.role.role_name

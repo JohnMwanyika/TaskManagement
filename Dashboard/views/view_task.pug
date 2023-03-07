@@ -1,0 +1,91 @@
+extends sub-layout
+block content
+
+    main#main.main
+        .pagetitle
+            h1 Task
+            nav
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        a(href="/dashboard") Home
+                    li.breadcrumb-item Users
+                    li.breadcrumb-item.active View Task
+        section.section.profile
+            .row
+                .col-xl-4
+                    .card
+                        .card-body.profile-card.pt-4.d-flex.flex-column.align-items-center
+                            img.rounded-circle(src="/assets/img/profile-img.jpg" alt="Profile")
+                            h2 #{user.first_name} #{user.last_name}
+                            h3 #{user.role.role_name}
+                            .social-links.mt-2
+                                a.twitter(href="#")
+                                    i.bi.bi-twitter
+                                a.facebook(href="#")
+                                    i.bi.bi-facebook
+                                a.instagram(href="#")
+                                    i.bi.bi-instagram
+                                a.linkedin(href="#")
+                                    i.bi.bi-linkedin
+                .col-lg-8
+                    //  project card 
+                    .card.d-block
+                        .card-body
+                            .d-flex.justify-content-between.align-items-center.mb-2
+                                h5.my-3 #{task.title}
+                                .dropdown
+                                    a.dropdown-toggle.arrow-none.card-drop(href="#" data-bs-toggle="dropdown" aria-expanded="false")
+                                        i.dripicons-dots-3
+                                    .dropdown-menu.dropdown-menu-end
+                                        //  item
+                                        a.dropdown-item(href="javascript:void(0);")
+                                            i.mdi.mdi-pencil.me-1
+                                            | Edit
+                                        //  item
+                                        a.dropdown-item(href="javascript:void(0);")
+                                            i.mdi.mdi-delete.me-1
+                                            | Delete
+                                //  project title
+                            .badge.bg-secondary.text-light.mb-3 #{task.task_status.status_name}
+                            h5 Task Overview:
+                            p.text-muted.mb-2.
+                                #{task.description}
+                            .row
+                                .col-md-4
+                                    .mb-4
+                                        h5 Start Date
+                                        p=moment(task.start_at).format('ll')
+                                            | 
+                                            small.text-muted=moment(task.start_at).format('LT')
+                                .col-md-4
+                                    .mb-4
+                                        h5 End Date
+                                        p=moment(task.due_in).format('ll')
+                                            |  
+                                            small.text-muted=moment(task.due_in).format('LT')
+                                //- .col-md-4
+                                //-     .mb-4
+                                //-         h5 Budget
+                                //-         p $15,800
+                            #tooltip-container
+                                h5 Team Members:
+                                //- a.d-inline-block(href="javascript:void(0);" data-bs-container="#tooltip-container" data-bs-toggle="tooltip" data-bs-placement="top" title="Mat Helme")
+                                //-     img.rounded-circle.img-thumbnail.avatar-sm(src="assets/images/users/avatar-6.jpg" alt="friend")
+                                //- a.d-inline-block(href="javascript:void(0);" data-bs-container="#tooltip-container" data-bs-toggle="tooltip" data-bs-placement="top" title="Michael Zenaty")
+                                //-     img.rounded-circle.img-thumbnail.avatar-sm(src="assets/images/users/avatar-7.jpg" alt="friend")
+                                //  end card-body
+                                //  end card
+                                //  end card
+                                //  end col 
+                                .col-lg-6.col-xxl-4.
+    //- script.
+    //-     $('.sdate').innerHTML = (function(){
+    //-         let day = "2010-02-28 13:40:55"
+    //-         let date = moment(day);
+    //-         date.format("DD/MM/YYYY-H:mm:ss");
+    //-     })
+        //- function clickHandler() {
+        //-     let day = "2010-02-28 13:40:55"
+        //-     let date = moment(day);
+        //-     alert(date.format("DD/MM/YYYY-H:mm:ss"));
+        //- }

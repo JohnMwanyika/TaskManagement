@@ -1,0 +1,108 @@
+extends sub-layout
+
+block content 
+  
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Manage Users</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item active">Manage users</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-12">
+
+          <div class="card recent-sales overflow-auto">
+
+            <div class="card-body">
+            <h5 class="card-title"></h5>
+            <div class="table-responsive">
+              <table class="table table-sm table-hover datatable">
+                <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Username</th>
+                  <th scope="col"><i class="bi bi-envelope"></i> Email</th>
+                  <th scope="col"><i class="bi bi-telephone"></i> Phone</th>
+                  <th scope="col"> Designation</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                each row,index in rows
+                  include mixins/_new_user_form
+                  +user_form(row,'Edit')
+                  <tr>
+                    <th scope="row"><a href="#">#{index+1}</a></th>
+                    <td>#{row.first_name}</td>
+                    <td>#{row.last_name}</td>
+                    <td>#{row.username}</td>
+                    <td> #{row.email}</td>
+                    <td><i class="bi bi-telephone-fill text-secondary"></i> #{row.phone}</td>
+                      if (!row.designation)
+                        <td>unset</td>
+                      else
+                        <td>#{row.designation.title}</td>
+                    <td>#{row.role.role_name}</td>
+                    <td>
+                      <div class="dropdown text-center">
+                        <button class="btn btn-sm border btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          |Action |
+                        </button>
+                        <ul class="dropdown-menu">
+                          li(class="border-bottom")
+                            a(class="dropdown-item",href="#" ,data-bs-toggle="modal", data-bs-target=`#user_modal${index}`)
+                              span <i class="bi bi-pencil-square text-dark"></i>
+                              | Edit
+
+                          - var link = `/users/${row.user_id}`
+                          li.dropdown-item(class="border-bottom")
+                            a(href=link)
+                              span <i class="bi bi-binoculars text-dark"></i>
+                                span(class="") View
+                          li.dropdown-item(class="border-bottom")
+                            a(href='#',class="")
+                              span <i class="bi bi-key text-dark"></i>
+                                span(class="text-danger") Reset Password
+                          li.dropdown-item
+                            a(href='#')
+                              span <i class="bi bi-person-x text-dark"></i>
+                                span(class="") Deactivate
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+  //- script(src="/socket.io/socket.io.js") 
+  //- script.
+  //-     const socket = io();
+  //-     socket.on('results',(data)=>{
+  //-       console.log(data)
+  //-       socket.emit('success','data deliverd successfully');
+  //-     });
